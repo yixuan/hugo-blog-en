@@ -1,5 +1,42 @@
+html {
+  font-size: 12px;
+}
+body {
+  line-height: 1.75em;
+}
+
+
+#sidebar .sidebar-profile .sidebar-profile-name {
+  font-size: 2.4rem;
+}
+#sidebar[data-behavior="1"] .sidebar-profile .sidebar-profile-bio, #sidebar[data-behavior="1"] .sidebar-profile .sidebar-profile-job, #sidebar[data-behavior="1"] .sidebar-profile .sidebar-profile-location {
+  font-size: 1.8rem;
+}
+#sidebar[data-behavior="1"] ul.sidebar-buttons li.sidebar-button .sidebar-button-link .sidebar-button-desc {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+
+
 .main-content-wrap {
   max-width: 900px;
+}
+
+blockquote {
+  border-left: 10px solid #999;
+  color: #999;
+  padding: 0 20px;
+}
+blockquote > p:first-child {
+  margin-bottom: 1em;
+}
+
+p {
+  margin: 0 0 1em;
+}
+.post .post-content *:not(blockquote):not(.alert) > p {
+    margin: 1em 0 0;
 }
 
 .post img {
