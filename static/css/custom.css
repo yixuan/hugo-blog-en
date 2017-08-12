@@ -1,0 +1,15 @@
+.main-content-wrap {
+  max-width: 900px;
+}
+
+.post img {
+  padding: 5px;
+  border: 1px solid #ddd;
+  box-shadow: 1px 1px 4px #999;
+}
+
+img.align-right {
+  display: inline;
+  float: right;
+  margin-left: 1em;
+}
