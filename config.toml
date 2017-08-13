@@ -17,8 +17,8 @@ languageCode = "en-us"
 defaultContentLanguage = "en-us"
 title = "Yixuan's Blog"
 theme = "hugo-tranquilpeak-theme"
-disqusShortname = "hugo-tranquilpeak-theme"
-# googleAnalytics = "UA-123-45"
+disqusShortname = "joyfulhome"
+googleAnalytics = "UA-43536203-1"
 paginate = 7
 canonifyurls = true
 
