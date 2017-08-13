@@ -4,7 +4,7 @@ title: Yixuan's Blog
 
 <img src="https://i.imgur.com/jTtRJ.png" class="align-right"/>
 
-This is my personal homepage written in English (and in [Markdown](http://daringfireball.net/projects/markdown/)), a site mainly to record my study in Statistics and some other related topics.
+This is my personal homepage written in English (and in [Markdown](https://daringfireball.net/projects/markdown/)), a site mainly to record my study in Statistics and some other related topics.
 
 Some years ago when I read the book *Statistics And Truth*, I found the statements in its preface quite interesting:
 
@@ -14,8 +14,8 @@ Some years ago when I read the book *Statistics And Truth*, I found the statemen
 >
 > All judgements are, in their rationale, statistics.
 
-If you are curious about these sorts of judgments, you may be interested in some of my [blogs](/blogs/). I also post articles on programming techniques, especially for the [R](http://r-project.org/) language.
+If you are curious about these sorts of judgments, you may be interested in some of my [blogs](/blogs/). I also post articles on programming techniques, especially for the [R](https://r-project.org/) language.
 
-This site is driven by [Jekyll Bootstrap](http://jekyllbootstrap.com/). You can find the source code of this site in my [GitHub page](https://github.com/yixuan/). The theme is modified from a [WordPress](http://wordpress.org/) template called [Hum](http://wordpress.org/extend/themes/hum/).
+This site is driven by [Hugo](https://gohugo.io/). You can find the source code of this site in the [GitHub repository](https://github.com/yixuan/hugo-blog-en). The theme is modified from [Tranquilpeak](https://github.com/kakawait/hugo-tranquilpeak-theme).
 
-I also have a Chinese homepage. Please [come here](http://yixuan.cos.name/cn).
+I also have a Chinese homepage. Please [come here](https://yixuan.cos.name/cn).
