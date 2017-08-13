@@ -18,8 +18,16 @@ body {
 }
 
 
-.main-content-wrap {
-  max-width: 900px;
+@media only screen and (min-width: 768px) {
+  .main-content-wrap {
+    max-width: 900px;
+    padding: 0 30px;
+  }
+}
+@media only screen and (min-width: 1280px) {
+  #index-page {
+    margin-top: 60px;
+  }
 }
 blockquote {
   border-left: 10px solid #999;
