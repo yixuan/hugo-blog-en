@@ -1,5 +1,6 @@
 ---
 title: "Handwriting recognition using R"
+slug: "handwriting-recognition-using-r"
 date: 2011-12-18
 categories:
 - Programming

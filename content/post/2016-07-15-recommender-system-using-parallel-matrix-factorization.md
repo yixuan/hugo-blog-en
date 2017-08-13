@@ -1,5 +1,6 @@
 ---
 title: "recosystem: Recommender System Using Parallel Matrix Factorization"
+slug: "recommender-system-using-parallel-matrix-factorization"
 date: 2016-07-15
 categories:
 - Programming

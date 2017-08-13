@@ -1,5 +1,6 @@
 ---
 title: "Windows binary of RMySQL"
+slug: "windows-binary-of-rmysql"
 date: 2011-10-22
 categories:
 - Programming

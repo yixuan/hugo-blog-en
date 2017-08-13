@@ -1,5 +1,6 @@
 ---
 title: "Large scale eigenvalue decomposition and SVD with rARPACK"
+slug: "large-scale-eigen-and-svd-with-rarpack"
 date: 2016-02-20
 categories:
 - Programming

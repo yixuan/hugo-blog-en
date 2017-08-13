@@ -1,5 +1,6 @@
 ---
 title: "How to run regression on large datasets in R"
+slug: "large-regression"
 date: 2011-10-02
 categories:
 - Programming

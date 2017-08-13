@@ -16,7 +16,7 @@ tags:
 - programming
 ---
 
-<img src="http://i.imgur.com/EPgIMLi.jpg" class="alignleft"/>
+<img src="https://i.imgur.com/EPgIMLi.jpg" class="align-right"/>
 
 > Dr. Hadley Wickham is the Chief Scientist of RStudio and Assistant Professor
 of Statistics at Rice University. He is the developer of the famous R package `ggplot2`

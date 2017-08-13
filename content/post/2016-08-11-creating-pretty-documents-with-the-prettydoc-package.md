@@ -1,5 +1,6 @@
 ---
 title: "Creating Pretty Documents with the prettydoc Package"
+slug: "creating-pretty-documents-with-the-prettydoc-package"
 date: 2016-08-11
 categories:
 - R

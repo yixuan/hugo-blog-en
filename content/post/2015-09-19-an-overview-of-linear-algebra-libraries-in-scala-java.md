@@ -1,5 +1,6 @@
 ---
 title: "An overview of linear algebra libraries in Scala/Java"
+slug: "an-overview-of-linear-algebra-libraries-in-scala-java"
 date: 2015-09-19
 categories:
 - Programming
