@@ -22,7 +22,7 @@ The main task of recommender system is to predict unknown entries in the
 rating matrix based on observed values, as is shown in the table below:
 
 <div align="center">
-  <img src="http://i.imgur.com/bmW79NS.png" alt="Rating matrix" />
+  <img src="https://i.imgur.com/bmW79NS.png" alt="Rating matrix" />
 </div>
 
 Each cell with number in it is the rating given by some user on a specific
@@ -58,17 +58,17 @@ the prediction of $\hat{R}_{u,v}=p^\prime_u q_v$.
 
 # LIBMF and recosystem
 
-[LIBMF](http://www.csie.ntu.edu.tw/~cjlin/libmf/)
+[LIBMF](https://www.csie.ntu.edu.tw/~cjlin/libmf/)
 is an open source C++ library for recommender system using parallel
 matrix factorization, developed by
-[Dr. Chih-Jen Lin](http://www.csie.ntu.edu.tw/~cjlin/) and his research group.
+[Dr. Chih-Jen Lin](https://www.csie.ntu.edu.tw/~cjlin/) and his research group.
 [[3](#LIBMF)]
 
 LIBMF is a parallelized library, meaning that
 users can take advantage of multi-core CPUs to speed up the computation.
 It also utilizes some advanced CPU features to further improve the performance.
 
-[recosystem](http://cran.r-project.org/package=recosystem)
+[recosystem](https://cran.r-project.org/package=recosystem)
 ([Github](https://github.com/yixuan/recosystem)) is an R wrapper of
 the LIBMF library that inherits most of its features. Additionally, this
 package provides a number of user-friendly R functions to
@@ -105,8 +105,8 @@ real movie recommendation data set.
 
 The [MovieLens](https://movielens.org/) website collected many
 movie rating data for research use. [[4](#MovieLens)] In this article we download the
-[MovieLens 1M Dataset](http://files.grouplens.org/datasets/movielens/ml-1m.zip)
-from [grouplens](http://grouplens.org/datasets/movielens/),
+[MovieLens 1M Dataset](https://files.grouplens.org/datasets/movielens/ml-1m.zip)
+from [grouplens](https://grouplens.org/datasets/movielens/),
 which contains 1 million ratings from 6000 users and 4000 movies.
 
 The rating data file, `ratings.dat`, looks like below:
@@ -220,7 +220,7 @@ ggplot(pred, aes(x = movie, y = user, fill = rating)) +
 ```
 
 <div align="center">
-  <img src="http://i.imgur.com/nFGyyaO.png" alt="Predicted ratings" />
+  <img src="https://i.imgur.com/nFGyyaO.png" alt="Predicted ratings" />
 </div>
 
 # Performance
@@ -237,7 +237,7 @@ according to the following guideline:
 - The default `Makevars` provides generic options that should apply to most
 CPUs.
 - If your CPU supports SSE3
-([a list of supported CPUs](http://en.wikipedia.org/wiki/SSE3)), add
+([a list of supported CPUs](https://en.wikipedia.org/wiki/SSE3)), add
 
 ```
 PKG_CPPFLAGS += -DUSESSE
@@ -245,7 +245,7 @@ PKG_CXXFLAGS += -msse3
 ```
 
 - If not only SSE3 is supported but also AVX
-([a list of supported CPUs](http://en.wikipedia.org/wiki/Advanced_Vector_Extensions)), add
+([a list of supported CPUs](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions)), add
 
 ```
 PKG_CPPFLAGS += -DUSEAVX
@@ -259,25 +259,25 @@ the performance of computation. The y axis is the elapsed time of the model tuni
 procedure in the previous example.
 
 <div align="center">
-  <img src="http://i.imgur.com/GfgShWZ.png" alt="Performance" />
+  <img src="https://i.imgur.com/GfgShWZ.png" alt="Performance" />
 </div>
 
 ## References
 
 <div id="FPSG2015"></div>
 
-[1] Chin, Wei-Sheng, Yong Zhuang, Yu-Chin Juan, and Chih-Jen Lin. 2015a. [*A Fast Parallel Stochastic Gradient Method for Matrix Factorization in Shared Memory Systems*](http://www.csie.ntu.edu.tw/~cjlin/papers/libmf/libmf_journal.pdf). ACM TIST.
+[1] Chin, Wei-Sheng, Yong Zhuang, Yu-Chin Juan, and Chih-Jen Lin. 2015a. [*A Fast Parallel Stochastic Gradient Method for Matrix Factorization in Shared Memory Systems*](https://www.csie.ntu.edu.tw/~cjlin/papers/libmf/libmf_journal.pdf). ACM TIST.
 
 <div id="LRSG"></div>
 
-[2] Chin, Wei-Sheng, Yong Zhuang, Yu-Chin Juan, and Chih-Jen Lin. 2015b. [*A Learning-Rate Schedule for Stochastic Gradient Methods to Matrix Factorization*](http://www.csie.ntu.edu.tw/~cjlin/papers/libmf/mf_adaptive_pakdd.pdf). ACM TIST.
+[2] Chin, Wei-Sheng, Yong Zhuang, Yu-Chin Juan, and Chih-Jen Lin. 2015b. [*A Learning-Rate Schedule for Stochastic Gradient Methods to Matrix Factorization*](https://www.csie.ntu.edu.tw/~cjlin/papers/libmf/mf_adaptive_pakdd.pdf). ACM TIST.
 
 <div id="LIBMF"></div>
 
-[3] Lin, Chih-Jen, Yu-Chin Juan, Yong Zhuang, and Wei-Sheng Chin. 2015. [*LIBMF: A Matrix-Factorization Library for Recommender Systems*](http://www.csie.ntu.edu.tw/~cjlin/libmf/).
+[3] Lin, Chih-Jen, Yu-Chin Juan, Yong Zhuang, and Wei-Sheng Chin. 2015. [*LIBMF: A Matrix-Factorization Library for Recommender Systems*](https://www.csie.ntu.edu.tw/~cjlin/libmf/).
 
 <div id="MovieLens"></div>
 
 [4] F. Maxwell Harper and Joseph A. Konstan. 2015. [*The MovieLens Datasets: History
-and Context*](http://dx.doi.org/10.1145/2827872). ACM Transactions on Interactive Intelligent Systems (TiiS) 5, 4,
+and Context*](https://dx.doi.org/10.1145/2827872). ACM Transactions on Interactive Intelligent Systems (TiiS) 5, 4,
 Article 19 (December 2015), 19 pages.

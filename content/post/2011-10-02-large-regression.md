@@ -84,7 +84,7 @@ statements on it. Database restores data on the hard disk and uses a small buffe
 so you don't need to worry about the memory;
 it's just a matter of how long it takes to accomplish the computation.
 
-R supports many database systems among which [SQLite](http://www.sqlite.org/) is the lightest and the most convenient.
+R supports many database systems among which [SQLite](https://www.sqlite.org/) is the lightest and the most convenient.
 There is an **RSQLite** package in R that allows you to read/write data from/to an **SQLite** database,
 as well as executing SQL statements on it and fetching results back to R. Therefore, if we can
 "translate" our algorithm into SQL statements, then the size of data we can deal with will only depend on

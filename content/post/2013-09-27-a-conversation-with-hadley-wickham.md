@@ -251,6 +251,6 @@ barbecue food. I also like to make cocktails.
 
 **Yixuan:** OK. Thank you for the conversation!
 
-<p><img src="http://i.imgur.com/ICvLmEQ.jpg" class="aligncenter"/></p>
+<p><img src="https://i.imgur.com/ICvLmEQ.jpg" class="aligncenter"/></p>
 
 (Hadley Wickham with his *ggplot2* book in Chinese translation)
