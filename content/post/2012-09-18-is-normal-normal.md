@@ -30,7 +30,7 @@ A counter-example is given by the book _Statistical Inference_
 
 Let $X$ and $Y$ be independent $N(0,1)$ random variables, and define a new random variable $Z$ by
 
-$$Z = \begin{cases} X &\mbox{if } XY > 0 \\ -X & \mbox{otherwise} \end{cases}$$
+$$Z = \begin{cases} X &\text{if } XY > 0 \\\\ -X & \text{otherwise} \end{cases}$$
 
 Then it can be shown that $Z$ has a normal distribution, while $Y+Z$ is not.
 
@@ -75,9 +75,9 @@ while the details about Copula model may be provided in future posts.
 
 Consider functions
 
-$$C_1(u,v)=[\max(u^{-2}+v^{-2}-1,0)]^{-1/2}$$
+$$C_1(u,v)=[\max(u^{-2}+v^{-2}-1,0)]^{-1 / 2}$$
 
-$$C_2(u,v)=\exp(-[(\ln u)^2+(\ln v)^2]^{1/2})$$
+$$C_2(u,v)=\exp(-[(\ln u)^2+(\ln v)^2]^{1 / 2})$$
 
 $$C_3(u,v)=-\ln\left(1+\frac{(e^{-u}-1)(e^{-v}-1)}{e^{-1}-1}\right)$$
 

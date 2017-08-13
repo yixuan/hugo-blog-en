@@ -31,19 +31,19 @@ collaborative filtering, matrix completion, matrix recovery, etc.
 
 A popular technique to solve the recommender system problem is the matrix
 factorization method. The idea is to approximate the whole rating matrix
-$R_{m\times n}$ by the product of two matrices of lower dimensions,
-$P_{k\times m}$ and $Q_{k\times n}$, such that
+$R\_{m\times n}$ by the product of two matrices of lower dimensions,
+$P\_{k\times m}$ and $Q\_{k\times n}$, such that
 
-$$R\approx P'Q$$
+$$R\approx P^\prime Q$$
 
 Let $p_u$ be the $u$-th column of $P$, and $q_v$ be the
 $v$-th column of $Q$, then the rating given by user $u$ on item $v$
-would be predicted as $p'_u q_v$.
+would be predicted as $p^\prime_u q_v$.
 
 A typical solution for $P$ and $Q$ is given by the following optimization
 problem [[1](#FPSG2015); [2](#LRSG)]:
 
-$$\min_{P,Q} \sum_{(u,v)\in R} \left[f(p_u,q_v;r_{u,v})+\mu_P||p_u||_1+\mu_Q||q_v||_1+\frac{\lambda_P}{2} ||p_u||_2^2+\frac{\lambda_Q}{2} ||q_v||_2^2\right]$$
+$$\min\_{P,Q} \sum\_{(u,v)\in R} \left[f(p\_u,q_v;r\_{u,v})+\mu\_P||p\_u||\_1+\mu\_Q||q\_v||\_1+\frac{\lambda_P}{2} ||p\_u||\_2^2+\frac{\lambda\_Q}{2} ||q\_v||\_2^2\right]$$
 
 where $(u,v)$ are locations of observed entries in $R$, $r_{u,v}$ is
 the observed rating, $f$ is the loss function, and
@@ -53,7 +53,7 @@ to avoid overfitting.
 The process of solving the matrices $P$ and $Q$ is called
 model training, and the selection of penalty parameters is
 parameter tuning. After obtaining $P$ and $Q$, we can then do
-the prediction of $\hat{R}_{u,v}=p'_u q_v$.
+the prediction of $\hat{R}_{u,v}=p^\prime_u q_v$.
 
 # LIBMF and recosystem
 

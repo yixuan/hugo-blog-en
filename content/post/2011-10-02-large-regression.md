@@ -127,16 +127,16 @@ Then it comes the most important step -- translate the regression algorithm into
 
 Recall that the expression of beta hat can be written in a quite simple form:
 
-$$\hat{\beta}=(X'X)^{-1}X'y$$
+$$\hat{\beta}=(X^\prime X)^{-1}X^\prime y$$
 
-Also note that however large the sample size $n$ is, $X'X$ and $X'y$ are always of the size
+Also note that however large the sample size $n$ is, $X^\prime X$ and $X^\prime y$ are always of the size
 $(p+1) \times (p+1)$. If the number of variables is not very large, the inverse and multiplication
 of matrices of that size could be easily handled by R, so our main target is to compute
-$X'X$ and $X'y$ in SQL.
+$X^\prime X$ and $X^\prime y$ in SQL.
 
-Rewrite $X$ as $X=(\mathbf{x\_0,x\_1,\ldots,x_p})$, then $X'X$ could be expressed as
+Rewrite $X$ as $X=(\mathbf{x\_0,x\_1,\ldots,x_p})$, then $X^\prime X$ could be expressed as
 
-$$\left(\begin{array}{cccc}\mathbf{x_{0}'x_{0}} & \mathbf{x_{0}'x_{1}} & \ldots & \mathbf{x_{0}'x_{p}}\\\mathbf{x_{1}'x_{0}} & \mathbf{x_{1}'x_{1}} & \ldots & \mathbf{x_{1}'x_{p}}\\\vdots & \vdots & \ddots & \vdots\\\mathbf{x_{p}'x_{0}} & \mathbf{x_{p}'x_{1}} & \ldots & \mathbf{x_{p}'x_{p}}\end{array}\right)$$
+$$\left(\begin{array}{cccc} \mathbf{x_0^\prime x_0} & \mathbf{x_0^\prime x_1} & \ldots & \mathbf{x_0^\prime x_p} \\\\ \mathbf{x_1^\prime x_0} & \mathbf{x_1^\prime x_1} & \ldots & \mathbf{x_1^\prime x_p} \\\\ \vdots & \vdots & \ddots & \vdots \\\\ \mathbf{x_p^\prime x_0} & \mathbf{x_p^\prime x_1} & \ldots & \mathbf{x_p^\prime x_p} \end{array}\right)$$
 
 And each element in the matrix can be calculated using SQL, for example,
 

@@ -48,7 +48,7 @@ points, resulting in the following figure.
 The dots in the figure have normalized orders of 0.02, 0.04,
 0.06, ..., 1, at which the x and y coordinates are obtained by
 interpolation. Therefore, we could use $r = (x, y)$ where
-$x = (x\_1, x\_2, ..., x\_{50})'$ and $y = (y\_1, y\_2, ..., y\_{50})'$ to
+$x = (x\_1, x\_2, \ldots, x\_{50})^\prime$ and $y = (y\_1, y\_2, \ldots, y\_{50})^\prime$ to
 represent the information of the number 2 I have drawn. Somewhat
 confused by the operations above? Well, the idea behind this
 normalization and interpolation is simple: use 50 "uniformly

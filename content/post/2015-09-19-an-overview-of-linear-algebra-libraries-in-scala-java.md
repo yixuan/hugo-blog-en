@@ -57,7 +57,7 @@ order to demonstrate the usage of the library:
 3. Set $A\_{1,1}=A\_{3,6}$
 4. Get the 3 by 3 sub-matrix $B=A\_{1:3,1:3}$
 5. Set the sub-matrix $A\_{1:3,2:4}=B$
-6. Calculate the matrix product $C=A'B$
+6. Calculate the matrix product $C=A^\prime B$
 7. Solve linear equation $Bx=a$, where $a$ is the first column of $A$
 
 # 3. JAMA
