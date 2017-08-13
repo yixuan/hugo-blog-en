@@ -17,7 +17,7 @@ tags:
 
 > In January 2016, I was honored to receive an "Honorable Mention" of the
 [John Chambers Award 2016](http://stat-computing.org/awards/jmc/).
-This article was written for [R-bloggers](http://www.r-bloggers.com/),
+This article was written for [R-bloggers](https://www.r-bloggers.com/),
 whose builder, Tal Galili, kindly invited me
 to write an introduction to the `rARPACK` package.
 
@@ -49,7 +49,7 @@ that is used to calculate a few eigenvalues of a square matrix. However
 ARPACK has stopped development for a long time, and it has some compatibility
 issues with the current version of LAPACK. Therefore to maintain `rARPACK` in a
 good state, I wrote a new backend for `rARPACK`, and that is the C++ library
-[Spectra](http://yixuan.cos.name/spectra/).
+[Spectra](https://spectralib.org/).
 
 The name of `rARPACK` was POORLY designed, I admit. Starting from version
 0.8-0, `rARPACK` no longer relies on ARPACK, but due to CRAN polices and
@@ -167,8 +167,8 @@ to 50, then the difference is almost imperceptible, as is shown below.
 </div>
 
 There is also a nice [Shiny App](https://yihui.shinyapps.io/imgsvd/)
-developed by [Nan Xiao](http://nanx.me/),
-[Yihui Xie](http://yihui.name/) and [Tong He](http://www.sfu.ca/~hetongh/) that
+developed by [Nan Xiao](https://nanx.me/),
+[Yihui Xie](https://yihui.name/) and [Tong He](http://www.sfu.ca/~hetongh/) that
 allows users to upload an image and visualize the effect of compression using
 this algorithm. The code is available on
 [GitHub](https://github.com/road2stat/imgsvd).
@@ -203,4 +203,4 @@ package, partial SVD
 - svds: `svds()` from `rARPACK`
 
 The code for benchmark and the environment to run the code can be
-found [here](http://yixuan.cos.name/spectra/performance.html).
+found [here](https://spectralib.org/performance.html).

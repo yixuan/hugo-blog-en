@@ -27,7 +27,7 @@ about his own experience and interest on data visualization, data tidying, R pro
 and other related topics.
 
 > Below is the written record of our conversation, with a Chinese translation posted in
-[Capital of Statistics](http://cos.name/), the largest online community on Statistics in China.
+[Capital of Statistics](https://cosx.org/), the largest online community on Statistics in China.
 
 
 **Yixuan:** Can you first tell us, how did you choose to enter the field of
@@ -146,7 +146,7 @@ likely to crash R, and you need to get started from the scratch,
 a little bit annoying. But at least now, if R crashes, RStudio will
 just restart R and keep going.
 
-**Yixuan:** Many of the visitors of [our website](http://cos.name/)
+**Yixuan:** Many of the visitors of [our website](https://cosx.org/)
 are curious about the dynamic
 graphics. They want to know whether you have any plan to integrate
 for example R and the D3 library in the next generation of `ggplot2`.
@@ -173,7 +173,7 @@ really nice thing about social coding is that authors get motivated
 because you can see other people not only using it but also caring
 about it, which is really really cool. We've talked a little bit
 about how we can make use of [Gists](https://gist.github.com/).
-One example is [RPubs](http://rpubs.com/). That should be based
+One example is [RPubs](https://rpubs.com/). That should be based
 on Gist, so you can fork someone else's work and add some
 modification, and if they want they can pull the changes back -- we have a lot
 of ideas around that.
@@ -187,7 +187,7 @@ a really good way to learn, like "here is my best effort, can you do
 any better?" Any time when there are two people collaborating to write
 a piece of code, it is almost always better than just one person.
 
-**Yixuan:** And as the chief scientist in [RStudio](http://www.rstudio.com/),
+**Yixuan:** And as the chief scientist in [RStudio](https://www.rstudio.com/),
 do you have any future plan for RStudio?
 
 **Hadley:** I'm looking forward to the day when there are more scientists (laugh).
@@ -216,7 +216,7 @@ because the authors are more interested in the theoretical papers,
 not in providing a tool that you can use in data analysis. So I want
 to integrate them together to form a tool that is fast and works well.
 
-**Yixuan:** For our team ([Capital of Statistics]((http://cos.name/))),
+**Yixuan:** For our team ([Capital of Statistics]((https://cosx.org/))),
 we have translated your ggplot2 book,
 and Winston's R Graphics Cookbook is also ongoing. Can you introduce your next book,
 if I'm correct, the [Advanced R Programming](http://adv-r.had.co.nz/)?

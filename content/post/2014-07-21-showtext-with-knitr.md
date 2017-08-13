@@ -43,7 +43,7 @@ While searching and adding fonts may be a tedious work,
 package **sysfonts** (which **showtext** depends on)
 provides a convenient function `font.add.google()` to automatically download
 and use fonts from the Google Fonts repository
-([http://www.google.com/fonts](http://www.google.com/fonts)).
+([https://www.google.com/fonts](https://www.google.com/fonts)).
 The first parameter is the font name in Google Fonts and the second one is
 the family name that will be used in R plots.
 

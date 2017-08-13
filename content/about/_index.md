@@ -3,7 +3,7 @@ title : About Me
 ---
 
 <div align="center">
-  <img src="http://i.imgur.com/A1OfGXN.jpg" alt="Purdue University" />
+  <img src="https://i.imgur.com/A1OfGXN.jpg" alt="Purdue University" />
 </div>
 
 I am Yixuan Qiu, a PhD student in

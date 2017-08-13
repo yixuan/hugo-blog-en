@@ -13,7 +13,7 @@ tags:
 ---
 
 This is a pretty old topic in R graphics.
-[A classical article in R NEWS](http://cran.r-project.org/doc/Rnews/Rnews_2006-2.pdf),
+[A classical article in R NEWS](https://cran.r-project.org/doc/Rnews/Rnews_2006-2.pdf),
 *Non-standard fonts in PostScript and PDF graphics*,
 describes how to use and embed system fonts in the PDF/PostScript device.
 More recently, [Winston Chang](https://github.com/wch) developed
@@ -25,7 +25,7 @@ and also from the [Revolution blog](http://blog.revolutionanalytics.com/2012/09/
 Now, we have another choice: the `showtext` package.
 
 [showtext](https://github.com/yixuan/showtext/) 0.2 has just been
-[submitted to CRAN](http://cran.r-project.org/web/packages/showtext/index.html).
+[submitted to CRAN](https://cran.r-project.org/web/packages/showtext/index.html).
 Below is the introduction of this package excerpted from the
 [README.md](https://github.com/yixuan/showtext/blob/master/README.md) file. In short,
 
@@ -184,7 +184,7 @@ extra font at all.
 The image created by bitmap graphics devices (`png()`, `jpeg()`, ...)
 looks ugly because they don't support anti-alias feature well. To produce
 high-quality output, try to use the `CairoPNG()` and `CairoJPEG()` devices from the
-[Cairo](http://cran.r-project.org/web/packages/Cairo/index.html) package.
+[Cairo](https://cran.r-project.org/web/packages/Cairo/index.html) package.
 
 ## The internals of `showtext`
 Every graphics device in R implements some functions to draw specific graphical
