@@ -29,6 +29,9 @@ body {
     margin-top: 60px;
   }
 }
+h1 {
+  line-height: 1.25em;
+}
 blockquote {
   border-left: 10px solid #999;
   color: #999;
@@ -57,4 +60,10 @@ img.align-right {
 .codeblock, figure.highlight {
   line-height: 1.5em;
   padding: 15px;
+}
+
+
+.post .post-meta {
+  margin-top: 1em;
+  font-size: 1.6rem;
 }

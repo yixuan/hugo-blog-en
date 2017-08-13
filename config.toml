@@ -54,28 +54,34 @@ canonifyurls = true
   url = "/"
 [[menu.main]]
   weight = 2
+  identifier = "about"
+  name = "About"
+  pre = "<i class=\"sidebar-button-icon fa fa-lg fa-question\"></i>"
+  url = "/about"
+[[menu.main]]
+  weight = 3
   identifier = "blogs"
   name = "Blogs"
   pre = "<i class=\"sidebar-button-icon fa fa-lg fa-edit\"></i>"
   url = "/blogs"
 [[menu.main]]
-  weight = 3
+  weight = 4
+  identifier = "projects"
+  name = "Projects"
+  pre = "<i class=\"sidebar-button-icon fa fa-lg fa-tasks\"></i>"
+  url = "/projects"
+[[menu.main]]
+  weight = 5
   identifier = "categories"
   name = "Categories"
   pre = "<i class=\"sidebar-button-icon fa fa-lg fa-bookmark\"></i>"
   url = "/categories"
 [[menu.main]]
-  weight = 4
+  weight = 6
   identifier = "tags"
   name = "Tags"
   pre = "<i class=\"sidebar-button-icon fa fa-lg fa-tags\"></i>"
   url = "/tags"
-[[menu.main]]
-  weight = 5
-  identifier = "about"
-  name = "About"
-  pre = "<i class=\"sidebar-button-icon fa fa-lg fa-question\"></i>"
-  url = "/#about"
 
 [[menu.links]]
   weight = 1
