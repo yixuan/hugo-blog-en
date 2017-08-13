@@ -1,6 +1,3 @@
-html {
-  font-size: 12px;
-}
 body {
   line-height: 1.75em;
 }
@@ -23,7 +20,7 @@ body {
 
 @media only screen and (min-width: 768px) {
   .main-content-wrap {
-    max-width: 900px;
+    max-width: 800px;
     padding: 0 30px;
   }
 }
@@ -50,10 +47,13 @@ p {
     margin: 1em 0 0;
 }
 .post .post-content img {
-  margin-top: 1em;
   padding: 5px;
   border: 1px solid #ddd;
   box-shadow: 1px 1px 4px #999;
+  max-width: 90%;
+}
+.post .post-content p + img, .post .post-content p + div img {
+  margin-top: 1em;
 }
 img.align-right {
   display: inline;
@@ -80,4 +80,9 @@ img.align-right {
   color: #FFF;
   padding: 0 5px;
   border-radius: 3px;
+}
+@media only screen and (max-width: 1024px) {
+  ul.archive-posts {
+    padding-left: 0;
+  }
 }

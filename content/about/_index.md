@@ -2,7 +2,9 @@
 title : About Me
 ---
 
-![Purdue University](https://i.imgur.com/qaqnR.jpg "Purdue University")
+<div align="center">
+  <img src="http://i.imgur.com/A1OfGXN.jpg" alt="Purdue University" />
+</div>
 
 I am Yixuan Qiu, a PhD student in
 [Department of Statistics](http://www.stat.purdue.edu/), [Purdue University](https://www.purdue.edu/).
