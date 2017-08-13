@@ -13,7 +13,7 @@ body {
   font-size: 1.8rem;
 }
 #sidebar[data-behavior="1"] ul.sidebar-buttons li.sidebar-button .sidebar-button-link .sidebar-button-desc {
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   font-weight: bold;
 }
 
@@ -45,4 +45,8 @@ img.align-right {
   display: inline;
   float: right;
   margin-left: 1em;
+}
+.codeblock, figure.highlight {
+  line-height: 1.5em;
+  padding: 15px;
 }
