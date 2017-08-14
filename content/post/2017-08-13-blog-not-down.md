@@ -47,13 +47,17 @@ install_hugo()  ## run once
 new_site(theme = "kakawait/hugo-tranquilpeak-theme")
 ```
 
-The `theme` parameter is optional since it has a default value `theme = "yihui/hugo-lithium-theme"`. Then you get a directory of Hugo source files, and
-the generated static HTML pages in the `public` folder.
+The `theme` parameter is optional since it has a default value `theme = "yihui/hugo-lithium-theme"`.
+The value I specified will use the theme at
+[https://github.com/kakawait/hugo-tranquilpeak-theme](https://github.com/kakawait/hugo-tranquilpeak-theme)
+(thanks to the theme author!). Then you get a directory of Hugo source files,
+and the generated static HTML pages in the `public` folder.
 
-Note that unlike Jekyll blogs that can be directly rendered by [Github Pages](https://pages.github.com/), Hugo blogs are not yet supported by Github. But
-fortunately, you can deploy your blog on [Netlify](https://www.netlify.com/) by
-linking a Github repository.
-There is a nice [article](https://www.netlify.com/blog/2016/09/21/a-step-by-step-guide-victor-hugo-on-netlify/) talking about this.
+Note that unlike Jekyll blogs that can be directly rendered by [Github Pages](https://pages.github.com/),
+Hugo blogs are not yet supported by Github. But fortunately, you can deploy your blog on
+[Netlify](https://www.netlify.com/) by linking a Github repository.
+There is a nice [article](https://www.netlify.com/blog/2016/09/21/a-step-by-step-guide-victor-hugo-on-netlify/)
+talking about this.
 
 For me, the next major steps to fully migrate the blog to Hugo were as follows:
 
@@ -63,7 +67,8 @@ files under this folder have higher priority than the imported theme files, so y
 easily override some theme functions without polluting the upstream.
 3. Files in the `static` folder will be located in the website root directory, for example CSS and images.
 4. Push the directory to Github and link to Netlify.
-5. Point the domain name to the new server address as described in [this document](https://www.netlify.com/docs/custom-domains/).
+5. Point the domain name to the new server address as described in
+[this document](https://www.netlify.com/docs/custom-domains/).
 
 So far all of my posts are plain Markdown files, meaning that they are not dynamic
 documents that contain executable code. But in fact another attractive feature of
