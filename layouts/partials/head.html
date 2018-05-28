@@ -95,7 +95,7 @@
     <link rel="stylesheet" href="/css/style.css" />
     <!--STYLES END-->
     {{ range .Site.Params.customCSS }}
-      <link rel="stylesheet" href="{{ $.Site.BaseURL }}{{ . }}">
+      <link rel="stylesheet" href="{{ . }}">
     {{ end }}
 
     {{ if .Params.ga.async }}
