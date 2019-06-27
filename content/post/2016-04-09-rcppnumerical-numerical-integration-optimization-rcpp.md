@@ -164,8 +164,8 @@ minimization problems based on the
 developed by [Naoaki Okazaki](http://www.chokkan.org/).
 
 <div align="center">
-  <img src="http://aria42.com/images/steepest-descent.png" width="400px" />
-  <p>(Picture from <a href="http://aria42.com/blog/2014/12/understanding-lbfgs">aria42.com</a>)</p>
+  <img src="https://aria42.com/images/steepest-descent.png" width="400px" />
+  <p>(Picture from <a href="https://aria42.com/blog/2014/12/understanding-lbfgs">aria42.com</a>)</p>
 </div>
 
 Again, one needs to first define a functor to represent the multivariate
@@ -191,7 +191,7 @@ typedef const Eigen::Ref<const Eigen::VectorXd> Constvec;
 (Basically you can treat `Refvec` as a `Eigen::VectorXd` and
 `Constvec` the `const` version. Using `Eigen::Ref` is mainly to avoid
 memory copy. See the explanation
-[here](http://eigen.tuxfamily.org/dox/classEigen_1_1Ref.html).)
+[here](https://eigen.tuxfamily.org/dox/classEigen_1_1Ref.html).)
 
 The `f_grad()` member function returns the function value on vector `x`,
 and overwrites `grad` by the gradient.
