@@ -4,7 +4,7 @@ category_1:
     - name: Spectra
       url: https://spectralib.org/
       logo: /images/sticker-spectra.png
-      description: C++ library for large scale eigenvalue and SVD problems
+      description: C++ library for large scale eigenvalue and SVD problems (Honorable Mention of <a href="http://stat-computing.org/awards/jmc/winners.html">John Chambers Award 2016</a>)
     - name: LBFGS++
       url: https://lbfgspp.statr.me/
       logo: /images/sticker-lbfgspp.png

@@ -18,7 +18,7 @@
                   <h1 class="postShorten-title" itemprop="headline">{{ .name }}</h1>
                 </div>
                 <div class="postShorten-excerpt" itemprop="articleBody">
-                  <p>{{ .description }}</p>
+                  <p>{{ .description | safeHTML }}</p>
                   <p><a href="{{ .url }}">→ Details</a></p>
                 </div>
               </div>
