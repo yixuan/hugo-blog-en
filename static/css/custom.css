@@ -86,3 +86,15 @@ img.align-right {
     padding-left: 0;
   }
 }
+
+
+/* Software page */
+@media only screen and (min-width:480px) {
+  .postShorten.postShorten--thumbnailimg-left .postShorten-thumbnailimg {
+    float:left;
+    margin:5px 15px 15px 0;
+  }
+  .postShorten-header {
+    margin-top: 10px;
+  }
+}

@@ -1,0 +1,37 @@
+{{ partial "head.html" . }}
+  <body>
+    <div id="blog">
+      {{ partial "header.html" . }}
+      {{ partial "sidebar.html" . }}
+      {{ partial "post/header-cover.html" . }}
+      <div id="main" data-behavior="{{ .Scratch.Get "sidebarBehavior" }}"
+        class="{{ with .Params.coverimage }}hasCover{{ end }}
+               {{ if eq .Params.covermeta "out" }}hasCoverMetaOut{{ else }}hasCoverMetaIn{{ end }}
+               {{ with .Params.coverCaption }}hasCoverCaption{{ end }}">
+        <section class="postShorten-group main-content-wrap">
+          {{ range .Site.Data.software }}
+            <h1>{{ .title }}</h1>
+            {{ range .list }}
+            <article class="postShorten postShorten--thumbnailimg-left">
+              <div class="postShorten-wrap">
+                <div class="postShorten-header">
+                  <h1 class="postShorten-title" itemprop="headline">{{ .name }}</h1>
+                </div>
+                <div class="postShorten-excerpt" itemprop="articleBody">
+                  <p>{{ .description }}</p>
+                  <p><a href="{{ .url }}">→ Details</a></p>
+                </div>
+              </div>
+              <a href="{{ .url }}">
+                <div class="postShorten-thumbnailimg">
+                  <img alt="" itemprop="image" src="{{ .logo }}"/>
+                </div>
+              </a>
+            </article>
+            {{ end }}
+          {{ end }}
+        </section>
+        {{ partial "footer.html" . }}
+      </div>
+    </div>
+{{ partial "foot.html" . }}

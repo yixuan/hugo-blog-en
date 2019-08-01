@@ -1,0 +1,43 @@
+category_1:
+  title: Numerical Computing
+  list:
+    - name: Spectra
+      url: https://spectralib.org/
+      logo: /images/sticker-spectra.png
+      description: C++ library for large scale eigenvalue and SVD problems
+    - name: LBFGS++
+      url: https://lbfgspp.statr.me/
+      logo: /images/sticker-lbfgspp.png
+      description: A header-only C++ library for L-BFGS algorithm
+    - name: Fastncdf
+      url: https://github.com/yixuan/fastncdf
+      logo: /images/sticker-fastncdf.png
+      description: Fast computation of normal cumulative distribution function
+
+category_2:
+  title: Statistical Modeling and Machine Learning
+  list:
+    - name: MiniDNN
+      url: https://github.com/yixuan/MiniDNN
+      logo: /images/sticker-minidnn.png
+      description: A header-only C++ library for deep neural networks
+    - name: Recosystem
+      url: https://github.com/yixuan/recosystem
+      logo: /images/sticker-recosystem.png
+      description: Recommender system using parallel matrix factorization
+
+category_3:
+  title: Graphics and Data Visualization
+  list:
+    - name: R2SWF
+      url: https://github.com/yixuan/R2SWF
+      logo: /images/sticker-r2swf.png
+      description: Creating Flash animations from R graphics
+
+category_4:
+  title: Reproducible Research
+  list:
+    - name: Prettydoc
+      url: https://prettydoc.statr.me/
+      logo: /images/sticker-prettydoc.png
+      description: Creating pretty documents from R Markdown
