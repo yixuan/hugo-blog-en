@@ -9,6 +9,10 @@ category_1:
       url: https://lbfgspp.statr.me/
       logo: /images/sticker-lbfgspp.png
       description: A header-only C++ library for L-BFGS algorithm
+    - name: RcppNumerical
+      url: https://github.com/yixuan/RcppNumerical
+      logo: /images/sticker-rcppnumerical.png
+      description: Rcpp integration for numerical computing libraries
     - name: Fastncdf
       url: https://github.com/yixuan/fastncdf
       logo: /images/sticker-fastncdf.png
