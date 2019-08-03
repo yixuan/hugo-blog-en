@@ -37,6 +37,10 @@ category_2:
 category_3:
   title: Graphics and Data Visualization
   list:
+    - name: Showtext
+      url: https://github.com/yixuan/showtext
+      logo: /images/sticker-showtext.png
+      description: An R package that makes it easier to use fonts in R graphics
     - name: R2SWF
       url: https://github.com/yixuan/R2SWF
       logo: /images/sticker-r2swf.png
