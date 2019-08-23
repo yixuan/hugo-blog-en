@@ -75,6 +75,11 @@ img.align-right {
 .archive .archive-posts .archive-post .archive-post-date {
   padding-left: 5px;
 }
+.archive .archive-posts .archive-post::before {
+  font-family: "Font Awesome 5 Free";
+  content: '\f0da';
+  font-size: 1.3rem;
+}
 .tag .tag-count {
   background-color: #CCC;
   color: #FFF;
