@@ -15,7 +15,7 @@
 baseURL = "https://statr.me"
 languageCode = "en-us"
 defaultContentLanguage = "en-us"
-title = "Yixuan's Blog"
+title = "Yixuan's Homepage"
 theme = "hugo-tranquilpeak-theme"
 disqusShortname = "joyfulhome"
 googleAnalytics = "UA-43536203-1"
@@ -31,10 +31,10 @@ canonifyurls = true
   blog = "blogs"
 
 [author]
-  name = "Yixuan's Blog"
-  bio = "Statistics, Programming, and ...?"
-  # job = "PhD Student"
-  # location = "West Lafayette, IN"
+  name = "Yixuan Qiu"
+  bio = "Statistics, Data, and Programming"
+  job = "Postdoctoral Researcher"
+  location = "Pittsburgh, PA"
   # Your Gravatar email. Overwrite `author.picture` everywhere in the blog
   # gravatarEmail = "yixuan.qiu@cos.name"
   # Your profile picture
