@@ -3,26 +3,27 @@ title : About Me
 ---
 
 <div align="center">
-  <img src="https://i.imgur.com/A1OfGXN.jpg" alt="Purdue University" />
+  <img src="https://i.imgur.com/G3kyoMY.jpg" alt="CMU" />
 </div>
 
-I am Yixuan Qiu, a PhD student in
-[Department of Statistics](http://www.stat.purdue.edu/), [Purdue University](https://www.purdue.edu/).
+I am Yixuan Qiu, currently a postdoc at [Department of Statistics](http://www.stat.cmu.edu/),
+[Carnegie Mellon University](https://www.cmu.edu/). I obtained my PhD degree in statistics
+from [Purdue University](http://www.stat.purdue.edu/) in 2018, and I graduated from
+[Renmin University of China](https://www.ruc.edu.cn/en) for B.A. and M.A. in
+statistics and actuarial science, respectively.
 
 My research focuses on statistical machine learning and inference. I have great interest
-in statistical computing, large scale data analysis, and data visualization.
-The [Projects](/projects/) page
-lists some open source software and other projects that I have done.
+in statistical computing, large-scale data analysis, deep learning, and data visualization.
+You can find some of my works in the [Research](/research/) page.
 
-I am pretty much a "useR", since R is so naturally connected with Statistics.
-Apart from this, I also keep an eye on other open source projects and programming languages --
-some of them are useful in statistical computing, and others are simply for fun.
-[GitHub](https://github.com/) is a nice place to find these stuffs,
-and even this blog is open source in this [GitHub repository](https://github.com/yixuan/hugo-blog-en).
+I am also enthusiastic about programming and developing high-performance software packages
+for statistics and machine learning. The [Software](/software/) page
+lists some open source software packages that I have written and maintained over the years.
+Feel free to stop by my [GitHub](https://github.com/yixuan/) page, and even better, give me a
+star for projects that interest you.
 
-I graduated from [Renmin University of China](http://www.ruc.edu.cn/en), where I obtained B.A. and M.A. in
-Statistics and Actuarial Science, respectively. There I stayed for six years in the city
-of Beijing. That was a good memory.
+I have been constantly (although slowly!) writing technical [blog posts](/blogs/) on statistics and programming.
+Just leave a comment there if you have any thoughts on some topics.
 
-You can always reach me through email, [yixuanq [at] gmail [dot] com](#). Feel free to send
-me messages or leave comments here.
+You can always reach me through email, [yixuanq [at] gmail [dot] com](#).
+
