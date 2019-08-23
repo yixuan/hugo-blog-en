@@ -1,12 +1,12 @@
 ---
-title: Yixuan's Blog
+title: Yixuan's Homepage
 ---
 
 <img src="https://i.imgur.com/jTtRJ.png" class="align-right"/>
 
-This is my personal homepage written in English (and in [Markdown](https://daringfireball.net/projects/markdown/)), a site mainly to record my study in Statistics and some other related topics.
+This is my personal homepage mainly to record my study and research in statistics.
 
-Some years ago when I read the book *Statistics And Truth*, I found the statements in its preface quite interesting:
+Some years ago when I read the book *Statistics And Truth* by C. R. Rao, I found the words in its preface quite interesting:
 
 > All knowledge is, in final analysis, history.
 >
@@ -14,8 +14,12 @@ Some years ago when I read the book *Statistics And Truth*, I found the statemen
 >
 > All judgements are, in their rationale, statistics.
 
-If you are curious about these sorts of judgments, you may be interested in some of my [blogs](/blogs/). I also post articles on programming techniques, especially for the [R](https://r-project.org/) language.
+Since then I have always quoted this paragraph on the index page of my website.
+
+For a long time I have used this place to write technical [blogs](/blogs/) on statistics and programming.
+You can also browse my [research](/research/) and [software](/software/), or know a little bit more [about me](/about/).
 
 This site is driven by [Hugo](https://gohugo.io/). You can find the source code of this site in the [GitHub repository](https://github.com/yixuan/hugo-blog-en). The theme is modified from [Tranquilpeak](https://github.com/kakawait/hugo-tranquilpeak-theme).
 
 I also have a Chinese homepage. Please [come here](https://yixuan.cos.name/cn).
+
