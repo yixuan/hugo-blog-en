@@ -6,14 +6,18 @@ title : About Me
   <img src="https://i.imgur.com/G3kyoMY.jpg" alt="CMU" />
 </div>
 
-I am Yixuan Qiu, currently a postdoc at [Department of Statistics](http://www.stat.cmu.edu/),
-[Carnegie Mellon University](https://www.cmu.edu/). I obtained my PhD degree in statistics
-from [Purdue University](http://www.stat.purdue.edu/) in 2018, and I graduated from
-[Renmin University of China](https://www.ruc.edu.cn/en) for B.A. and M.A. in
-statistics and actuarial science, respectively.
+I am Yixuan Qiu, currently a postdoctoral researcher in
+[Department of Statistics](http://www.stat.cmu.edu/) at [Carnegie Mellon University](https://www.cmu.edu/),
+working with Dr. [Kathryn Roeder](http://www.stat.cmu.edu/~roeder/index.html) and
+[Jing Lei](http://www.stat.cmu.edu/~jinglei/). I obtained my PhD degree in statistics
+from [Purdue University](http://www.stat.purdue.edu/) in 2018, advised by
+Dr. [Lingsong Zhang](https://www.stat.purdue.edu/~lingsong/) and
+[Xiao Wang](https://www.stat.purdue.edu/~wangxiao/).
+Before I joined Purdue, I graduated from [Renmin University of China](https://www.ruc.edu.cn/en)\
+for B.A. and M.A. in statistics and actuarial science, respectively.
 
 My research focuses on statistical machine learning and inference. I have great interest
-in statistical computing, large-scale data analysis, deep learning, and data visualization.
+in statistical computing, deep learning, exact inference methods, large-scale data analysis, and data visualization.
 You can find some of my works in the [Research](/research/) page.
 
 I am also enthusiastic about programming and developing high-performance software packages
