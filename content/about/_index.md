@@ -13,7 +13,7 @@ working with Dr. [Kathryn Roeder](http://www.stat.cmu.edu/~roeder/index.html) an
 from [Purdue University](http://www.stat.purdue.edu/) in 2018, advised by
 Dr. [Lingsong Zhang](https://www.stat.purdue.edu/~lingsong/) and
 [Xiao Wang](https://www.stat.purdue.edu/~wangxiao/).
-Before I joined Purdue, I graduated from [Renmin University of China](https://www.ruc.edu.cn/en)\
+Before I joined Purdue, I graduated from [Renmin University of China](https://www.ruc.edu.cn/en)
 for B.A. and M.A. in statistics and actuarial science, respectively.
 
 My research focuses on statistical machine learning and inference. I have great interest
