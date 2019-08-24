@@ -1,13 +1,16 @@
 <!--EXTERNAL SCRIPTS-->
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+{{ if .IsPage }}
 <script src="//uploads.cosx.org/static/hljs/highlight.pack.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/3.3.5/jquery.fancybox.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.js" integrity="sha384-jmxIlussZWB7qCuB+PgKG1uLjjxbVVIayPJwi6cG6Zb4YKq0JIw+OMnkkEC7kYCq" crossorigin="anonymous"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/contrib/auto-render.min.js" integrity="sha384-IiI65aU9ZYub2MY9zhtKd1H2ps7xxf+eb2YFG9lX6uRqpXCvBTOidPRCXCrQ++Uc" crossorigin="anonymous"></script>
+{{ end }}
 <!--EXTERNAL SCRIPTS END-->
 <!--SCRIPTS-->
 <script src="/js/script-qi9wbxp2ya2j6p7wx1i6tgavftewndznf4v0hy2gvivk1rxgc3lm7njqb6bz.min.js"></script>
 <!--SCRIPTS END-->
+
+{{ if .IsPage }}
 <script>
 $(document).ready(function() {
   hljs.configure({ classPrefix: '', useBR: false });
@@ -37,6 +40,8 @@ $(document).ready(function() {
   });
 });
 </script>
+{{ end }}
+
 {{ if .IsPage }}
   {{ if not (eq .Params.comments false) }}
     {{ if .Site.DisqusShortname }}
@@ -66,6 +71,7 @@ $(document).ready(function() {
     {{ end }}
   {{ end }}
 {{ end }}
+
 {{ with .Site.Params.algolia }}
   {{ if (isset . "appId") | and (isset . "apiKey") | and (isset . "indexName") }}
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment-with-locales.min.js"></script>
