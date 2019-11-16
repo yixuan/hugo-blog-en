@@ -21,6 +21,10 @@ category_1:
 category_2:
   title: Statistical Modeling and Machine Learning
   list:
+    - name: ALMOND
+      url: https://github.com/yixuan/almond
+      logo: /images/sticker-almond.png
+      description: Adaptive latent modeling and optimization via neural networks and Langevin diffusion
     - name: RSpectra
       url: https://github.com/yixuan/RSpectra
       logo: /images/sticker-rspectra.png
