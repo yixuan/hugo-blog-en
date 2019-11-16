@@ -6,17 +6,17 @@ I have great interest in statistical computing, deep learning, exact inference m
 
 ## <i class="fas fa-angle-double-right"></i> Publication and Work in Progress
 
-- **Qiu, Y.**, Lei, J., and Roeder, K., *Gradient-based Sparse Principal Component Analysis with Extensions to Online Learning*. To be submitted.
-- **Qiu, Y.** and Zhang, L., *Exact Tests for the Multivariate Behrens–Fisher Problem*. To be submitted.
-- **Qiu, Y.** and Wang, X., *Stochastic Approximate Gradient Descent via the Langevin Algorithm*. Under review.
-- **Qiu, Y.**, Zhang, L., and Wang, X., *Unbiased Contrastive Divergence Algorithm for Training Energy-Based Latent Variable Models*. Under review.
-- **Qiu, Y.** and Wang, X., *ALMOND: Adaptive Latent Modeling and Optimization via Neural Networks and Langevin Diffusion*. Under review.
+- **Qiu, Y.** and Wang, X., *ALMOND: Adaptive Latent Modeling and Optimization via Neural Networks and Langevin Diffusion*. Accepted by Journal of the American Statistical Association, 2019+.
+- **Qiu, Y.** and Wang, X., *Stochastic Approximate Gradient Descent via the Langevin Algorithm*. Accepted by AAAI Conference on Artificial Intelligence (AAAI 2020), 2019+.
 - Lu, J.*, **Qiu, Y.***, and Deng, A., *A Note on Type S/M Errors in Hypothesis Testing*. *Joint first authors. British Journal of Mathematical and Statistical Psychology, 2019.
 - **Qiu, Y.**, Zhang, L., and Liu, C., *Exact and Efficient Inference for Partial Bayes Problems*. Electronic Journal of Statistics, 2018.
 - **Qiu, Y.** and Wei, W., *A Scalable Sequential Principal Component Analysis Algorithm (SeqPCA) with
 Application to User Access Control Analysis*. IEEE International Conference on Big Data, 2017.
 - Abraham, G., **Qiu, Y.**, and Inouye, M., *FlashPCA2: Principal Component Analysis of Biobank-scale Genotype Datasets*. Bioinformatics, 2017.
 - **Qiu, Y.**, Wang, X. et al., *Web Usage Cluster Analysis Based on Prediction Strength*. International Conference on Instrumentation, Measurement, Circuits and Systems, 2011.
+- **Qiu, Y.**, Lei, J., and Roeder, K., *Gradient-based Sparse Principal Component Analysis with Extensions to Online Learning*. Under review.
+- **Qiu, Y.**, Zhang, L., and Wang, X., *Unbiased Contrastive Divergence Algorithm for Training Energy-Based Latent Variable Models*. Under review.
+- **Qiu, Y.** and Zhang, L., *Exact Tests for the Multivariate Behrens–Fisher Problem*. To be submitted.
 
 ## <i class="fas fa-angle-double-right"></i> Invited Conference Talks
 
