@@ -1,5 +1,5 @@
 ---
-title: "Blog Not Down"
+title: "Blog not down"
 slug: "blog-not-down"
 date: 2017-08-13
 categories:

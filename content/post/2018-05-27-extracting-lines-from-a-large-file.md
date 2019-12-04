@@ -1,5 +1,5 @@
 ---
-title: "Extracting Specific Lines from a Large (Compressed) Text File"
+title: "Extracting specific lines from a large (compressed) text file"
 slug: "extracting-lines-from-a-large-file"
 date: 2018-05-27
 categories:

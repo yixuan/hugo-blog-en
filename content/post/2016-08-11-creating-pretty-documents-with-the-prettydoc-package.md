@@ -1,5 +1,5 @@
 ---
-title: "Creating Pretty Documents with the prettydoc Package"
+title: "Creating pretty documents with the prettydoc package"
 slug: "creating-pretty-documents-with-the-prettydoc-package"
 date: 2016-08-11
 categories:

@@ -1,5 +1,5 @@
 ---
-title: "A Conversation with Hadley Wickham"
+title: "A conversation with Hadley Wickham"
 date: 2013-09-27
 categories:
 - Statistics

@@ -1,5 +1,5 @@
 ---
-title: "RcppNumerical: Numerical integration and optimization with Rcpp"
+title: "RcppNumerical: numerical integration and optimization with Rcpp"
 slug: "rcppnumerical-numerical-integration-optimization-rcpp"
 date: 2016-04-09
 categories:
