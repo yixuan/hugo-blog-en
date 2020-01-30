@@ -29,6 +29,10 @@ category_2:
       url: https://github.com/yixuan/RSpectra
       logo: /images/sticker-rspectra.png
       description: Large-scale eigenvalue decomposition, SVD, and principal component analysis
+    - name: CDtau
+      url: https://github.com/yixuan/cdtau
+      logo: /images/sticker-cdtau.png
+      description: Unbiased contrastive divergence algorithm for training energy-based latent variable models
     - name: MiniDNN
       url: https://github.com/yixuan/MiniDNN
       logo: /images/sticker-minidnn.png
