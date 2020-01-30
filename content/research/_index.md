@@ -67,7 +67,7 @@ Application to User Access Control Analysis*. IEEE International Conference on B
 - **The Art of R Programming** by Norman Matloff.
 - **R Graphics Cookbook** by Winston Chang.
 
-<a href="https://book.douban.com/subject/26800150/"><img class="book" src="/images/book-apm.png" alt="Applied Predictive Modeling" /></a>
+<a href="https://book.douban.com/subject/26800150/"><img class="book" src="/images/book-apm.jpg" alt="Applied Predictive Modeling" /></a>
 <a href="https://book.douban.com/subject/24527091/"><img class="book" src="/images/book-ggplot2.jpg" alt="ggplot2" /></a>
 <a href="https://book.douban.com/subject/24699632/"><img class="book" src="/images/book-art-r.jpg" alt="The Art of R Programming" /></a>
 <a href="https://book.douban.com/subject/25873705/"><img class="book" src="/images/book-r-graphics-cookbook.png" alt="R Graphics Cookbook" /></a>
