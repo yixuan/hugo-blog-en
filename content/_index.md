@@ -2,7 +2,7 @@
 title: Yixuan's Homepage
 ---
 
-<img src="https://i.imgur.com/jTtRJ.png" class="align-right"/>
+<img src="/images/gravatar.png" class="align-right"/>
 
 This is my personal homepage mainly to record my study and research in statistics.
 
