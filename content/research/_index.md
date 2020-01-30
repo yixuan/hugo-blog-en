@@ -23,8 +23,9 @@ Application to User Access Control Analysis*. IEEE International Conference on B
 
 ## <i class="fas fa-angle-double-right"></i> Invited Conference Talks
 
-- **Gradient-based sparse principal component analysis with extensions to online learning**<br/>
-  The 11th ICSA International Conference (incoming), 2019.
+- **Gradient-based Sparse Principal Component Analysis**<br/>
+  The 11th ICSA International Conference, 2019.
+  <a href="https://bitbucket.org/yixuan/downloads/downloads/2019-icsa-gradfps.pdf"><i class="far fa-clone"></i> Slides</a>
 - **Adaptive Latent Modeling and Optimization via Neural Networks and Langevin Diffusion**<br/>
   The 36th Annual Quality and Productivity Research Conference, 2019.
   <a href="https://bitbucket.org/yixuan/downloads/downloads/2019-qprc-almond.pdf"><i class="far fa-clone"></i> Slides</a>
@@ -39,6 +40,8 @@ Application to User Access Control Analysis*. IEEE International Conference on B
 
 ## <i class="fas fa-angle-double-right"></i> Other Talks and Posters
 
+- **Gradient-based Spase PCA with Extensions to Online Learning**<br/>
+  Joint Statistical Meetings, 2019.
 - **Stochastic Approximate Gradient Descent via the Underdamped Langevin Algorithm**<br/>
   SAMSI Deep Learning Workshop, 2019.
   <a href="https://bitbucket.org/yixuan/downloads/downloads/2019-samsi-sagd.pdf"><i class="fas fa-columns"></i> Poster</a>
