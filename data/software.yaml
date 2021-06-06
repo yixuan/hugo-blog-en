@@ -21,6 +21,10 @@ category_1:
 category_2:
   title: Statistical Modeling and Machine Learning
   list:
+    - name: MarkerPen
+      url: https://github.com/yixuan/markerpen
+      logo: /images/sticker-markerpen.png
+      description: Marker gene detection via penalized principal component analysis
     - name: ALMOND
       url: https://github.com/yixuan/almond
       logo: /images/sticker-almond.png
