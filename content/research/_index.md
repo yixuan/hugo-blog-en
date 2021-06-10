@@ -41,6 +41,13 @@ Application to User Access Control Analysis*. IEEE International Conference on B
 
 ## <i class="fas fa-angle-double-right"></i> Other Talks and Posters
 
+- **Unbiased Contrastive Divergence Algorithm for Training Energy-based Latent Variable Models**<br/>
+  International Conference on Learning Representations ([website](https://iclr.cc/virtual_2020/poster_r1eyceSYPr.html)), 2020.
+  <a href="https://bitbucket.org/yixuan/downloads/downloads/2020-iclr-ucd.pdf"><i class="fas fa-clone"></i> Slides</a>
+  <a href="https://iclr.cc/virtual_2020/poster_r1eyceSYPr.html"><i class="fas fa-video"></i> Video</a>
+- **Stochastic Approximate Gradient Descent via the Underdamped Langevin Algorithm**<br/>
+  AAAI Conference on Artificial Intelligence, 2020.
+  <a href="https://bitbucket.org/yixuan/downloads/downloads/2020-aaai-sagd.pdf"><i class="fas fa-columns"></i> Poster</a>
 - **Gradient-based Spase PCA with Extensions to Online Learning**<br/>
   Joint Statistical Meetings, 2019.
 - **Stochastic Approximate Gradient Descent via the Underdamped Langevin Algorithm**<br/>
