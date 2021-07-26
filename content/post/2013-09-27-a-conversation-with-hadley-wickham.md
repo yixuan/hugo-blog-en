@@ -161,7 +161,7 @@ ggvis.
 (Showing the demo)
 
 **Yixuan:** Another major change of software development we can see these years
-is that social coding becomes mroe popular. Many developers have a
+is that social coding becomes more popular. Many developers have a
 [Github](https://github.com/‎) account, for example. Do you think that will change the way we
 develop R and related packages?
 

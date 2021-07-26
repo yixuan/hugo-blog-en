@@ -4,16 +4,12 @@ title : Research
 
 I have great interest in statistical computing, deep learning, exact inference methods, large-scale data analysis, and data visualization.
 
-## <i class="fas fa-angle-double-right"></i> Work in Progress
-
-- **Qiu, Y.**, Lei, J., and Roeder, K., *Gradient-based Sparse Principal Component Analysis with Extensions to Online Learning*. Under review.
-- **Qiu, Y.** and Zhang, L., *Exact Tests for the Multivariate Behrens–Fisher Problem*. To be submitted.
-
 ## <i class="fas fa-angle-double-right"></i> Publication
 
-- **Qiu, Y.** and Wang, X., *ALMOND: Adaptive Latent Modeling and Optimization via Neural Networks and Langevin Diffusion*. Accepted by Journal of the American Statistical Association, 2019+.
-- **Qiu, Y.**, Zhang, L., and Wang, X., *Unbiased Contrastive Divergence Algorithm for Training Energy-Based Latent Variable Models*. Accepted by International Conference on Learning Representations (ICLR 2020), 2019+.
-- **Qiu, Y.** and Wang, X., *Stochastic Approximate Gradient Descent via the Langevin Algorithm*. Accepted by AAAI Conference on Artificial Intelligence (AAAI 2020), 2019+.
+- **Qiu, Y.**, Wang, J., Lei, J., and Roeder, K., *Identification of cell-type-specific marker genes from co-expression patterns in tissue samples*. Bioinformatics, 2021.
+- **Qiu, Y.** and Wang, X., *ALMOND: Adaptive Latent Modeling and Optimization via Neural Networks and Langevin Diffusion*. Journal of the American Statistical Association, 2020.
+- **Qiu, Y.** and Wang, X., *Stochastic Approximate Gradient Descent via the Langevin Algorithm*. AAAI Conference on Artificial Intelligence (AAAI 2020), 2020.
+- **Qiu, Y.**, Zhang, L., and Wang, X., *Unbiased Contrastive Divergence Algorithm for Training Energy-Based Latent Variable Models*. International Conference on Learning Representations (ICLR 2020), 2019.
 - Lu, J.*, **Qiu, Y.***, and Deng, A., *A Note on Type S/M Errors in Hypothesis Testing*. *Joint first authors. British Journal of Mathematical and Statistical Psychology, 2019.
 - **Qiu, Y.**, Zhang, L., and Liu, C., *Exact and Efficient Inference for Partial Bayes Problems*. Electronic Journal of Statistics, 2018.
 - **Qiu, Y.** and Wei, W., *A Scalable Sequential Principal Component Analysis Algorithm (SeqPCA) with
@@ -21,8 +17,13 @@ Application to User Access Control Analysis*. IEEE International Conference on B
 - Abraham, G., **Qiu, Y.**, and Inouye, M., *FlashPCA2: Principal Component Analysis of Biobank-scale Genotype Datasets*. Bioinformatics, 2017.
 - **Qiu, Y.**, Wang, X. et al., *Web Usage Cluster Analysis Based on Prediction Strength*. International Conference on Instrumentation, Measurement, Circuits and Systems, 2011.
 
-## <i class="fas fa-angle-double-right"></i> Invited Conference Talks
+## <i class="fas fa-angle-double-right"></i> Invited Talks
 
+- **Efficient Multi-Modal Sampling via Tempered Distribution Flow**<br/>
+  University of Missouri (online), 2021.
+- **Prettier R Graphs and Documents with {showtext}+{prettydoc}**<br/>
+  Cleveland R User Group ([website](https://www.meetup.com/Cleveland-UseR-Group/events/272645889/)), 2020.
+  <a href="https://yixuan.blog/cleveland-r-meetup/pretty.html"><i class="far fa-clone"></i> Slides</a>
 - **Gradient-based Sparse Principal Component Analysis**<br/>
   The 11th ICSA International Conference, 2019.
   <a href="https://bitbucket.org/yixuan/downloads/downloads/2019-icsa-gradfps.pdf"><i class="far fa-clone"></i> Slides</a>
@@ -40,6 +41,13 @@ Application to User Access Control Analysis*. IEEE International Conference on B
 
 ## <i class="fas fa-angle-double-right"></i> Other Talks and Posters
 
+- **Unbiased Contrastive Divergence Algorithm for Training Energy-based Latent Variable Models**<br/>
+  International Conference on Learning Representations ([website](https://iclr.cc/virtual_2020/poster_r1eyceSYPr.html)), 2020.
+  <a href="https://bitbucket.org/yixuan/downloads/downloads/2020-iclr-ucd.pdf"><i class="far fa-clone"></i> Slides</a>
+  <a href="https://iclr.cc/virtual_2020/poster_r1eyceSYPr.html"><i class="far fa-file-video"></i> Video</a>
+- **Stochastic Approximate Gradient Descent via the Underdamped Langevin Algorithm**<br/>
+  AAAI Conference on Artificial Intelligence, 2020.
+  <a href="https://bitbucket.org/yixuan/downloads/downloads/2020-aaai-sagd.pdf"><i class="fas fa-columns"></i> Poster</a>
 - **Gradient-based Spase PCA with Extensions to Online Learning**<br/>
   Joint Statistical Meetings, 2019.
 - **Stochastic Approximate Gradient Descent via the Underdamped Langevin Algorithm**<br/>
