@@ -13,8 +13,14 @@ I have great interest in statistical computing, deep learning, exact inference m
   <a href="https://academic.oup.com/bioinformatics/article/37/19/3228/6255309"><i class="fas fa-link"></i> Link</a>
   <a href="https://github.com/yixuan/markerpen"><i class="fas fa-code"></i> Code</a>
 - **Qiu, Y.** and Wang, X., *ALMOND: Adaptive Latent Modeling and Optimization via Neural Networks and Langevin Diffusion*. Journal of the American Statistical Association, 2021.
+  <a href="https://www.tandfonline.com/doi/abs/10.1080/01621459.2019.1691563"><i class="fas fa-link"></i> Link</a>
+  <a href="https://github.com/yixuan/almond"><i class="fas fa-code"></i> Code</a>
 - **Qiu, Y.** and Wang, X., *Stochastic Approximate Gradient Descent via the Langevin Algorithm*. AAAI Conference on Artificial Intelligence (AAAI 2020), 2020.
+  <a href="https://ojs.aaai.org/index.php/AAAI/article/view/5992"><i class="fas fa-link"></i> Link</a>
+  <a href="https://arxiv.org/pdf/2002.05519"><i class="far fa-file-pdf"></i> PDF</a>
 - **Qiu, Y.**, Zhang, L., and Wang, X., *Unbiased Contrastive Divergence Algorithm for Training Energy-Based Latent Variable Models*. International Conference on Learning Representations (ICLR 2020), 2020.
+  <a href="https://openreview.net/forum?id=r1eyceSYPr"><i class="fas fa-link"></i> Link</a>
+  <a href="https://github.com/yixuan/cdtau"><i class="fas fa-code"></i> Code</a>
 - Lu, J.*, **Qiu, Y.***, and Deng, A., *A Note on Type S/M Errors in Hypothesis Testing*. *Joint first authors. British Journal of Mathematical and Statistical Psychology, 2019.
 - **Qiu, Y.**, Zhang, L., and Liu, C., *Exact and Efficient Inference for Partial Bayes Problems*. Electronic Journal of Statistics, 2018.
 - **Qiu, Y.** and Wei, W., *A Scalable Sequential Principal Component Analysis Algorithm (SeqPCA) with
