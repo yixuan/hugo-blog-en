@@ -22,10 +22,15 @@ I have great interest in statistical computing, deep learning, exact inference m
   <a href="https://openreview.net/forum?id=r1eyceSYPr"><i class="fas fa-link"></i> Link</a>
   <a href="https://github.com/yixuan/cdtau"><i class="fas fa-code"></i> Code</a>
 - Lu, J.*, **Qiu, Y.***, and Deng, A., *A Note on Type S/M Errors in Hypothesis Testing*. *Joint first authors. British Journal of Mathematical and Statistical Psychology, 2019.
+  <span style="padding-left:10px"><a href="https://bpspsychub.onlinelibrary.wiley.com/doi/10.1111/bmsp.12132"><i class="fas fa-link"></i> Link</a></span>
+  <span style="padding-left:10px"><a href="https://www.microsoft.com/en-us/research/uploads/prod/2020/09/LuQiuDeng-BJMSP2019.pdf"><i class="far fa-file-pdf"></i> PDF</a></span>
 - **Qiu, Y.**, Zhang, L., and Liu, C., *Exact and Efficient Inference for Partial Bayes Problems*. Electronic Journal of Statistics, 2018.
+  <span style="padding-left:10px"><a href="https://projecteuclid.org/journals/electronic-journal-of-statistics/volume-12/issue-2/Exact-and-efficient-inference-for-partial-Bayes-problems/10.1214/18-EJS1511.full"><i class="fas fa-link"></i> Link</a></span>
 - **Qiu, Y.** and Wei, W., *A Scalable Sequential Principal Component Analysis Algorithm (SeqPCA) with
 Application to User Access Control Analysis*. IEEE International Conference on Big Data, 2017.
 - Abraham, G., **Qiu, Y.**, and Inouye, M., *FlashPCA2: Principal Component Analysis of Biobank-scale Genotype Datasets*. Bioinformatics, 2017.
+  <span style="padding-left:10px"><a href="https://academic.oup.com/bioinformatics/article/33/17/2776/3798630"><i class="fas fa-link"></i> Link</a></span>
+  <span style="padding-left:10px"><a href="https://github.com/gabraham/flashpca"><i class="fas fa-code"></i> Code</a></span>
 - **Qiu, Y.**, Wang, X. et al., *Web Usage Cluster Analysis Based on Prediction Strength*. International Conference on Instrumentation, Measurement, Circuits and Systems, 2011.
 
 ## <i class="fas fa-angle-double-right"></i> Invited Talks
