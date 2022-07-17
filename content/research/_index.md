@@ -7,9 +7,11 @@ I have great interest in statistical computing, deep learning, exact inference m
 ## <i class="fas fa-angle-double-right"></i> Publication
 
 - **Qiu, Y.**, Lei, J., and Roeder, K., *Gradient-based Sparse Principal Component Analysis with Extensions to Online Learning*. Biometrika, 2022.
-  <a href="https://academic.oup.com/biomet/advance-article-abstract/doi/10.1093/biomet/asac041/6640166"><i class="far fa-link"></i> Link</a>
-  <a href="https://github.com/yixuan/gradfps"><i class="far fa-code"></i> Code</a>
+  <a href="https://academic.oup.com/biomet/advance-article-abstract/doi/10.1093/biomet/asac041/6640166"><i class="fas fa-link"></i> Link</a>
+  <a href="https://github.com/yixuan/gradfps"><i class="fas fa-code"></i> Code</a>
 - **Qiu, Y.**, Wang, J., Lei, J., and Roeder, K., *Identification of Cell-type-specific Marker Genes from Co-expression Patterns in Tissue Samples*. Bioinformatics, 2021.
+  <a href="https://academic.oup.com/bioinformatics/article/37/19/3228/6255309"><i class="fas fa-link"></i> Link</a>
+  <a href="https://github.com/yixuan/markerpen"><i class="fas fa-code"></i> Code</a>
 - **Qiu, Y.** and Wang, X., *ALMOND: Adaptive Latent Modeling and Optimization via Neural Networks and Langevin Diffusion*. Journal of the American Statistical Association, 2021.
 - **Qiu, Y.** and Wang, X., *Stochastic Approximate Gradient Descent via the Langevin Algorithm*. AAAI Conference on Artificial Intelligence (AAAI 2020), 2020.
 - **Qiu, Y.**, Zhang, L., and Wang, X., *Unbiased Contrastive Divergence Algorithm for Training Energy-Based Latent Variable Models*. International Conference on Learning Representations (ICLR 2020), 2020.
