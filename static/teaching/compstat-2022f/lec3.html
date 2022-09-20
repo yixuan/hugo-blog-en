@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Computational Statistics</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Yixuan Qiu" />
+    <meta name="date" content="2022-09-21" />
+    <script src="libs/header-attrs-2.14/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        CommonHTML: {
+          scale: 80
+        }
+      });
+    </script>
+    <link rel="stylesheet" href="style.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Computational Statistics
+]
+.subtitle[
+## Lecture 3
+]
+.author[
+### Yixuan Qiu
+]
+.date[
+### 2022-09-21
+]
+
+---
+
+class: inverse, center, middle
+
+# Numerical Linear Algebra
+
+---
+
+# Today's Topics
+
+- Case studies
+
+  - Spline fitting
+
+  - Back to regression
+
+- New topics
+
+  - `\(LDL^T\)` decomposition
+
+  - QR decomposition
+
+---
+class: center, middle
+
+# Spline Fitting
+
+---
+
+# Interpolation Problem
+
+Given observed points `\(\mathbf{x}=(x_0,\ldots,x_n)'\)` and
+`\(\mathbf{y}=(y_0,\ldots,y_n)'\)`, find a function `\(f(x)\)` such that
+`\(f(x_i)=y_i,i=0,\ldots,n\)`.
+
+
+
+&lt;img src="lec3_files/figure-html/unnamed-chunk-1-1.png" width="50%" /&gt;&lt;img src="lec3_files/figure-html/unnamed-chunk-1-2.png" width="50%" /&gt;
+
+---
+
+# Spline Fitting
+
+- Without loss of generality we can assume that `\(x_0&lt;x_1&lt;\cdots&lt;x_n\)`
+
+- We typically require that `\(f\)` is continuous, or differentiable, or smooth
+(2nd derivative exists)
+
+- One important class of functions commonly used for interpolation are
+piecewise polynomials, also known as .highlight[spline functions]
+
+- Spline fitting is the task of determining polynomial coefficients in each interval
+
+---
+
+# Natural Cubic Spline
+
+- A commonly-used spline is the .highlight[natural cubic spline]
+
+- Has continuous second derivative
+
+- On each interval `\([x_i,x_{i+1}]\)`, it is a cubic polynomial
+`\(f(x)=f_i(x)=a_i+b_i(x-x_i)+c_i(x-x_i)^2+d_i(x-x_i)^3\)`
+
+- We need to determine the coefficients `\((a_i,b_i,c_i,d_i)\)`,
+`\(i=0,\ldots,n-1\)`
+
+---
+
+# Natural Cubic Spline
+
+- Natural cubic splines must satisfy some constraints
+
+
+- Interpolating observed points
+  - `\(f_0(x_0)=y_0\)`
+  - `\(f_{i-1}(x_i)=f_i(x_i)=y_i\)`, `\(i=1,\ldots,n-1\)`
+  - `\(f_{n-1}(x_n)=y_n\)`
+- Continuous first derivative
+  - `\(f_{i-1}'(x_i)=f_i'(x_i)\)`, `\(i=1,\ldots,n-1\)`
+- Continuous second derivative
+  - `\(f_{i-1}''(x_i)=f_i''(x_i)\)`, `\(i=1,\ldots,n-1\)`
+- Zero second derivative at end points
+  - `\(f_0''(x_0)=f_{n-1}''(x_n)=0\)`
+
+---
+
+# Theorem
+
+The natural cubic spline that satisfies the conditions in the previous slide has the form
+
+`$$\begin{align*}
+f_{i}(x) &amp; =\frac{z_{i+1}(x-x_{i})^{3}+z_{i}(x_{i+1}-x)^{3}}{6h_{i}}\\
+ &amp; \quad+\left(\frac{y_{i+1}}{h_{i}}-\frac{z_{i+1}h_{i}}{6}\right)(x-x_{i})\\
+ &amp; \quad+\left(\frac{y_{i}}{h_{i}}-\frac{z_{i}h_{i}}{6}\right)(x_{i+1}-x),\quad i=0,\ldots,n-1
+\end{align*}$$`
+where `\(h_i=x_{i+1}-x_i\)`, and `\(z_i=f''(x_i)\)` are values to be determined
+
+---
+
+# Spline Fitting
+
+- We have assume that `\(z_0=z_{n}=0\)`
+
+- So there are `\((n-1)\)` unknown values `\(z_1,\ldots,z_{n-1}\)`
+
+- The relation `\(f_{i-1}'(x_i)=f_i'(x_i)\)`, `\(i=1,\ldots,n-1\)` gives
+`$$6(b_i-b_{i-1})=h_{i-1}z_{i-1}+2(h_{i-1}+h_i)z_i+h_i z_{i+1},$$`
+where `\(b_i=(y_{i+1}-y_i)/h_i\)`
+
+---
+
+# Spline Fitting
+
+- Further let `\(v_i=2(h_{i-1}+h_i)\)`, `\(u_i=6(b_i-b_{i-1})\)`
+
+- Then we get a tridiagonal system
+
+`$$\begin{bmatrix}v_{1} &amp; h_{1}\\
+h_{1} &amp; v_{2} &amp; h_{2}\\
+ &amp; h_{2} &amp; v_{3} &amp; \ddots\\
+ &amp;  &amp; \ddots &amp; \ddots &amp; h_{n-2}\\
+ &amp;  &amp;  &amp; h_{n-2} &amp; v_{n-1}
+\end{bmatrix}\begin{bmatrix}z_{1}\\
+z_{2}\\
+z_{3}\\
+\vdots\\
+z_{n-1}
+\end{bmatrix}=\begin{bmatrix}u_{1}\\
+u_{2}\\
+u_{3}\\
+\vdots\\
+u_{n-1}
+\end{bmatrix}$$`
+
+- Solving the system gives the expression of the spline function
+
+---
+class: center, middle
+
+# Back to Regression
+
+---
+
+- Computing predicted values of linear regression `\(\hat{y}=X(X'X)^{-1}X'Y\)`.
+
+- .highlight[NEVER do the following:]
+
+```r
+X %*% solve(t(X) %*% X) %*% t(X) %*% Y
+```
+
+- Benchmark
+
+
+```r
+set.seed(123)
+X = matrix(rnorm(5000 * 500), 5000)
+Y = rnorm(5000)
+
+system.time(X %*% solve(t(X) %*% X) %*% t(X) %*% Y)
+```
+
+```
+##    user  system elapsed 
+##    9.58    0.02    9.61
+```
+
+- .highlight[What's wrong with this implementation?]
+
+---
+
+# First improvement
+
+- Let's first try a simple "magic"
+
+
+```r
+system.time(X %*% (solve(t(X) %*% X) %*% (t(X) %*% Y)))
+```
+
+```
+##    user  system elapsed 
+##    0.92    0.00    0.92
+```
+
+- Recall the previous implementation
+
+```r
+X %*% solve(t(X) %*% X) %*% t(X) %*% Y
+```
+
+- You get ~10x speedup almost for free
+
+- .highlight[The only differences are two pairs of parentheses!]
+
+---
+
+# Principle 1
+
+- When multiplying several matrices together, prefer to first compute the product involving smaller matrices
+
+- Reason: the computational complexity of the matrix multiplication `\(A_{m\times n}B_{n\times p}\)` is `\(O(mnp)\)`
+
+---
+
+# Second improvement
+
+
+```r
+system.time(X %*% solve(t(X) %*% X, t(X) %*% Y))
+```
+
+```
+##    user  system elapsed 
+##    0.85    0.00    0.84
+```
+
+---
+
+# Principle 2
+
+- Avoid explicit matrix inversion whenever possible
+
+- Instead, solve linear systems
+
+- In fact, in statistical computing, it is .highlight[very rare] that you really need `\(A^{-1}\)`
+
+- Computing `\(A^{-1}B\)` is equivalent to solving `\(AX=B\)`
+
+- Computing `\(BA^{-1}\)` is equivalent to solving `\(A'X=B'\)`
+
+---
+
+# Third improvement
+
+
+```r
+system.time(X %*% solve(crossprod(X), crossprod(X, Y)))
+```
+
+```
+##    user  system elapsed 
+##    0.73    0.00    0.74
+```
+
+---
+
+# Principle 3
+
+- Avoid explicit matrix transpose
+
+- Try specialized functions
+
+- `crossprod(x)`: compute `\(X'X\)`
+
+- `crossprod(x, y)`: compute `\(X'Y\)`
+
+- `tcrossprod(x, y)`: compute `\(XY'\)`
+
+---
+
+# Principle 4
+
+- Utilize special structures of matrices
+
+- For example, symmetry, positive definiteness, etc.
+
+- .highlight[Try to further improve the solution!]
+
+
+
+---
+class: center, middle
+
+# `\(LDL^T\)` Decomposition
+
+---
+
+# Motivation
+
+- LU decomposition applies to .highlight[general] square matrices
+
+- Cholesky decomposition applies to .highlight[positive definite] matrices
+  - Halves the storage cost
+  - Typically faster than LU decomposition
+
+- If we only know the matrix is .highlight[symmetric]
+
+- Is there any tailored decomposition method?
+
+---
+
+# `\(LDL^T\)` Decomposition
+
+- [4] shows that a nonsingular symmetric matrix `\(A\)` can be decomposed as `\(A=LDL'\)`
+
+- `\(L\)` is lower triangular with ones on the diagonal
+
+- `\(D\)` is a .highlight[block] diagonal matrix, each block being `\(1\times 1\)` or `\(2\times 2\)`, e.g.,
+
+`$$\tiny\begin{bmatrix}\begin{array}{rrrrr}
+1 &amp; -3 &amp; 4 &amp; -4 &amp; 0\\
+-3 &amp; 10 &amp; -12 &amp; 6 &amp; 13\\
+4 &amp; -12 &amp; 11 &amp; -1 &amp; -25\\
+-4 &amp; 6 &amp; -1 &amp; 6 &amp; -5\\
+0 &amp; 13 &amp; -25 &amp; 5 &amp; 42
+\end{array}\end{bmatrix}=\begin{bmatrix}\begin{array}{rrrrr}
+1\\
+-3 &amp; 1\\
+4 &amp; -2 &amp; 1\\
+-4 &amp; 0 &amp; -3 &amp; 1\\
+0 &amp; 3 &amp; 5 &amp; 2 &amp; 1
+\end{array}\end{bmatrix}\begin{bmatrix}\begin{array}{rrrrr}
+1\\
+ &amp; 1 &amp; 2\\
+ &amp; 2 &amp; -1\\
+ &amp;  &amp;  &amp; -1\\
+ &amp;  &amp;  &amp;  &amp; 2
+\end{array}\end{bmatrix}\begin{bmatrix}\begin{array}{rrrrr}
+1 &amp; -3 &amp; 4 &amp; -4 &amp; 0\\
+ &amp; 1 &amp; -2 &amp; 0 &amp; 3\\
+ &amp;  &amp; 1 &amp; -3 &amp; 5\\
+ &amp;  &amp;  &amp; 1 &amp; 2\\
+ &amp;  &amp;  &amp;   &amp; 1
+\end{array}\end{bmatrix}$$`
+
+- In practice, a permutation matrix would be applied to `\(A\)` for factorization, i.e., `\(P'AP=LDL'\)`
+
+
+
+---
+
+# Solving Linear Systems
+
+- Suppose the decomposition `\(P'AP=LDL'\)` is given
+
+- If we wish to solve `\(Ax=b\)`, then:
+
+1. Compute `\(\tilde{b}=P'b\)`
+
+2. Solve `\(Ly_1=\tilde{b}\)` to get `\(y_1\)`
+
+3. Solve `\(Dy_2=y_1\)` to get `\(y_2\)`
+
+4. Solve `\(L'\tilde{x}=y_2\)` to get `\(\tilde{x}\)`
+
+5. Compute `\(x=P\tilde{x}\)`
+
+---
+
+# Solving Linear Systems
+
+- Solving `\(Dy=c\)` is similar to solving a diagonal system
+
+- Since `\(D\)` is block diagonal, `\(D=\mathrm{bdiag}(D_1,\ldots,D_K)\)`
+
+- Each `\(D_k\)` is `\(1\times 1\)` or `\(2\times 2\)`
+
+- Partition `\(c\)` according to `\(D\)`, `\(c=(c_1',\ldots,c_K')'\)`
+
+- Then `\(y=((D_1^{-1}c_1)',\ldots,(D_K^{-1}c_K)')'\)`
+
+- If `\(D_k\)` is `\(2\times 2\)`, use closed-form inverse formula
+
+---
+
+# Algorithm
+
+- The most commonly-used algorithm for the `\(LDL^T\)` decomposition is the Bunch-Kaufman algorithm [5]
+
+- We omit the details here since it is pretty involved
+
+- Interested readers are referred to [4] and [5]
+
+- .highlight[The computational complexity is] `\(O(n^3)\)`, with a multiplicative factor similar to Cholesky decomposition
+
+---
+
+# Implementation
+
+- Unfortunately, at the current moment there is no mature R interface to this decomposition
+
+- There is indeed a `BunchKaufman()` function in the **Matrix** package, but it is somewhat incomplete
+
+- The good news is that the algorithm has been implemented in the LAPACK library, which is included by R
+
+- We just need to write a simple C++ wrapper to call the function via **Rcpp**
+
+---
+
+# Implementation
+
+
+
+- Simple wrapper for the factorization function
+
+
+```r
+ldlt_fac = function(A)
+{
+    res = Matrix::BunchKaufman(A, uplo = "L")
+    list(perm = res@perm, fac = matrix(res@x, res@Dim[1]))
+}
+```
+
+---
+
+# Implementation
+
+- C++ code to call the solving function
+- This will create an R function `ldlt_solve()`
+
+
+```r
+compiler_flags = "-lRlapack -lRblas -lgfortran -lm -lquadmath"
+Sys.setenv("PKG_LIBS" = compiler_flags)
+
+Rcpp::cppFunction(includes = "#include &lt;R_ext/Lapack.h&gt;",
+code = "
+    NumericVector ldlt_solve(List fac, NumericVector b)
+    {
+        NumericMatrix fac_res = fac[\"fac\"];
+        IntegerVector perm = fac[\"perm\"];
+        NumericVector sol = Rcpp::clone(b);
+        const int n = fac_res.nrow();
+        const int nrhs = 1;
+        char uplo = 'L';
+        int info;
+        F77_CALL(dsytrs)(
+            &amp;uplo, &amp;n, &amp;nrhs, fac_res.begin(), &amp;n,
+            perm.begin(), sol.begin(), &amp;n, &amp;info FCONE);
+        return sol;
+    }
+")
+```
+
+---
+
+# Implementation
+
+- Verify the result
+
+
+```r
+set.seed(123)
+n = 2000
+M = matrix(rnorm(n^2), n)
+A = M + t(M)
+b = rnorm(n)
+
+fac = ldlt_fac(A)
+x = ldlt_solve(fac, b)
+max(abs(A %*% x - b))  # Verify A*x = b
+```
+
+```
+## [1] 8.482548e-12
+```
+
+---
+
+# Benchmark
+
+- This implementation is much faster than `solve()`
+
+
+```r
+library(dplyr)
+bench::mark(
+    solve(A, b), ldlt_fac(A), ldlt_solve(fac, b),
+    max_iterations = 10, check = FALSE
+) %&gt;% select(expression, min, median)
+```
+
+```
+## # A tibble: 3 × 3
+##   expression              min   median
+##   &lt;bch:expr&gt;         &lt;bch:tm&gt; &lt;bch:tm&gt;
+## 1 solve(A, b)           1.42s    1.42s
+## 2 ldlt_fac(A)        701.23ms 701.23ms
+## 3 ldlt_solve(fac, b)    3.2ms   3.51ms
+```
+
+---
+
+# When to Use?
+
+- As long as you can guarantee `\(A\)` is symmetric, use `\(LDL^T\)` decomposition to solve linear systems
+
+- If positive definiteness is guaranteed, use Cholesky decomposition
+
+---
+class: center, middle
+
+# QR Decomposition
+
+---
+
+# Motivation
+
+- Most of the decomposition methods introduced before heavily rely on triangular matrices
+
+- This is because triangular matrices have cheap "inverse" operations
+
+- Another special type of matrices is the orthogonal matrix
+
+- `\(Q'Q=QQ'=I\)`, which implies `\(Q^{-1}=Q'\)`
+
+---
+
+# QR Decomposition
+
+- QR decomposition factorizes a square matrix into the product of two matrices, `\(A=QR\)`
+
+- `\(Q\)` is an orthogonal matrix, `\(Q'Q=QQ'=I\)`
+
+- `\(R\)` is upper triangular
+
+---
+
+# Factorization Theorem &lt;sup&gt;&lt;span class="small"&gt;[2]&lt;/span&gt;&lt;/sup&gt;
+
+Let `\(A\)` be a nonsingular square matrix. There exists a unique pair `\((Q,R)\)`, where `\(Q\)` is an orthogonal matrix and `\(R\)` is an upper triangular matrix with positive diagonal entries, such that `\(A=QR\)`.
+
+---
+
+# Solving Linear Systems
+
+- Suppose the decomposition `\(A=QR\)` is given
+
+- If we wish to solve `\(Ax=b\)`, then:
+
+- First, compute `\(\tilde{b}=Q'b\)`
+
+- Second, solve `\(Rx=\tilde{b}\)` to get `\(x\)`
+
+--
+
+- .highlight[However, it is uncommon to directly use QR decomposition for solving linear systems]
+
+--
+
+- Typically slower than LU decomposition
+
+- More useful in factorizing rectangular matrices
+
+---
+
+# Factorization Theorem &lt;sup&gt;&lt;span class="small"&gt;[3]&lt;/span&gt;&lt;/sup&gt;
+
+Let `\(A_{m\times n}\)` be a matrix with `\(\mathrm{rank}(A)=n\)`, `\(n\le m\)`. Then there exist an orthogonal matrix `\(Q_{m\times m}\)` and an upper triangular matrix `\(R_{n\times n}\)` with positive diagonal entries, such that
+`$$A=Q\begin{pmatrix}R\\
+0
+\end{pmatrix}=\begin{pmatrix}Q_{1} &amp; Q_{2}\end{pmatrix}\begin{pmatrix}R\\
+0
+\end{pmatrix}.$$`
+In addition, the matrices `\(R\)` and `\(Q_1=AR^{-1}\)` are uniquely determined.
+
+---
+
+# Thin QR Decomposition
+
+- According to the factorization theorem in the previous slide, any rectangular matrix `\(A\)` with full column rank can be factorized as `\(A=Q_1R\)`
+
+- `\(A\in \mathbb{R}^{m\times n}\)`, `\(Q_1\in \mathbb{R}^{m\times n}\)`, `\(R\in \mathbb{R}^{n\times n}\)`
+
+- `\(Q_1\)` is .highlight[column-orthonormal], meaning that `\(Q_1'Q_1=I_{n\times n}\)`
+
+- This is called the .highlight[thin QR decomposition]
+
+---
+
+# Relation with Cholesky Decomposition
+
+- If the (thin) QR decomposition result `\(X=QR\)` is given
+
+- Then `\(X'X=R'Q'QR=R'R\)`, which is exactly the Cholesky decomposition of `\(A=X'X\)`
+
+---
+
+# Relation with Regression
+
+- To see why the thin QR decomposition is useful, recall the regression coefficient estimate `\(\hat{\beta}=(X'X)^{-1}X'Y\)` and predicted values `\(\hat{y}=X\hat{\beta}\)`
+
+- Suppose we have `\(X_{n\times p}=QR\)`, `\(X\)` full column rank, then:
+  - `\(\hat{\beta}=(R'R)^{-1}R'Q'Y=R^{-1}Q'Y\)`
+  - `\(\hat{y}=QR\hat{\beta}=QQ'Y\)`
+  
+- `\(QQ'\)` is essentially the projection matrix, or hat matrix, in regression analysis
+
+--
+
+- .highlight[Warning:] `\(Q_{n\times p}\)` is only column-orthonomal, so `\(\require{color}\color{deeppink}QQ'\neq I_{n\times n}\)`! (We do have `\(Q'Q=I_{p\times p}\)`)
+
+---
+
+# Algorithm
+
+- Here we omit the computing algorithm for QR decomposition
+
+- Interested readers are referred to
+  - Section 9 of [1] (modified Gram-Schmidt algorithm)
+  - Section 7.3.4 of [2] (Householder algorithm)
+  - Section 2.3.2 of [3] (Householder algorithm)
+
+- The important point is, in practice we do .highlight[NOT] explicitly form the `\(Q\)` matrix
+
+- Instead, given a vector `\(y\)`, computing `\(Qy\)` and `\(Q'y\)` has specialized algorithms
+
+---
+
+# Computational Complexity
+
+- For rectangular matrix `\(X_{n\times p}\)`, `\(X\)` full column rank, `\(n\ge p\)`
+
+- Computing the thin QR decomposition .highlight[using the modified Gram-Schmidt algorithm costs] `\(O(np^2)\)`
+
+- .highlight[Using the Householder algorithm costs] `\(O(np^2-p^3/3)\)`
+
+---
+
+# Implementation
+
+- The `qr()` function in R can perform QR decomposition
+
+
+```r
+set.seed(123)
+x = matrix(rnorm(25), 5, 5)
+qr_res = qr(x)
+```
+
+---
+
+# Implementation
+
+- The result is a compact representation of `\(Q\)` and `\(R\)`
+
+
+```r
+qr_res
+```
+
+```
+## $qr
+##             [,1]       [,2]       [,3]       [,4]       [,5]
+## [1,]  1.67880106 -1.8735119 -0.1240544 -2.4977185 -0.6449736
+## [2,]  0.13710826 -1.3836930 -1.2267898 -0.6009298  0.7682812
+## [3,] -0.92846517  0.8909949 -0.7676374 -1.1355032  0.8695156
+## [4,] -0.04199925 -0.4147299  0.9330131  0.3672150 -1.0253122
+## [5,] -0.07701195 -0.1723435 -0.3178735 -0.8619799 -0.5906208
+## 
+## $rank
+## [1] 5
+## 
+## $qraux
+## [1] 1.3338547 1.0665197 1.1686505 1.5069425 0.5906208
+## 
+## $pivot
+## [1] 1 2 3 4 5
+## 
+## attr(,"class")
+## [1] "qr"
+```
+
+---
+
+# Implementation
+
+- To get the explicit `\(Q\)` and `\(R\)` matrices, use `qr.Q()` and `qr.R()`
+
+
+```r
+qr.Q(qr_res)
+```
+
+```
+##             [,1]       [,2]       [,3]        [,4]        [,5]
+## [1,] -0.33385471 -0.7874465 -0.2822091  0.43404722 -0.02073790
+## [2,] -0.13710826 -0.1474621 -0.2109068 -0.47031583  0.83293313
+## [3,]  0.92846517 -0.3428718 -0.1241733  0.01466849  0.06897252
+## [4,]  0.04199925  0.4395243 -0.8533937  0.27599706  0.02448081
+## [5,]  0.07701195  0.2178078  0.3635610  0.71694943  0.54812026
+```
+
+```r
+qr.R(qr_res)
+```
+
+```
+##          [,1]      [,2]       [,3]       [,4]       [,5]
+## [1,] 1.678801 -1.873512 -0.1240544 -2.4977185 -0.6449736
+## [2,] 0.000000 -1.383693 -1.2267898 -0.6009298  0.7682812
+## [3,] 0.000000  0.000000 -0.7676374 -1.1355032  0.8695156
+## [4,] 0.000000  0.000000  0.0000000  0.3672150 -1.0253122
+## [5,] 0.000000  0.000000  0.0000000  0.0000000 -0.5906208
+```
+
+---
+
+# Implementation
+
+- But you rarely need to explicitly form `\(Q\)`
+- To compute `\(Qv\)` and `\(Q'v\)`, use `qr.qy()` and `qr.qty()`
+
+
+```r
+Q = qr.Q(qr_res)
+v = rnorm(5)
+
+Q %*% v
+```
+
+```
+##             [,1]
+## [1,] -0.65989192
+## [2,]  1.65499813
+## [3,] -1.80255035
+## [4,] -0.11692776
+## [5,] -0.02040374
+```
+
+```r
+qr.qy(qr_res, v)
+```
+
+```
+## [1] -0.65989192  1.65499813 -1.80255035 -0.11692776 -0.02040374
+```
+
+---
+
+# Implementation
+
+
+```r
+crossprod(Q, v)  # == t(Q) %*% v
+```
+
+```
+##            [,1]
+## [1,]  0.6394024
+## [2,]  0.9249034
+## [3,]  1.7073775
+## [4,] -0.5390799
+## [5,]  1.4027564
+```
+
+```r
+qr.qty(qr_res, v)
+```
+
+```
+## [1]  0.6394024  0.9249034  1.7073775 -0.5390799  1.4027564
+```
+
+---
+
+# Implementation
+
+- The `qr()` function also supports thin QR decomposition
+
+
+```r
+set.seed(123)
+x = matrix(rnorm(15), 5, 3)
+qr_res = qr(x)
+qr.Q(qr_res)
+```
+
+```
+##             [,1]       [,2]       [,3]
+## [1,] -0.33385471 -0.7874465 -0.2822091
+## [2,] -0.13710826 -0.1474621 -0.2109068
+## [3,]  0.92846517 -0.3428718 -0.1241733
+## [4,]  0.04199925  0.4395243 -0.8533937
+## [5,]  0.07701195  0.2178078  0.3635610
+```
+
+```r
+qr.R(qr_res)
+```
+
+```
+##          [,1]      [,2]       [,3]
+## [1,] 1.678801 -1.873512 -0.1240544
+## [2,] 0.000000 -1.383693 -1.2267898
+## [3,] 0.000000  0.000000 -0.7676374
+```
+
+---
+
+# Implementation
+
+- You can also get the full QR decomposition by adding the `complete = TRUE` argument
+
+
+```r
+qr.Q(qr_res, complete = TRUE)
+```
+
+```
+##             [,1]       [,2]       [,3]        [,4]       [,5]
+## [1,] -0.33385471 -0.7874465 -0.2822091 -0.23791265 0.36362704
+## [2,] -0.13710826 -0.1474621 -0.2109068  0.95639468 0.01684644
+## [3,]  0.92846517 -0.3428718 -0.1241733  0.05201684 0.04760905
+## [4,]  0.04199925  0.4395243 -0.8533937 -0.11881268 0.25031427
+## [5,]  0.07701195  0.2178078  0.3635610  0.10901648 0.89586144
+```
+
+```r
+qr.R(qr_res, complete = TRUE)
+```
+
+```
+##          [,1]      [,2]       [,3]
+## [1,] 1.678801 -1.873512 -0.1240544
+## [2,] 0.000000 -1.383693 -1.2267898
+## [3,] 0.000000  0.000000 -0.7676374
+## [4,] 0.000000  0.000000  0.0000000
+## [5,] 0.000000  0.000000  0.0000000
+```
+
+---
+
+# Benchmark
+
+
+```r
+library(Matrix)
+set.seed(123)
+M = matrix(rnorm(2000^2), 2000)
+A = crossprod(M)
+
+bench::mark(
+    lu(A), chol(A), qr(A),
+    max_iterations = 10, check = FALSE
+) %&gt;% select(expression, min, median)
+```
+
+```
+## # A tibble: 3 × 3
+##   expression      min   median
+##   &lt;bch:expr&gt; &lt;bch:tm&gt; &lt;bch:tm&gt;
+## 1 lu(A)         1.46s    1.46s
+## 2 chol(A)       1.33s    1.33s
+## 3 qr(A)         4.25s    4.25s
+```
+
+---
+
+# Benchmark
+
+
+```r
+set.seed(123)
+n = 2000
+p = 200
+x = matrix(rnorm(n * p), n, p)
+
+bench::mark(
+    chol(crossprod(x)),
+    qr(x),
+    max_iterations = 100, check = FALSE
+) %&gt;% select(expression, min, median)
+```
+
+```
+## # A tibble: 2 × 3
+##   expression              min   median
+##   &lt;bch:expr&gt;         &lt;bch:tm&gt; &lt;bch:tm&gt;
+## 1 chol(crossprod(x))   42.8ms   46.7ms
+## 2 qr(x)                57.5ms     59ms
+```
+
+---
+
+# When to Use?
+
+- QR decomposition is seldom used to solve linear systems directly
+
+  - It is typically slower than LU decomposition
+
+- Thin QR decomposition is widely used in regression computation
+
+  - It is slightly slower than Cholesky decomposition on `\(X'X\)`
+  - But QR decomposition is more stable
+
+---
+
+# References
+
+.medium[
+
+[1] Folkmar Bornemann (2018). Numerical Linear Algebra. Springer.
+
+[2] Grégoire Allaire and Sidi Mahmoud Kaber (2008). Numerical linear algebra. Springer.
+
+[3] Åke Björck (2015). Numerical methods in matrix computations. Springer.
+
+[4] James R. Bunch and Beresford N. Parlett (1971). Direct methods for solving symmetric indefinite systems of linear equations. SIAM Journal on Numerical Analysis.
+
+[5] James R. Bunch and Linda Kaufman (1977). Some stable methods for calculating inertia and solving symmetric linear systems. Mathematics of computation.
+
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
