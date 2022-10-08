@@ -136,7 +136,8 @@ $f_3:\mathbb{R}^p\rightarrow\mathbb{R}$.
 For convenience we also let $u=f_1(x)\in\mathbb{R}^m$ and
 $v=f_2(u)\in\mathbb{R}^p$.
 By the chain rule of derivative, we have
-$$\left[\frac{\partial y}{\partial x^{T}}\right]_{1\times n}=\left[\frac{\partial y}{\partial v^{T}}\right]_{1\times p}\cdot\left[\frac{\partial v}{\partial u^{T}}\right]_{p\times m}\cdot\left[\frac{\partial u}{\partial x^{T}}\right]_{m\times n}$$
+
+$$\left[\frac{\partial y}{\partial x^{T}}\right]\_{1\times n}=\left[\frac{\partial y}{\partial v^{T}}\right]\_{1\times p}\cdot\left[\frac{\partial v}{\partial u^{T}}\right]\_{p\times m}\cdot\left[\frac{\partial u}{\partial x^{T}}\right]\_{m\times n}$$
 
 In the formula above,
 $\partial y/\partial x^T=(\partial y/\partial x_1,\ldots,\partial y/\partial x_n)$
