@@ -144,10 +144,10 @@ $\partial y/\partial x^T=(\partial y/\partial x_1,\ldots,\partial y/\partial x_n
 is a **row vector**, and $\partial v/\partial u^T$ is a $p\times m$
 **Jacobian matrix**
 
-$$J=\begin{bmatrix}\frac{\partial v\_{1}}{\partial u\_{1}} & \frac{\partial v\_{1}}{\partial u\_{2}} & \cdots & \frac{\partial v\_{1}}{\partial u\_{m}}\\
-\frac{\partial v\_{2}}{\partial u\_{1}} & \frac{\partial v\_{2}}{\partial u\_{2}} & \cdots & \frac{\partial v\_{2}}{\partial u\_{m}}\\
-\vdots & \vdots & \ddots & \vdots\\
-\frac{\partial v\_{p}}{\partial u\_{1}} & \frac{\partial v\_{p}}{\partial u\_{2}} & \cdots & \frac{\partial v\_{p}}{\partial u\_{m}}
+$$J=\begin{bmatrix}\frac{\partial v\_{1}}{\partial u\_{1}} \& \frac{\partial v\_{1}}{\partial u\_{2}} \& \cdots \& \frac{\partial v\_{1}}{\partial u\_{m}}\\
+\frac{\partial v\_{2}}{\partial u\_{1}} \& \frac{\partial v\_{2}}{\partial u\_{2}} \& \cdots \& \frac{\partial v\_{2}}{\partial u\_{m}}\\
+\vdots \& \vdots \& \ddots \& \vdots\\
+\frac{\partial v\_{p}}{\partial u\_{1}} \& \frac{\partial v\_{p}}{\partial u\_{2}} \& \cdots \& \frac{\partial v\_{p}}{\partial u\_{m}}
 \end{bmatrix}.$$
 
 Now if you want to define the `f2` function in Tensorflow with gradient
