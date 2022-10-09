@@ -21,7 +21,7 @@ I have great interest in statistical computing, deep learning, exact inference m
 - **Qiu, Y.**, Zhang, L., and Wang, X., *Unbiased Contrastive Divergence Algorithm for Training Energy-Based Latent Variable Models*. International Conference on Learning Representations (ICLR 2020), 2020.
   <span style="padding-left:10px"><a href="https://openreview.net/forum?id=r1eyceSYPr"><i class="fas fa-link"></i> Link</a></span>
   <span style="padding-left:10px"><a href="https://github.com/yixuan/cdtau"><i class="fas fa-code"></i> Code</a></span>
-- Lu, J.*, **Qiu, Y.***, and Deng, A., *A Note on Type S/M Errors in Hypothesis Testing*. *Joint first authors. British Journal of Mathematical and Statistical Psychology, 2019.
+- Lu, J.\*, **Qiu, Y.**\*, and Deng, A., *A Note on Type S/M Errors in Hypothesis Testing*. *Joint first authors. British Journal of Mathematical and Statistical Psychology, 2019.
   <span style="padding-left:10px"><a href="https://bpspsychub.onlinelibrary.wiley.com/doi/10.1111/bmsp.12132"><i class="fas fa-link"></i> Link</a></span>
   <span style="padding-left:10px"><a href="https://www.microsoft.com/en-us/research/uploads/prod/2020/09/LuQiuDeng-BJMSP2019.pdf"><i class="far fa-file-pdf"></i> PDF</a></span>
 - **Qiu, Y.**, Zhang, L., and Liu, C., *Exact and Efficient Inference for Partial Bayes Problems*. Electronic Journal of Statistics, 2018.

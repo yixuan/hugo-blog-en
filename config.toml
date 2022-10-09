@@ -192,4 +192,8 @@ canonifyurls = true
 
 # Set Markdown engine to allow raw HTML
 [markup]
-  defaultMarkdownHandler = "blackfriday"
+  defaultMarkdownHandler = "goldmark"
+
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
