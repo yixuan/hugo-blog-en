@@ -1,31 +1,45 @@
 @font-face {
-  font-family: 'Yanone Kaffeesatz';
+  font-family: 'Domitian';
   font-style: normal;
   font-weight: 400;
-  src: local('Yanone Kaffeesatz Regular'), local('YanoneKaffeesatz-Regular'),
-       url('https://github.com/yihui/xaringan/releases/download/v0.1/yanone-kaffeesatz.woff') format('woff');
+  src: url('https://statr.me/fonts/Domitian-Roman.woff2') format('woff2');
 }
+
 @font-face {
-  font-family: 'Droid Serif';
+  font-family: 'Domitian';
   font-style: normal;
-  font-weight: 400;
-  src: local('Droid Serif'), local('DroidSerif'),
-       url('https://github.com/yihui/xaringan/releases/download/v0.1/droid-serif.woff') format('woff');
+  font-weight: 700;
+  src: url('https://statr.me/fonts/Domitian-Bold.woff2') format('woff2');
 }
+
 @font-face {
   font-family: 'Source Code Pro';
   font-style: normal;
   font-weight: 400;
   src: local('Source Code Pro'), local('SourceCodePro-Regular'),
-       url('https://github.com/yihui/xaringan/releases/download/v0.1/source-code-pro.woff') format('woff');
+       url('https://statr.me/fonts/SourceCodePro-Regular.woff2') format('woff2');
 }
 
-body { font-family: 'Droid Serif', 'Palatino Linotype', 'Book Antiqua', Palatino, 'Songti SC', serif; }
+@font-face {
+  font-family: 'Source Code Pro';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Source Code Pro'), local('SourceCodePro-Bold'),
+       url('https://statr.me/fonts/SourceCodePro-Bold.woff2') format('woff2');
+}
+
+body {
+  font-family: 'Domitian', 'Droid Serif', 'Palatino Linotype', 'Book Antiqua', Palatino, 'Songti SC', serif;
+}
+
 h1, h2, h3 {
-  font-family: 'Yanone Kaffeesatz', 'Palatino Linotype', 'Book Antiqua', Palatino, 'STHeiti', 'SimHei', 'Microsoft YaHei';
+  font-family: 'Domitian', 'Yanone Kaffeesatz', 'Palatino Linotype', 'Book Antiqua', Palatino, 'STHeiti', 'SimHei', 'Microsoft YaHei';
   font-weight: normal;
 }
-.remark-code, .remark-inline-code { font-family: 'Source Code Pro', 'Lucida Console', Monaco, monospace; }
+
+.remark-code, .remark-inline-code {
+  font-family: 'Source Code Pro', 'Lucida Console', Monaco, monospace;
+}
 
 .remark-slide-content h1 {
   font-size: 32pt;
@@ -45,6 +59,7 @@ h1, h2, h3 {
 
 .remark-code-line {
   font-size: 12pt;
+  line-height: 90%;
 }
 
 .highlight {

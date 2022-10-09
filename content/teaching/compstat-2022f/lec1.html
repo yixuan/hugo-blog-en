@@ -9,11 +9,8 @@
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
-        TeX: {
-          extensions: ["color.js"]
-        },
         CommonHTML: {
-          scale: 80
+          scale: 100
         }
       });
     </script>
@@ -54,8 +51,11 @@ class: inverse, center, middle
 Modern statistics and data science demand for novel and efficient computing algorithms
 
 - Big data break down many existing software packages
+
 - Solving complicated models are time-consuming
+
 - Hardware resources are not utilized in the most efficient way
+
 - High energy consumption but low performance
 
 ---
@@ -65,8 +65,11 @@ Modern statistics and data science demand for novel and efficient computing algo
 However, computing has long been an underrated field in statistics
 
 - Researchers tend to spend more time on the theoretical properties of models and methods
+
 - Practitioners love to directly use software packages and care less about the computing details
+
 - Computing itself is less likely to be the primary object of study
+
 - .highlight[A carefully designed computing algorithm may be deemed merely a "trick" rather than solid contributions]
 
 ---
@@ -81,7 +84,7 @@ class: inverse, center, middle
 
 ---
 
-Q1. Given two matrices `\(A_{n\times m}\)` and `\(B_{m\times n}\)`, compute `\(\mathrm{tr}(AB)\)`.
+**Q1.** Given two matrices `\(A_{n\times m}\)` and `\(B_{m\times n}\)`, compute `\(\mathrm{tr}(AB)\)`.
 
 --
 
@@ -114,11 +117,11 @@ system.time(sum(diag(A %*% B)))
 
 
 
-"My solution" takes 0.013 seconds.
+"My solution" takes 0.016 seconds.
 
 ---
 
-Q2. Let `\(f(x)\sim 0.3 \cdot N(-1, 0.1) + 0.7 \cdot N(1, 0.01)\)`.
+**Q2.** Let `\(f(x)\sim 0.3 \cdot N(-1, 0.1) + 0.7 \cdot N(1, 0.01)\)`.
 Write a function to evaluate `\(\log f(x)\)`. Test the result on `\(x=-15\)` and `\(x=15\)`.
 
 --
@@ -154,7 +157,7 @@ The correct results are -980.972, -1280.972.
 
 ---
 
-Q3. Computing predicted values of linear regression `\(\hat{y}=X(X'X)^{-1}X'Y\)`.
+**Q3.** Computing predicted values of linear regression `\(\hat{y}=X(X'X)^{-1}X'Y\)`.
 
 --
 
@@ -187,11 +190,11 @@ system.time(X %*% solve(t(X) %*% X) %*% t(X) %*% Y)
 
 
 
-"My solution" takes 0.727 seconds.
+"My solution" takes 0.690 seconds.
 
 ---
 
-Q4. Computing the operator norm of a matrix `\(A_{m\times n}\)`, `\(m&lt;n\)`. `\(\Vert A\Vert_{\mathrm{op}}=\sqrt{\lambda_\max(A'A)}\)`.
+**Q4.** Computing the operator norm of a matrix `\(A_{m\times n}\)`, `\(m&lt;n\)`. `\(\Vert A\Vert_{\mathrm{op}}=\sqrt{\lambda_\max(A'A)}\)`.
 
 --
 
@@ -268,30 +271,32 @@ class: inverse, center, middle
 
 # Scope
 
-- Statistical computing is a multidisciplinary field
-  - Statistics
-  - Computer science
-  - Numerical analysis
-  - Optimization
-  - Database
-  - Programming
-  - Graphics
-  - Software engineering
-  - Reproducible research
-  - ...
+Statistical computing is a multidisciplinary field
+
+- Statistics
+- Computer science
+- Numerical analysis
+- Optimization
+- Database
+- Programming
+- Graphics
+- Software engineering
+- Reproducible research
+- ...
 
 ---
 
 # Scope
 
-- Computational statistics builds on top of mathematical statistics, statistical computing, and applied statistics
-  - Everything that appears in the previous slide
-  - Monte Carlo simulation
-  - Bootstrap/resampling techniques
-  - EM algorithm
-  - Density estimation
-  - Computational optimal transport
-  - ...
+Computational statistics builds on top of mathematical statistics, statistical computing, and applied statistics
+
+- Everything that appears in the previous slide
+- Monte Carlo simulation
+- Bootstrap/resampling techniques
+- EM algorithm
+- Density estimation
+- Computational optimal transport
+- ...
 
 ---
 
@@ -337,23 +342,30 @@ class: inverse, center, middle
 
 - Some important methods and algorithms will be left as homework or course projects
 
-
-- Understand the details well
-- Go through and verify the theoretical properties
-- Implement the algorithm correctly and efficiently
+  - Understand the details well
+  
+  - Go through and verify the theoretical properties
+    
+  - Implement the algorithm correctly and efficiently
 
 ---
 
 # Topics on Numerical Linear Algebra
 
 - Triangular and tridiagonal systems
+
 - LU decomposition
+
 - Cholesky decomposition
+
 - Conjugate gradient method
+
 - `\(LDL^T\)` decomposition
+
 - QR decomposition
-- Eigenvalue decomposition
-- Singular value decomposition
+
+- Eigenvalue/Singular value decomposition
+
 - Basic sparse matrix operations
 
 ---
@@ -361,10 +373,15 @@ class: inverse, center, middle
 # Topics on Optimization
 
 - (Sub)Gradient descent and projected (sub)gradient descent
+
 - Newton's method
+
 - Proximal gradient descent
+
 - L-BFGS and L-BFGS-B
+
 - Douglas-Rachford splitting
+
 - ADMM
 
 ---
@@ -372,9 +389,13 @@ class: inverse, center, middle
 # Topics on Simulation and Sampling
 
 - Univariate random number generation
+
 - Rejection sampling
+
 - Importance sampling
+
 - Markov chain Monte Carlo
+
 - Measure transport
 
 ---
@@ -382,8 +403,11 @@ class: inverse, center, middle
 # Miscellaneous
 
 - Numerical stability
+
 - Software
+
 - Calling C++ code within R and Python
+
 - Basic parallel computing methods
 
 ---
@@ -391,7 +415,9 @@ class: inverse, center, middle
 # Goals of Statistical Computing
 
 - Be .highlight[Accurate]
+
 - Be .highlight[Stable]
+
 - Be .highlight[Fast]
 
 ---
