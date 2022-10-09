@@ -1,7 +1,8 @@
 <!--EXTERNAL SCRIPTS-->
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 {{ if .IsPage }}
-<script src="//uploads.cosx.org/static/hljs/highlight.pack.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
 {{ end }}
 <!--EXTERNAL SCRIPTS END-->
 <!--SCRIPTS-->
@@ -11,7 +12,7 @@
 {{ if .IsPage }}
 <script>
 $(document).ready(function() {
-  hljs.configure({ classPrefix: '', useBR: false });
+  /*hljs.configure({ classPrefix: '', useBR: false });
   $('pre.code-highlight').each(function(i, block) {
     var code = "";
     hljs.highlightAuto(block.innerText).value.split(/\r\n|\r|\n/).forEach(function(line) {
@@ -24,8 +25,9 @@ $(document).ready(function() {
   $('pre > code').each(function(i, block) {
     $(this).addClass('codeblock');
     hljs.highlightBlock(block);
-  });
+  });*/
 
+  // KaTeX configuration
   renderMathInElement(document.body, {
       // do not render inside those tags
       "ignoredTags":["script", "noscript", "style", "textarea", "pre", "code"],
