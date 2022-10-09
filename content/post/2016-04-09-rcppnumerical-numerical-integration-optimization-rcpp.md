@@ -60,7 +60,7 @@ import(RcppNumerical)
 # Numerical Integration
 
 <div align="center">
-  <img src="https://i.imgur.com/NYIAs1J.png" width="350px" />
+  <img src="https://upload.yixuan.blog/en/2016/04/integration.png" width="350px" />
   <p>(Picture from <a href="https://en.wikipedia.org/wiki/Integral">Wikipedia</a>)</p>
 </div>
 
@@ -153,7 +153,7 @@ qplot(t0, mt, geom = "line", xlab = "t", ylab = "M(t)",
 ```
 
 <div align="center">
-  <img src="https://i.imgur.com/2ZDJH7X.png" width="500px" />
+  <img src="https://upload.yixuan.blog/en/2016/04/mgf-beta.png" width="500px" />
 </div>
 
 # Numerical Optimization

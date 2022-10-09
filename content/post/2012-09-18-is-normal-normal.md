@@ -52,9 +52,10 @@ hist(y + z);
 
 We obtain the random numbers of $X,Y$ and $Z$, and then use histograms to show their distributions.
 
-<p><img src="https://i.imgur.com/1zx8P.png" alt="Histograms of Y and Z" class="aligncenter"/></p>
-
-<p><img src="https://i.imgur.com/6allQ.png" alt="Histograms of Y+Z" class="aligncenter"/></p>
+<div align="center">
+  <img src="https://upload.yixuan.blog/en/2012/09/hist-yz.png" alt="Histograms of Y and Z" />
+  <img src="https://upload.yixuan.blog/en/2012/09/hist-yplusz.png" alt="Histograms of Y+Z" />
+</div>
 
 The result is clear: Both $Y$ and $Z$ should be Normal, but $Y+Z$ has a two-mode distribution, which
 is obviously non-Normal.

@@ -16,7 +16,7 @@ tags:
 - programming
 ---
 
-<img src="https://i.imgur.com/EPgIMLi.jpg" class="align-right"/>
+<img src="https://upload.yixuan.blog/en/2013/09/hadley.jpg" class="align-right"/>
 
 > Dr. Hadley Wickham is the Chief Scientist of RStudio and Assistant Professor
 of Statistics at Rice University. He is the developer of the famous R package `ggplot2`
@@ -162,7 +162,7 @@ ggvis.
 
 **Yixuan:** Another major change of software development we can see these years
 is that social coding becomes more popular. Many developers have a
-[Github](https://github.com/‎) account, for example. Do you think that will change the way we
+[Github](https://github.com/) account, for example. Do you think that will change the way we
 develop R and related packages?
 
 **Hadley:** I think so. Certainly I find that the time between creating a Github
@@ -251,6 +251,6 @@ barbecue food. I also like to make cocktails.
 
 **Yixuan:** OK. Thank you for the conversation!
 
-<p><img src="https://i.imgur.com/ICvLmEQ.jpg" class="aligncenter"/></p>
+<p><img src="https://upload.yixuan.blog/en/2013/09/hadley-interview.jpg" class="aligncenter"/></p>
 
 (Hadley Wickham with his *ggplot2* book in Chinese translation)

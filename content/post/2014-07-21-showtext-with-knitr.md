@@ -68,5 +68,5 @@ text(1, 1.1, "A fancy dot", family = "lobster", col = "steelblue", cex = 3)
 ``````
 
 <div align="center">
-  <img src="https://i.imgur.com/pO87LFy.png" />
+  <img src="https://upload.yixuan.blog/en/2014/07/showtext.png" />
 </div>

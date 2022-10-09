@@ -22,7 +22,7 @@ The main task of recommender system is to predict unknown entries in the
 rating matrix based on observed values, as is shown in the table below:
 
 <div align="center">
-  <img src="https://i.imgur.com/bmW79NS.png" alt="Rating matrix" />
+  <img src="https://upload.yixuan.blog/en/2016/07/rating-matrix.png" alt="Rating matrix" />
 </div>
 
 Each cell with number in it is the rating given by some user on a specific
@@ -220,7 +220,7 @@ ggplot(pred, aes(x = movie, y = user, fill = rating)) +
 ```
 
 <div align="center">
-  <img src="https://i.imgur.com/nFGyyaO.png" alt="Predicted ratings" />
+  <img src="https://upload.yixuan.blog/en/2016/07/pred-rating.png" alt="Predicted ratings" />
 </div>
 
 # Performance
@@ -259,7 +259,7 @@ the performance of computation. The y axis is the elapsed time of the model tuni
 procedure in the previous example.
 
 <div align="center">
-  <img src="https://i.imgur.com/GfgShWZ.png" alt="Performance" />
+  <img src="https://upload.yixuan.blog/en/2016/07/performance.png" alt="Performance" />
 </div>
 
 ## References

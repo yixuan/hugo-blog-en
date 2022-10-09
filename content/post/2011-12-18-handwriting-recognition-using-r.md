@@ -31,12 +31,16 @@ cursor at a sequence of time points. This could be done via the
 drew a number 2 in the graphics window like below, the coordinates of
 each point in the trace were assigned to a pair of variables `px` and `py`.
 
-<p><img src="https://i.imgur.com/257Ng.png" alt="Record trace" class="aligncenter"/></p>
+<div align="center">
+  <img src="https://upload.yixuan.blog/en/2011/12/record-trace.png" alt="Record trace" />
+</div>
 
 The scatterplot of `px` and `py` versus their orders in the trace is
 shown below.
 
-<p><img src="https://i.imgur.com/4gsCV.png" alt="Record points" class="aligncenter"/></p>
+<div align="center">
+  <img src="https://upload.yixuan.blog/en/2011/12/record-points.png" alt="Record points" />
+</div>
 
 To be comparable among different traces, we normalize the Order to be
 within (0, 1] (that is, transform 1, 2, ..., n to 1/n, 2/n, ..., 1).
@@ -44,7 +48,9 @@ Also, since this recording is discrete but the real trace should be
 continuous, we use the `spline()` function to interpolate at unknown
 points, resulting in the following figure.
 
-<p><img src="https://i.imgur.com/M0Wos.png" alt="Record splines" class="aligncenter"/></p>
+<div align="center">
+  <img src="https://upload.yixuan.blog/en/2011/12/record-spline.png" alt="Record splines" />
+</div>
 
 The dots in the figure have normalized orders of 0.02, 0.04,
 0.06, ..., 1, at which the x and y coordinates are obtained by

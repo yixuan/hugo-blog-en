@@ -70,7 +70,7 @@ different OS. The two images below are the screenshots of the same PDF
 file created by R but viewed under Windows and Linux respectively.
 
 <div align="center">
-  <img src="https://i.imgur.com/x1zM34F.png" />
+  <img src="https://upload.yixuan.blog/en/2014/01/chinese-char.png" />
 </div>
 
 This means that the appearance of graph created by `pdf()` is
@@ -110,7 +110,7 @@ dev.off()
 ```
 
 <div align="center">
-  <img src="https://i.imgur.com/u5uvjy5.png" />
+  <img src="https://upload.yixuan.blog/en/2014/01/r-lang.png" />
 </div>
 
 The use of `intToUtf8()` is for convenience if you can't view or input
@@ -164,7 +164,7 @@ dev.off()
 ```
 
 <div align="center">
-  <img src="https://i.imgur.com/EUIGQ6L.png" />
+  <img src="https://upload.yixuan.blog/en/2014/01/merienda.png" />
 </div>
 
 In this case we add two font faces(regular and bold) with the family name

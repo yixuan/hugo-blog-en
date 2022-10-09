@@ -144,8 +144,8 @@ it using the calculated singular values and singular vectors.
 
 Below shows an image of size 622x1000:
 <div align="center">
-  <img src="https://i.imgur.com/VfmfWJi.jpg" width="500px" />
-  <p>(Orignal image)</p>
+  <img src="https://upload.yixuan.blog/en/2016/02/original-img.jpg" width="500px" />
+  <p>(Original image)</p>
 </div>
 
 If we use the first five singular pairs to recover the image,
@@ -153,7 +153,7 @@ then we need to store 8115 elements, which is only 1.3% of the original data
 size. The recovered image will look like below:
 
 <div align="center">
-  <img src="https://i.imgur.com/U2dYWHb.jpg" width="500px" />
+  <img src="https://upload.yixuan.blog/en/2016/02/singular-5.jpg" width="500px" />
   <p>(5 singular pairs)</p>
 </div>
 
@@ -162,7 +162,7 @@ structure of the original image. And if we increase the number of singular pairs
 to 50, then the difference is almost imperceptible, as is shown below.
 
 <div align="center">
-  <img src="https://i.imgur.com/rWSYG7B.jpg" width="500px" />
+  <img src="https://upload.yixuan.blog/en/2016/02/singular-50.jpg" width="500px" />
   <p>(50 singular pairs)</p>
 </div>
 
@@ -184,13 +184,13 @@ The first plot compares different SVD functions on a 1000x500 matrix,
 with dense format on the left panel, and sparse format on the right.
 
 <div align="center">
-  <img src="https://i.imgur.com/6TyJruc.png" width="700px" />
+  <img src="https://upload.yixuan.blog/en/2016/02/perf-1000x500.png" width="700px" />
 </div>
 
 The second plot shows the results on a 5000x2500 matrix.
 
 <div align="center">
-  <img src="https://i.imgur.com/CTtZieD.png" width="700px" />
+  <img src="https://upload.yixuan.blog/en/2016/02/perf-5000x2500.png" width="700px" />
 </div>
 
 The functions used corresponding to the axis labels are as follows:
