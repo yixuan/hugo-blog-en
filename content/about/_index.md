@@ -9,7 +9,7 @@ title : About Me
 I am Yixuan Qiu, currently an associate professor in
 [School of Statistics and Management](https://ssm.sufe.edu.cn/) at
 [Shanghai University of Finance and Economics (SUFE)](https://english.sufe.edu.cn/).
-Before joining SUFE in 2020, I was as a postdoctoral researcher in
+Before joining SUFE in 2020, I was a postdoctoral researcher in
 [Department of Statistics](http://www.stat.cmu.edu/) at [Carnegie Mellon University](https://www.cmu.edu/),
 working with Dr. [Kathryn Roeder](http://www.stat.cmu.edu/~roeder/index.html) and
 Dr. [Jing Lei](http://www.stat.cmu.edu/~jinglei/). I obtained my PhD degree in statistics
