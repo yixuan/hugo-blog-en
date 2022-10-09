@@ -16,7 +16,7 @@ tags:
 # Motivation
 
 Deep learning frameworks such as PyTorch and Tensorflow provide excellent
-auto-differentiation support for matrices and vectors. They have included 
+auto-differentiation support for matrices and vectors. They have included
 many built-in functions and operators that can be combined together to
 create complicated yet auto-differentiable functions. However, in some cases
 we prefer to manually define the gradient of a function, instead of relying
@@ -88,7 +88,7 @@ outside the Tensorflow computational graph.
 
 But theoretically, if we can also provide the derivative
 $\partial f_2/\partial x$, then we should be able to compute
-$\partial y/\partial x$ using the chain rule. Fortunately, 
+$\partial y/\partial x$ using the chain rule. Fortunately,
 Tensorflow provides a function decorator `@tf.custom_gradient` exactly to
 do this. The solution is also intuitive:
 we give `f2` some additional information, the gradient.
@@ -106,7 +106,7 @@ def f2(x):
         pdf = scipy.stats.norm.pdf(xnp)
         pdf = tf.constant(pdf, dtype=x.dtype)
         return upstream * pdf
-    
+
     return res, grad
 
 with tf.GradientTape() as tape:
@@ -144,9 +144,11 @@ $\partial y/\partial x^T=(\partial y/\partial x_1,\ldots,\partial y/\partial x_n
 is a **row vector**, and $\partial v/\partial u^T$ is a $p\times m$
 **Jacobian matrix**
 
-<div align="center">
-    <img src="https://statr.me/images/post/jacobian.png" alt="Jacobian matrix" />
-</div>
+$$J=\begin{bmatrix}\frac{\partial v_{1}}{\partial u_{1}} & \frac{\partial v_{1}}{\partial u_{2}} & \cdots & \frac{\partial v_{1}}{\partial u_{m}}\\\\
+\frac{\partial v_{2}}{\partial u_{1}} & \frac{\partial v_{2}}{\partial u_{2}} & \cdots & \frac{\partial v_{2}}{\partial u_{m}}\\\\
+\vdots & \vdots & \ddots & \vdots\\\\
+\frac{\partial v_{p}}{\partial u_{1}} & \frac{\partial v_{p}}{\partial u_{2}} & \cdots & \frac{\partial v_{p}}{\partial u_{m}}
+\end{bmatrix}.$$
 
 Now if you want to define the `f2` function in Tensorflow with gradient
 support, you should complete the following two steps:
@@ -244,7 +246,7 @@ def f2(x, A):
         grad_x = tf.linalg.matmul(A, upstream, transpose_a=True)
         grad_A = tf.linalg.matmul(upstream, x, transpose_b=True)
         return tf.squeeze(grad_x), grad_A
-    
+
     return res, grad
 
 tf.random.set_seed(123)
