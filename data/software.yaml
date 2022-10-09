@@ -8,7 +8,7 @@ category_1:
     - name: LBFGS++
       url: https://lbfgspp.statr.me/
       logo: /images/sticker-lbfgspp.png
-      description: A header-only C++ library for L-BFGS algorithm
+      description: A header-only C++ library for L-BFGS and L-BFGS-B algorithms
     - name: RcppNumerical
       url: https://github.com/yixuan/RcppNumerical
       logo: /images/sticker-rcppnumerical.png
