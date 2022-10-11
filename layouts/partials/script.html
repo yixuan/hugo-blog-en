@@ -42,7 +42,7 @@ $(document).ready(function() {
 </script>
 {{ end }}
 
-{{ if .IsPage }}
+{{ if or (.IsPage) (eq .Params.comments true) }}
   {{ if not (eq .Params.comments false) }}
     {{ if .Site.DisqusShortname }}
       <script>
