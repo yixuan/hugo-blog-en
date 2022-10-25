@@ -48,3 +48,8 @@ common computing problems in statistical and machine learning models.
   eigenvalue computation.
 - [Lecture 5](/teaching/compstat-2022f/lec5.html): Singular value decomposition, sparse matrix,
   case studies of statistical models on sparse data.
+
+#### Part II: Optimization
+
+- [Lecture 6](/teaching/compstat-2022f/lec6.html): Convex sets and convex functions,
+  convex optimization problems, (projected) gradient descent method and its convergence properties.
