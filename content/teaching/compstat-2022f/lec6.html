@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Computational Statistics</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Yixuan Qiu" />
+    <meta name="date" content="2022-10-19" />
+    <script src="libs/header-attrs-2.8/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        CommonHTML: {
+          scale: 100
+        }
+      });
+    </script>
+    <link rel="stylesheet" href="style.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Computational Statistics
+## Lecture 6
+### Yixuan Qiu
+### 2022-10-19
+
+---
+
+
+
+
+# Fundamental Problems
+
+- Numerical Linear Algebra
+  - Computations on matrices and vectors
+
+- .highlight[Optimization]
+  - .highlight[Minimizing objective functions]
+
+- Simulation/Sampling
+  - Generating random numbers from statistical distributions
+  
+---
+class: inverse, center, middle
+
+# Optimization
+
+---
+
+# Scope
+
+- Optimization is a very broad topic
+
+- We can only cover a small subset in this course
+
+- Focus on convex optimization problems arising from statistical and machine learning models
+
+---
+
+# Scope
+
+- We will introduce both classical and modern optimization algorithms
+
+- Also discuss convergence results that are less common in statistics courses (but common in optimization courses)
+
+- There is no globally "best" optimization algorithm
+
+- There may be good algorithms .highlight[for specific problems]
+
+---
+
+# Today's Topics
+
+- Convex functions
+
+- Gradient descent
+
+- Projected gradient descent
+
+---
+
+# Concepts
+
+- Convex set
+
+- Convex function
+
+- Strictly convex function
+
+- Strongly convex function
+
+---
+
+# Convex Set
+
+We only consider subsets of the Euclidean space `\(\mathbb{R}^d\)`.
+
+A set `\(C\subseteq \mathbb{R}^d\)` is convex, if
+
+`$$tx+(1-t)y\in C,\quad \forall x,y\in C,\ 0\le t\le 1.$$`
+
+.center[
+
+&lt;img src="images/convex-set.png" width="30%"/&gt;
+&lt;span style="padding-left:50px"&gt;
+&lt;img src="images/nonconvex-set.png" width="30%"/&gt;
+
+.small[(Image: https://en.wikipedia.org/wiki/Convex_set)]
+
+]
+
+The line segment connecting `\(x\)` and `\(y\)` is included in `\(C\)`.
+
+---
+
+# Convex Function
+
+`\(f:\mathbb{R}^d\rightarrow\mathbb{R}\)` is convex, if its domain `\(\mathcal{X}\)` is a convex set, and
+
+`$$f(tx+(1-t)y)\le tf(x)+(1-t)f(y),\quad \forall x,y\in \mathcal{X},\ 0\le t\le 1.$$`
+
+.center[
+
+&lt;img src="images/convex-function.png" width="70%"/&gt;
+
+.small[(Image: https://en.wikipedia.org/wiki/Convex_function)]
+
+]
+
+The line segment between `\(x\)` and `\(y\)` lies above the function.
+
+
+---
+
+# Strictly Convex Function
+
+Similar to the definition of convex function, but
+
+`$$f(tx+(1-t)y)&lt; tf(x)+(1-t)f(y),\quad \forall x\neq y,\ 0&lt;t&lt; 1.$$`
+
+Interpretation: The line segment between `\(x\)` and `\(y\)` strictly lies above the function, except for the end points `\(x\)` and `\(y\)`.
+
+---
+
+# Strongly Convex Function
+
+`\(f\)` is strongly convex with parameter `\(m&gt;0\)`, if `\(f-(m/2)\Vert x\Vert^2\)` is convex.
+
+Interpretation: `\(f\)` is at least as convex as a quadratic function.
+
+---
+
+# Relation
+
+Strongly convex `\(\Rightarrow\)`
+Strictly convex `\(\Rightarrow\)`
+Convex
+
+---
+
+# Properties
+
+- If `\(f\)` is differentiable and `\(\mathcal{X}\)`, the domain of `\(f\)`, is convex, then `\(f\)` is convex if and only if
+
+`$$f(y)\ge f(x)+[\nabla f(x)]'(y-x),\quad \forall x,y\in \mathcal{X}.$$`
+
+- If `\(f\)` is twice differentiable and `\(\mathcal{X}\)` is convex, then `\(f\)` is convex if and only if `\(\nabla^2 f(x)\succeq 0\)` for all `\(x\in \mathcal{X}\)`.
+
+- If `\(f\)` is twice differentiable and `\(\mathcal{X}\)` is convex, then `\(f\)` is strongly convex with parameter `\(m&gt;0\)` if and only if `\(\nabla^2 f(x)\succeq mI\)` for all `\(x\in \mathcal{X}\)`.
+
+---
+
+# Properties
+
+- The `\(\alpha\)`-sublevel set of a convex function `\(f\)`, defined as
+
+`$$C_\alpha=\{x\in \mathcal{X}: f(x)\le\alpha\},$$`
+
+is convex for any `\(\alpha\)`.
+
+- .highlight[The converse is not true!] Example: `\(f(x)=-e^x\)`.
+
+---
+
+# Properties
+
+- A nonnegative weighted sum of convex functions
+`$$f=w_1f_1+\cdots+w_mf_m$$`
+preserves convexity.
+
+- Composition with an affine mapping, `\(g(x)=f(Ax+b)\)`, preserves convexity.
+
+- Pointwise maximum and supermum, `\(f(x)=\max\{f_1(x),\ldots,f_m(x)\}\)`, preserves convexity.
+
+---
+
+
+# Jensen's Inequality
+
+If `\(f\)` is convex and `\(X\)` is a random variable supported on `\(C\)`, then
+
+`$$f(\mathbb{E}(X))\le \mathbb{E}(f(X)).$$`
+
+---
+
+# Examples
+
+- Univariate functions
+  - `\(e^{ax}\)` for any `\(a\in\mathbb{R}\)`
+  - `\(x^a\)` for `\(a\ge 1\)` or `\(a\le 0\)` with `\(\mathcal{X}=\mathbb{R}_{+}\)`
+  - `\(-x^a\)` for `\(0\le a\le 1\)` with `\(\mathcal{X}=\mathbb{R}_{+}\)`
+  - `\(|x|^a\)` for `\(a\ge 1\)` with `\(\mathcal{X}=\mathbb{R}\)`
+
+- Linear functions: `\(f(x)=Ax+b\)`
+
+- Quadratic functions: `\(f(x)=(1/2)x'Ax+b'x\)` if `\(A\succeq 0\)`
+
+- Norms: `\(\Vert x\Vert\)` (any norm, not limited to Euclidean norm)
+
+- Log-sum-exp (LSE) function:
+`$$\mathrm{LSE}(x_1,\ldots,x_n)=\log(e^{x_1}+\cdots+e^{x_n})$$`
+
+---
+
+# A Side Note on LSE
+
+- In some sense LSE can be called the "soft max" function, since
+
+`$$\small\max(x_1,\ldots,x_n)\le \mathrm{LSE}(x_1,\ldots,x_n)\le \max(x_1,\ldots,x_n)+\log(n)$$`
+
+- The widely-used **Softmax** function should better be called "soft argmax"
+
+`$$\mathrm{softmax}(x_1,\ldots,x_n)=\left(\frac{e^{x_1}}{\sum_i e^{x_i}},\ldots,\frac{e^{x_n}}{\sum_i e^{x_i}}\right)$$`
+
+- It can be verified that Softmax is the gradient of LSE
+
+---
+
+# Convex Optimization Problem
+
+A convex optimization problem is concerned with finding some `\(x^*\)` that attains the infimum
+`$$\inf_{x\in C}\,f(x),$$`
+where `\(f:\mathbb{R}^d\rightarrow\mathbb{R}\)` is a convex function with domain `\(\mathcal{X}\)`, and `\(C\subseteq\mathcal{X}\)` is a convex set. Such an `\(x^*\)`, if it exists, is called a solution to the convex optimization problem.
+
+In general, a convex optimization problem may have zero, one, or many solutions.
+
+---
+
+# Concepts
+
+- The .highlight[optimal value] is `\(\inf_{x\in C}\,f(x)\)`
+
+- A solution `\(x^*\)` is also called an .highlight[optimal point]
+
+- The set of all optimal points is called the .highlight[optimal set]
+
+---
+
+# Properties
+
+- The optimal set, if nonempty, is convex
+
+- If the objective function `\(f\)` is .highlight[strictly convex], then the problem has at most one optimal point
+
+- If `\(f\)` is differentiable, then `\(x^*\)` is an optimal point if and only if `\(x^*\in C\)` and
+`$$[\nabla f(x^*)]'(y-x^*)\ge 0,\quad\forall y\in C.$$`
+
+- If `\(C=\mathcal{X}\)`, then `\(x^*\)` is an optimal point if and only if `\(\nabla f(x^*)=0\)`.
+
+---
+class: center, middle
+
+# Gradient Descent
+
+---
+
+# Gradient Descent
+
+Gradient descent (GD) is a well-known and widely-used technique to solve the .highlight[unconstrained, smooth convex optimization problem]
+
+`$$\min_x\ f(x),$$`
+
+where `\(f\)` is convex and differentiable with domain `\(\mathcal{X}=\mathbb{R}^d\)`.
+
+The algorithm is simple: given an initial value `\(x^{(0)}\)`, iterate
+
+`$$x^{(k+1)}=x^{(k)}-\alpha_k\cdot\nabla f(x^{(k)}),\quad k=0,1,\ldots,$$`
+
+where `\(\alpha_k\)` is the step size.
+
+---
+
+# Questions
+
+- We are familiar with .highlight[using GD] to solve statistical models
+
+- But in this course we need to .highlight[understand GD] better
+
+- Does GD always converge?
+
+- How fast does it converge?
+
+- How to pick `\(\alpha_k\)`?
+
+---
+
+# Lipschitz Continuity
+
+We first introduce the concept of Lipschitz continuity, which plays an important role in analyzing GD.
+
+A function `\(f:\mathbb{R}^d\rightarrow\mathbb{R}^r\)` is Lipschitz continuous with constant `\(L&gt;0\)`, if
+`$$\Vert f(x)-f(y)\Vert\le L\Vert x - y\Vert,\quad\forall x,y\in\mathbb{R}^d.$$`
+
+For example, linear functions are Lipschitz continuous, whereas quadratic functions are not.
+
+---
+
+# Convergence of GD
+
+Suppose that `\(f:\mathbb{R}^d\rightarrow\mathbb{R}\)` is convex and differentiable, and assume its gradient is Lipschitz continuous with constant `\(L&gt;0\)`, i.e.,
+`$$\Vert \nabla f(x)-\nabla f(y) \Vert\le L\Vert x - y\Vert,\quad\forall x,y\in\mathbb{R}^d.$$`
+Then using a fixed step size `\(\alpha_k\equiv\alpha\le1/L\)`, we have
+`$$f(x^{(k)})-f(x^*)\le\frac{\Vert x^{(0)}-x^* \Vert^2}{2\alpha k},$$`
+where `\(f(x^*)\)` is the optimal value.
+
+.highlight[This is a non-asymptotic result.]
+
+---
+
+# Proof
+
+**Step 1**: We show that if `\(\nabla f(x)\)` is Lipschitz continuous with constant `\(L&gt;0\)`, then
+`$$f(y)\le f(x)+[\nabla f(x)]'(y-x)+\frac{L}{2}\Vert y-x \Vert^2,\quad\forall x,y.$$`
+
+--
+
+**Step 2**: Plugging in `\(y=x-\alpha\cdot\nabla f(x)\)`, then
+`$$\begin{align*}
+f(y) &amp; \le f(x)-\alpha[\nabla f(x)]'[\nabla f(x)]+\frac{\alpha^{2}L}{2}\Vert\nabla f(x)\Vert^{2}\\
+ &amp; =f(x)-(1-\alpha L/2)\alpha\Vert\nabla f(x)\Vert^{2}.
+\end{align*}$$`
+This means that if `\(\alpha\le 1/L\)`, we have
+`\(f(y)\le f(x)-(\alpha/2)\Vert\nabla f(x)\Vert^{2}\)`, implying that `\(f\)` is nonincreasing along iterations.
+
+---
+
+# Proof
+
+**Step 3**: Since `\(f\)` is convex, we have
+`$$\begin{align*}
+f(x^{*}) &amp; \ge f(x)+[\nabla f(x)]'(x^{*}-x),\\
+f(x) &amp; \le f(x^{*})+[\nabla f(x)]'(x-x^{*}).
+\end{align*}$$`
+
+--
+
+**Step 4**: Combining Step 2 and Step 3,
+`$$\begin{align*}
+f(y) &amp; \le f(x^{*})+[\nabla f(x)]'(x-x^{*})-\frac{\alpha}{2}\Vert\nabla f(x)\Vert^{2},\\
+f(y)-f(x^{*}) &amp; \le\frac{1}{2\alpha}\left(2\alpha[\nabla f(x)]'(x-x^{*})-\alpha^{2}\Vert\nabla f(x)\Vert^{2}\right)\\
+ &amp; =\frac{1}{2\alpha}\left(-\Vert x-x^{*}-\alpha\nabla f(x)\Vert^{2}+\Vert x-x^{*}\Vert^{2}\right)\\
+ &amp; =\frac{1}{2\alpha}\left(-\Vert y-x^{*}\Vert^{2}+\Vert x-x^{*}\Vert^{2}\right).
+\end{align*}$$`
+
+---
+
+# Proof
+
+**Step 5**: This means that
+`$$\begin{align*}
+f(x^{(k+1)})-f(x^{*}) &amp; \le\frac{1}{2\alpha}\left(\Vert x^{(k)}-x^{*}\Vert^{2}-\Vert x^{(k+1)}-x^{*}\Vert^{2}\right),\\
+\sum_{i=0}^{k-1}\left[f(x^{(i+1)})-f(x^{*})\right] &amp; \le\frac{1}{2\alpha}\left(\Vert x^{(0)}-x^{*}\Vert^{2}-\Vert x^{(k)}-x^{*}\Vert^{2}\right)\\
+ &amp; \le\frac{\Vert x^{(0)}-x^{*}\Vert^{2}}{2\alpha}.
+\end{align*}$$`
+
+--
+
+**Step 6**: Step 2 shows that
+`$$\sum_{i=0}^{k-1}\left[f(x^{(i+1)})-f(x^{*})\right]\ge k\left[f(x^{(k)})-f(x^{*})\right],$$`
+and then we get the final result.
+
+---
+
+## Convergence with Strong Convexity &lt;sup&gt;&lt;span class="small"&gt;[2]&lt;/span&gt;&lt;/sup&gt;
+
+If in addition, `\(f\)` is strongly convex with parameter `\(m&gt;0\)`, then with a fixed step size `\(\alpha\le 1/L\)`, we have
+`$$\Vert x^{(k)}-x^{*}\Vert^{2}\le(1-m\alpha)^{k}\Vert x^{(0)}-x^{*}\Vert^{2}.$$`
+
+**Note:** Here the convergence of `\(\Vert x^{(k)}-x^{*}\Vert\)` implies the convergence of `\(f(x^{(k)})-f(x^*)\)`. (Why?)
+
+--
+
+`$$\begin{align*}
+f(x^{(k)}) &amp; \le f(x^{*})+[\nabla f(x^{*})]'(x^{(k)}-x^{*})+\frac{L}{2}\Vert x^{(k)}-x^{*}\Vert^{2}\\
+ &amp; =f(x^{*})+\frac{L}{2}\Vert x^{(k)}-x^{*}\Vert^{2}.
+\end{align*}$$`
+
+---
+
+# Summary
+
+- If `\(f\)` is `\(L\)`-smooth (i.e., `\(\nabla f(x)\)` is Lipschitz continuous with constant `\(L&gt;0\)`), then the optimization error, `\(f(x^{(k)})-f(x^*)\)`, decays at the rate of `\(O(1/k)\)`.
+
+- If `\(f\)` is `\(L\)`-smooth and `\(m\)`-strongly-convex, then the optimization error decays exponentially fast at the rate of `\(O(\rho^k)\)` for some `\(\rho\in(0,1)\)`.
+
+---
+
+# Line Search
+
+The theory assumes that we use a fixed step size `\(\alpha_k\equiv\alpha\)`. In practice, the step size can be selected adaptively using the line search scheme: at each iteration `\(k\)`, find the largest possible `\(\alpha_k\le 1\)` such that
+`$$f(x^{(k)}-\alpha_{k}\nabla f(x^{(k)}))\le f(x^{(k)})-\beta\alpha_k\Vert\nabla f(x^{(k)})\Vert^{2},$$`
+where `\(0&lt;\beta\le 1/2\)`.
+
+---
+
+# Constrained Optimization
+
+- Recall that GD solves an .highlight[unconstrained] and .highlight[smooth] convex optimization problem
+
+- However, many problems do not satisfy one or two of the conditions
+
+- We first consider the extension to .highlight[constrained] problems
+
+---
+class: center, middle
+
+# Projected Gradient Descent
+
+---
+
+# Constrained Optimization
+
+Consider the constrained optimization problem
+`$$\min_{x\in C}\ f(x),$$`
+where `\(C\)` is a closed and non-empty convex set.
+
+Now we assume that we can compute the .highlight[projection operator] `\(P_C(x)\)` easily.
+
+---
+
+# Projection Operator
+
+The projection operator itself is also an optimization problem:
+
+`$$P_C(x)=\underset{u\in C}{\arg\min}\ \frac{1}{2}\Vert u-x\Vert^{2}.$$`
+
+However, for some convex sets `\(C\)`, computing `\(P_C(x)\)` is trivial.
+
+Projection is the closest point that satisfies the constraints.
+
+---
+
+## Examples
+
+- If `\(C=\{x\in\mathbb{R}^d:a'x=b\}\)`, then
+`$$P_C(x)=x+(b-a'x)a/\Vert a \Vert^2.$$`
+
+- If `\(C=\{x\in\mathbb{R}^d:a'x\le b\}\)`, then
+`$$P_{C}(x)=\begin{cases}
+x+(b-a'x)a/\Vert a\Vert^{2}, &amp; a'x&gt;b\\
+x, &amp; a'x\le b
+\end{cases}.$$`
+
+---
+
+## Examples
+
+- If `\(C=\{x\in\mathbb{R}^d:l_i\le x_i \le u_i,i=1,\ldots,d\}\)`, then
+`$$P_{C}(x)_{i}=\begin{cases}
+l_{i}, &amp; x_{i}\le l_{i}\\
+x_{i}, &amp; l_{i}&lt;x_{i}\le u_{i}\\
+u_{i}, &amp; x_{i}&gt;u_{i}
+\end{cases}.$$`
+
+- Special case: `\(C=\{x\in\mathbb{R}^d:x_i\ge 0\}\)`, `\(P_C(x)=[x]_+\)`.
+
+- Special case: `\(C=\{x\in\mathbb{R}^d:\Vert x\Vert_\infty\le t\}\)`,
+`$$P_{C}(x)_{i}=\begin{cases}
+x_{i}, &amp; |x_{i}|\le t\\
+\mathrm{sign}(x_{i})t, &amp; |x_{i}|&gt;t
+\end{cases}.$$`
+
+---
+
+## Examples
+
+- If `\(C=\{x\in\mathbb{R}^d:\Vert x\Vert\le t\}\)`, then
+`$$P_{C}(x)=\begin{cases}
+x, &amp; \Vert x\Vert\le t\\
+tx/\Vert x\Vert, &amp; \Vert x\Vert&gt;t
+\end{cases}.$$`
+
+--
+
+- **Question:** How to compute `\(P_C(x)\)`, where `\(C=\{x\in\mathbb{R}^d:\Vert x\Vert_1\le t\}\)`? Is it easy or hard?
+
+--
+
+- **Question:** How to compute `\(P_C(X)\)`, where `\(C=\{X\in\mathbb{R}^d:X\succeq0\}\)`, assuming `\(X\)` is symmetric? Is it easy or hard? (Use the Frobenius norm in the definition)
+
+---
+
+# Non-expansive Property of Projection &lt;sup&gt;&lt;span class="small"&gt;[3]&lt;/span&gt;&lt;/sup&gt;
+
+An interesting property of the projection operator is that it is non-expansive.
+
+Suppose that `\(C\)` is a closed and non-empty convex set, then for any `\(x\in C\)` and `\(y\in\mathbb{R}^d\)`,
+`$$(P_C(y)-x)'(P_C(y)-y)\le 0.$$`
+This implies that
+`$$\Vert x-P_C(y) \Vert\le\Vert x-y \Vert.$$`
+
+---
+
+# Projected Gradient Descent
+
+Projected gradient descent (PGD) modifies GD by adding a projection step at each iteration:
+
+`$$x^{(k+1)}=P_C\left(x^{(k)}-\alpha_k\cdot\nabla f(x^{(k)})\right),\quad k=0,1,\ldots.$$`
+
+Computational cost almost identical to GD if the projection operator is cheap.
+
+---
+
+# Convergence Property &lt;sup&gt;&lt;span class="small"&gt;[3]&lt;/span&gt;&lt;/sup&gt;
+
+Suppose that `\(f:\mathbb{R}^d\rightarrow\mathbb{R}\)` is convex and `\(L\)`-smooth on `\(C\)`.
+Then using a fixed step size `\(\alpha_k\equiv\alpha=1/L\)`, we have
+`$$f(x^{(k)})-f(x^*)\le\frac{3L\Vert x^{(0)}-x^* \Vert^2+f(x^{(0)})-f(x^*)}{k+1},$$`
+where `\(f(x^*)\)` is the optimal value.
+
+---
+
+# Proof
+
+Although the convergence result is similar to that of GD, the proof here is much harder.
+
+We only show the proof of a key intermediate result,
+`$$f(x^{(k+1)})\le f(x^{(k)})-\frac{L}{2}\Vert x^{(k+1)}-x^{(k)}\Vert^{2}.$$`
+
+A Complete proof can be found at [https://www.stats.ox.ac.uk/~rebeschi/teaching/AFoL](https://www.stats.ox.ac.uk/~rebeschi/teaching/AFoL/20/material/lecture09.pdf) [/20/material/lecture09.pdf](https://www.stats.ox.ac.uk/~rebeschi/teaching/AFoL/20/material/lecture09.pdf)
+
+---
+
+# Proof
+
+**Step 1**: Same as GD.
+`$$f(z)\le f(x)+[\nabla f(x)]'(z-x)+\frac{L}{2}\Vert z-x \Vert^2,\quad\forall x,z\in C.$$`
+
+--
+
+**Step 2**: Let `\(y=x-\alpha\cdot\nabla f(x)\)` and `\(z=P_C(y)\)`, and then we have `\(\nabla f(x)=(1/\alpha)(x-y)\)`, and
+`$$f(z)\le f(x)+\alpha^{-1}(x-y)'(z-x)+(L/2)\Vert z-x\Vert^{2}.$$`
+Also note that
+`$$\begin{align*}
+(x-y)'(z-x) &amp; =(z-y)'(z-x)+(x-z)'(z-x)\\
+ &amp; =(z-y)'(z-x)-\Vert x-z\Vert^{2}.
+\end{align*}$$`
+
+---
+
+# Proof
+
+**Step 3**: Since `\(z=P_C(y)\)`, by the non-expansive property we have
+`$$(z-x)'(z-x)\le 0,$$`
+and hence
+`$$f(z)\le f(x)-\alpha^{-1}\Vert x-z\Vert^{2}+(L/2)\Vert z-x\Vert^{2}.$$`
+
+Take `\(x=x^{(k)}\)`, `\(z=x^{(k+1)}\)`, `\(\alpha=1/L\)`, and we have
+`$$f(x^{(k+1)})\le f(x^{(k)})-\frac{L}{2}\Vert x^{(k+1)}-x^{(k)}\Vert^{2}.$$`
+This shows that `\(f(x^{(k)})\)` is nonincreasing.
+
+---
+
+## Convergence with Strong Convexity &lt;sup&gt;&lt;span class="small"&gt;[2]&lt;/span&gt;&lt;/sup&gt;
+
+If in addition, `\(f\)` is strongly convex with parameter `\(m&gt;0\)` on `\(C\)`, then with a fixed step size `\(\alpha= 1/L\)`, we have
+`$$f(x^{(k)})-f(x^{*})\le\left(1-\frac{m}{L}\right)^{k}\left[f(x^{(0)})-f(x^{*})\right].$$`
+
+---
+
+# Summary
+
+- PGD has the same convergence rates as GD in the following two cases.
+
+- If `\(f\)` is `\(L\)`-smooth, then the optimization error, `\(f(x^{(k)})-f(x^*)\)`, decays at the rate of `\(O(1/k)\)`.
+
+- If `\(f\)` is `\(L\)`-smooth and `\(m\)`-strongly-convex, then the optimization error decays exponentially fast at the rate of `\(O(\rho^k)\)`, where `\(\rho=1-m/L\)`.
+
+---
+
+# References
+
+.medium[
+
+[1] Stephen Boyd and Lieven Vandenberghe (2004). Convex optimization. Cambridge University Press.
+
+[2] Robert M. Gower (2018). Convergence theorems for gradient descent. Lecture notes for Statistical Optimization.
+
+[3] [https://www.stats.ox.ac.uk/~rebeschi/teaching/AFoL](https://www.stats.ox.ac.uk/~rebeschi/teaching/AFoL/20/material/lecture09.pdf) [/20/material/lecture09.pdf](https://www.stats.ox.ac.uk/~rebeschi/teaching/AFoL/20/material/lecture09.pdf)
+
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
