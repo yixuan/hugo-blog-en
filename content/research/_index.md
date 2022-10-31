@@ -6,6 +6,7 @@ I have great interest in statistical computing, deep learning, exact inference m
 
 ## <i class="fas fa-angle-double-right"></i> Publication
 
+- Zheng, Y., He, T., **Qiu, Y.**, and Wipf, D., *Learning Manifold Dimensions with Conditional Variational Autoencoders*. Advances in Neural Information Processing Systems (NeurIPS 2022), 2022.
 - **Qiu, Y.**, Lei, J., and Roeder, K., *Gradient-based Sparse Principal Component Analysis with Extensions to Online Learning*. Biometrika, 2022.
   <span style="padding-left:10px"><a href="https://academic.oup.com/biomet/advance-article-abstract/doi/10.1093/biomet/asac041/6640166"><i class="fas fa-link"></i> Link</a></span>
   <span style="padding-left:10px"><a href="https://github.com/yixuan/gradfps"><i class="fas fa-code"></i> Code</a></span>
