@@ -11,7 +11,7 @@ related to optimization and sampling. It will roughly be divided into three part
 
 - Numerical linear algebra
 - Optimization
-- Sampling and simulation
+- Simulation and sampling
 
 Frankly speaking, every method we are going to introduce can be a big research topic
 in itself (e.g. eigenvalue computation, optimization algorithms), so we do not attempt to
@@ -55,3 +55,8 @@ common computing problems in statistical and machine learning models.
   convex optimization problems, (projected) gradient descent method and its convergence properties.
 - [Lecture 7](/teaching/compstat-2022f/lec7.html): Nonsmooth optimization: subgradient and subdifferential, subgradient methods, proximal gradient descent.
 - [Lecture 8](/teaching/compstat-2022f/lec8.html): Advanced nonsmooth optimization via operator splitting methods: Douglas-Rachford splitting algorithm, Davis-Yin splitting algorithm, proximal-proximal-gradient method.
+- [Lecture 9](/teaching/compstat-2022f/lec9.html): Alternating direction method of multipliers, coordinate descent algorithm, case studies.
+
+#### Part III: Simulation and Sampling
+
+- [Lecture 10](/teaching/compstat-2022f/lec10.html): Basic and classical simulation problems, inverse transform algorithm, rejection sampling.
