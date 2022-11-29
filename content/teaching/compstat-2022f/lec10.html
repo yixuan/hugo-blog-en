@@ -161,7 +161,7 @@ Problem: Generate a permutation of `\(1,\ldots, n\)` such that all `\(n!\)` poss
 
 - Widely used in sampling without replacement
 
-- Can only select a subset
+- Can select only a subset
 
 ---
 
@@ -195,6 +195,20 @@ A better algorithm is as follows &lt;sup&gt;&lt;span class="small"&gt;[1]&lt;/sp
 
 ---
 
+# Proof Sketch
+
+- For each `\(k\)`, `\(I\)` follows a (discrete) uniform distribution on `\([k]:=\{1,2,\ldots,k\}\)`
+
+- When `\(k=n\)`, `\(P(P_n=i)=1/n\)` for `\(i\in [n]\)`
+
+- When `\(k=n-1\)`, `\(P(P_{n-1}=i|P_n=p_n)=1/(n-1)\)` for `\(i\in [n]\setminus\{p_n\}\)`
+
+- When `\(k=n-2\)`, `\(P(P_{n-2}=i|P_n=p_n,P_{n-1}=p_{n-1})=1/(n-2)\)` for `\(i\in [n]\setminus\{p_n,p_{n-1}\}\)`
+
+- By reduction, we have `\(P(P_1=p_1,\ldots,P_n=p_n)=1/n!\)`, where `\(\{p_1,\ldots,p_n\}\)` is a permutation of `\([n]\)`
+
+---
+
 # One-Pass Random Selection
 
 Problem: Suppose that there is a sequence of nonnegative numbers `\(a_1,\ldots,a_n\)`, and one can access them .highlight[sequentially]. The task is to randomly select an index `\(i^*\)` such that `\(P(i^*=i)=a_i/\sum_{j=1}^n a_j\)`, .highlight[with only one pass of data access].
@@ -212,6 +226,23 @@ Problem: Suppose that there is a sequence of nonnegative numbers `\(a_1,\ldots,a
 # Algorithm &lt;sup&gt;&lt;span class="small"&gt;[2]&lt;/span&gt;&lt;/sup&gt;
 
 ![](images/select_algorithm.png)
+
+We need to show that `\(P(i^*=i)=a_i/S_n\)` for `\(i=1,\ldots,n\)`, where `\(S_k=\sum_{j=1}^k a_j\)`.
+
+---
+
+# Proof Sketch
+
+- Now we attempt to prove a stronger conclusion: .highlight[after] `\(\require{color}\color{deeppink}{k}\)` .highlight[iterations], we have `\(P(i^*=i)=a_i/S_k\)` for `\(i=1,\ldots,k\)`
+
+- Clearly this holds for `\(k=1\)`
+
+- Suppose that the result holds for `\(k=l\)`, and then in the `\((l+1)\)`-th iteration:
+
+  - For `\(i=1,\ldots,l\)`, `\(i^*=i\)` means that in the new iteration `\(i^*\)` is not updated
+  - For `\(i=l+1\)`, `\(i^*=l+1\)` means `\(i^*\)` is updated
+  - The probability of updating is `\(a_{l+1}/S_{l+1}\)`, which is exactly `\(P(i^*=l+1)\)`
+  - Finally, for `\(i=1,\ldots,l\)`, `\(P(i^*=i)=(a_i/S_l)\cdot(1-a_{l+1}/S_{l+1})=a_i/S_{l+1}\)`
 
 ---
 
@@ -354,12 +385,23 @@ To generate `\(X\sim p(x)\)`:
 
 2. Set `\(X=F^{-1}(U)\)`, where `\(F(x)\)` is the c.d.f. of `\(X\)`
 
+---
+
+# Proof Sketch
+
+To prove that `\(X\sim p(x)\)`, we only need to show `\(P(X\le x)=F(x)\)`:
+
+`$$\begin{align*}
+P(X\le x) &amp; =P(F^{-1}(U)\le x) &amp;  &amp; \text{(by algorithm)}\\
+ &amp; =P(U\le F(x)) &amp;  &amp; \text{(monotonicity of }F(\cdot)\text{)}\\
+ &amp; =F(x) &amp;  &amp; \text{(c.d.f of uniform distribution)}
+\end{align*}$$`
 
 ---
 
 # Challenge
 
-- In general, the inverse transform algorithm only applies to univariate distributions
+- In general, the inverse transform algorithm only applies to univariate distributions (but we have a generalized method called measure transport)
 
 - Also, evaluating `\(F^{-1}(\cdot)\)` may be difficult
 
@@ -438,6 +480,63 @@ From [1]:
 
 ---
 
+# Proof Sketch
+
+- `\(P(\text{accepted}|Y=y)=f(y)/[cg(y)]\)`
+
+- `\(P(\text{accepted})=\int P(\text{accepted}|Y=y)g(y)\mathrm{d}y=1/c\)`
+
+- Let `\(\mathcal{X}=(-\infty,x_1]\times\cdots\times(-\infty,x_p]\)`, and then
+
+`$$\small\begin{align*}
+P(X\in\mathcal{X}) &amp; =P(Y\in\mathcal{X},\text{accepted})+(1-1/c)P(X\in\mathcal{X})\\
+ &amp; =\int_{\mathcal{X}}P(\text{accepted}|Y=y)g(y)\mathrm{d}y+(1-1/c)P(X\in\mathcal{X})\\
+ &amp; =(1/c)\int_{\mathcal{X}} f(y)\mathrm{d}y+(1-1/c)P(X\in\mathcal{X})
+\end{align*}$$`
+
+- This shows that `\(P(X\in\mathcal{X})=\int_{\mathcal{X}} f(y)\mathrm{d}y\)`
+
+---
+
+# Geometric Interpretation
+
+Consider the set
+
+`$$\mathcal{S}_{M}(h)=\{(x,z):0\le z\le Mh(x),x\in\mathbb{R}^{p},z\in\mathbb{R}\},$$`
+
+where `\(h\)` is a density function, and `\(M&gt;0\)` is a constant.
+
+We show that if `\((X,Z)\sim \mathrm{Unif}(\mathcal{S}_{M}(f))\)`, then `\(X\sim f(x)\)`.
+
+---
+
+# Geometric Interpretation
+
+.center[
+
+![](images/rejection_geometry.png)
+
+.small[(Image: https://artowen.su.domains/mc/Ch-nonunifrng.pdf)]
+
+]
+
+---
+
+# Geometric Interpretation
+
+Let `\(\mathcal{S}=\mathcal{S}_{M}(f)\)` and `\(\mathcal{X}=(-\infty,x_1]\times\cdots\times(-\infty,x_p]\)`, and then by definition,
+
+`$$\begin{align*}
+P(X\in\mathcal{X}) &amp; =\frac{\mathrm{vol}(\mathcal{S}\cap\mathcal{X}\times[0,+\infty))}{\mathrm{vol}(\mathcal{S})}=\frac{\int_{\mathcal{X}}\int_{0}^{Mf(x)}\mathrm{d}z\mathrm{d}x}{\int_{\mathbb{R}^{p}}\int_{0}^{Mf(x)}\mathrm{d}z\mathrm{d}x}\\
+ &amp; =\int_{\mathcal{X}}f(x)\mathrm{d}x,
+\end{align*}$$`
+
+which proves that `\(X\)` has density `\(f(x)\)`.
+
+Conversely, if `\(X\sim h(x)\)` and `\(Z|\{X=x\}\sim \mathrm{Unif}(0,Mh(x))\)`, then `\((X,Z)\sim \mathrm{Unif}(\mathcal{S}_{M}(h))\)`.
+
+---
+
 # Challenge
 
 - Finding a good proposal distribution `\(g(x)\)` can be hard
@@ -446,7 +545,7 @@ From [1]:
 
 - Rejection sampling may "waste" a lot of random numbers
 
-- If `\(f(x)\)` is given in the unnormalized form, or if `\(f(x)\)` is high-dimensinoal, the problem would be much more challenging
+- If `\(f(x)\)` is high-dimensinoal, the problem would be much more challenging
 
 ---
 
@@ -459,6 +558,8 @@ From [1]:
 [2] Michael W. Mahoney (2016). Lecture notes on randomized linear algebra. arXiv preprint arXiv:1608.04481.
 
 [3] David B. Thomas et al. (2007). Gaussian random number generators. ACM Computing Surveys.
+
+[4] https://artowen.su.domains/mc/Ch-nonunifrng.pdf
 
 ]
     </textarea>
