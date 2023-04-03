@@ -42,7 +42,7 @@ common computing problems in statistical and machine learning models.
   and computational statistics.
 - [Lecture 2](/teaching/compstat-2022f/lec2.html): Triangular and tridiagonal linear systems,
   LU decomposition, Cholesky decomposition.
-- [Lecture 3](/teaching/compstat-2022f/lec3.html): Case studies of spine fitting and regression,
+- [Lecture 3](/teaching/compstat-2022f/lec3.html): Case studies of spline fitting and regression,
   LDL' decomposition, QR decomposition.
 - [Lecture 4](/teaching/compstat-2022f/lec4.html): Iterative methods, conjugate gradient method,
   eigenvalue computation.
