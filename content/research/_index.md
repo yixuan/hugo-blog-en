@@ -6,11 +6,15 @@ I have great interest in statistical computing, deep learning, exact inference m
 
 ## <i class="fas fa-angle-double-right"></i> Publication
 
+- Zheng, Y., He, T., **Qiu, Y.**, and Wipf, D., *Learning Manifold Dimensions with Conditional Variational Autoencoders*. Advances in Neural Information Processing Systems (NeurIPS 2022), 2022.
+  <span style="padding-left:10px"><a href="https://papers.nips.cc/paper_files/paper/2022/hash/e04101138a3c94544760c1dbdf2c7a2d-Abstract-Conference.html"><i class="fas fa-link"></i> Link</a></span>
+  <span style="padding-left:10px"><a href="https://papers.nips.cc/paper_files/paper/2022/file/e04101138a3c94544760c1dbdf2c7a2d-Paper-Conference.pdf"><i class="far fa-file-pdf"></i> PDF</a></span>
 - **Qiu, Y.**, Lei, J., and Roeder, K., *Gradient-based Sparse Principal Component Analysis with Extensions to Online Learning*. Biometrika, 2022.
   <span style="padding-left:10px"><a href="https://academic.oup.com/biomet/advance-article-abstract/doi/10.1093/biomet/asac041/6640166"><i class="fas fa-link"></i> Link</a></span>
   <span style="padding-left:10px"><a href="https://github.com/yixuan/gradfps"><i class="fas fa-code"></i> Code</a></span>
 - **Qiu, Y.**, Wang, J., Lei, J., and Roeder, K., *Identification of Cell-type-specific Marker Genes from Co-expression Patterns in Tissue Samples*. Bioinformatics, 2021.
   <span style="padding-left:10px"><a href="https://academic.oup.com/bioinformatics/article/37/19/3228/6255309"><i class="fas fa-link"></i> Link</a></span>
+  <span style="padding-left:10px"><a href="https://academic.oup.com/bioinformatics/article-pdf/37/19/3228/40556813/btab257.pdf"><i class="far fa-file-pdf"></i> PDF</a></span>
   <span style="padding-left:10px"><a href="https://github.com/yixuan/markerpen"><i class="fas fa-code"></i> Code</a></span>
 - **Qiu, Y.** and Wang, X., *ALMOND: Adaptive Latent Modeling and Optimization via Neural Networks and Langevin Diffusion*. Journal of the American Statistical Association, 2021.
   <span style="padding-left:10px"><a href="https://www.tandfonline.com/doi/abs/10.1080/01621459.2019.1691563"><i class="fas fa-link"></i> Link</a></span>
@@ -20,17 +24,20 @@ I have great interest in statistical computing, deep learning, exact inference m
   <span style="padding-left:10px"><a href="https://arxiv.org/pdf/2002.05519"><i class="far fa-file-pdf"></i> PDF</a></span>
 - **Qiu, Y.**, Zhang, L., and Wang, X., *Unbiased Contrastive Divergence Algorithm for Training Energy-Based Latent Variable Models*. International Conference on Learning Representations (ICLR 2020), 2020.
   <span style="padding-left:10px"><a href="https://openreview.net/forum?id=r1eyceSYPr"><i class="fas fa-link"></i> Link</a></span>
+  <span style="padding-left:10px"><a href="https://openreview.net/pdf?id=r1eyceSYPr"><i class="far fa-file-pdf"></i> PDF</a></span>
   <span style="padding-left:10px"><a href="https://github.com/yixuan/cdtau"><i class="fas fa-code"></i> Code</a></span>
 - Lu, J.\*, **Qiu, Y.**\*, and Deng, A., *A Note on Type S/M Errors in Hypothesis Testing*. *Joint first authors. British Journal of Mathematical and Statistical Psychology, 2019.
   <span style="padding-left:10px"><a href="https://bpspsychub.onlinelibrary.wiley.com/doi/10.1111/bmsp.12132"><i class="fas fa-link"></i> Link</a></span>
   <span style="padding-left:10px"><a href="https://www.microsoft.com/en-us/research/uploads/prod/2020/09/LuQiuDeng-BJMSP2019.pdf"><i class="far fa-file-pdf"></i> PDF</a></span>
 - **Qiu, Y.**, Zhang, L., and Liu, C., *Exact and Efficient Inference for Partial Bayes Problems*. Electronic Journal of Statistics, 2018.
   <span style="padding-left:10px"><a href="https://projecteuclid.org/journals/electronic-journal-of-statistics/volume-12/issue-2/Exact-and-efficient-inference-for-partial-Bayes-problems/10.1214/18-EJS1511.full"><i class="fas fa-link"></i> Link</a></span>
+  <span style="padding-left:10px"><a href="https://projecteuclid.org/journalArticle/Download?urlId=10.1214%2F18-EJS1511"><i class="far fa-file-pdf"></i> PDF</a></span>
 - **Qiu, Y.** and Wei, W., *A Scalable Sequential Principal Component Analysis Algorithm (SeqPCA) with
 Application to User Access Control Analysis*. IEEE International Conference on Big Data, 2017.
   <span style="padding-left:10px"><a href="https://ieeexplore.ieee.org/abstract/document/8258403"><i class="fas fa-link"></i> Link</a></span>
 - Abraham, G., **Qiu, Y.**, and Inouye, M., *FlashPCA2: Principal Component Analysis of Biobank-scale Genotype Datasets*. Bioinformatics, 2017.
   <span style="padding-left:10px"><a href="https://academic.oup.com/bioinformatics/article/33/17/2776/3798630"><i class="fas fa-link"></i> Link</a></span>
+  <span style="padding-left:10px"><a href="https://academic.oup.com/bioinformatics/article-pdf/33/17/2776/49040964/bioinformatics_33_17_2776.pdf"><i class="far fa-file-pdf"></i> PDF</a></span>
   <span style="padding-left:10px"><a href="https://github.com/gabraham/flashpca"><i class="fas fa-code"></i> Code</a></span>
 - **Qiu, Y.**, Wang, X. et al., *Web Usage Cluster Analysis Based on Prediction Strength*. International Conference on Instrumentation, Measurement, Circuits and Systems, 2011.
 
