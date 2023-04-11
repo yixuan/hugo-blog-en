@@ -5,6 +5,10 @@ category_1:
       url: https://spectralib.org/
       logo: /images/sticker-spectra.png
       description: C++ library for large-scale eigenvalue and SVD problems (Honorable Mention of <a href="http://stat-computing.org/awards/jmc/winners.html">John Chambers Award 2016</a>)
+    - name: RSpectra
+      url: https://github.com/yixuan/RSpectra
+      logo: /images/sticker-rspectra.png
+      description: Large-scale eigenvalue decomposition, SVD, and principal component analysis
     - name: LBFGS++
       url: https://lbfgspp.statr.me/
       logo: /images/sticker-lbfgspp.png
@@ -33,10 +37,6 @@ category_2:
       url: https://github.com/yixuan/almond
       logo: /images/sticker-almond.png
       description: Adaptive latent modeling and optimization via neural networks and Langevin diffusion
-    - name: RSpectra
-      url: https://github.com/yixuan/RSpectra
-      logo: /images/sticker-rspectra.png
-      description: Large-scale eigenvalue decomposition, SVD, and principal component analysis
     - name: CDtau
       url: https://github.com/yixuan/cdtau
       logo: /images/sticker-cdtau.png
