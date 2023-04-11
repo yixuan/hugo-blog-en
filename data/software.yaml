@@ -21,6 +21,10 @@ category_1:
 category_2:
   title: Statistical Modeling and Machine Learning
   list:
+    - name: TemperFlow
+      url: https://github.com/yixuan/temperflow
+      logo: /images/sticker-temperflow.png
+      description: Efficient multimodal sampling via tempered distribution flow 
     - name: MarkerPen
       url: https://github.com/yixuan/markerpen
       logo: /images/sticker-markerpen.png
