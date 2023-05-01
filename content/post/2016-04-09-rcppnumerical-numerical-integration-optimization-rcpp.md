@@ -11,6 +11,7 @@ tags:
 - optimization
 - Rcpp
 - programming
+- C++
 ---
 
 # Introduction

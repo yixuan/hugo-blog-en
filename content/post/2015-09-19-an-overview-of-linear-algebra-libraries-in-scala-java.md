@@ -8,6 +8,7 @@ categories:
 tags:
 - matrix
 - linear algebra
+- numerical
 - statistics
 - data science
 - programming
