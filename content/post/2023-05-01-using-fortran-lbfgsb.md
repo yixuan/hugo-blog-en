@@ -22,8 +22,8 @@ smooth and box-constrained optimization problems
 of the form
 $$
 \begin{align*}
-\min_{x}\\, & f(x)\\\\
-\text{subject to}\\, & l\le x\le u,
+\min_{x}\quad & f(x)\\\\
+\text{subject to}\quad & l\le x\le u,
 \end{align*}
 $$
 where $l$ and $u$ are simple bounds for $x\in\mathbb{R}^n$, and can take $-\infty$ and $+\infty$ values.
