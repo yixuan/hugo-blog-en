@@ -10,8 +10,9 @@ I have great interest in statistical computing, deep learning, exact inference m
   <span style="padding-left:10px"><a href="https://www.tandfonline.com/doi/abs/10.1080/01621459.2023.2198059"><i class="fas fa-link"></i> Link</a></span>
   <span style="padding-left:10px"><a href="https://arxiv.org/pdf/2304.03933"><i class="far fa-file-pdf"></i> PDF</a></span>
   <span style="padding-left:10px"><a href="https://github.com/yixuan/temperflow"><i class="fas fa-code"></i> Code</a></span>
-- **Qiu, Y.**, Lei, J., and Roeder, K., *Gradient-based Sparse Principal Component Analysis with Extensions to Online Learning*. Biometrika, accepted, 2022+.
+- **Qiu, Y.**, Lei, J., and Roeder, K., *Gradient-based Sparse Principal Component Analysis with Extensions to Online Learning*. Biometrika, 2023.
   <span style="padding-left:10px"><a href="https://academic.oup.com/biomet/advance-article-abstract/doi/10.1093/biomet/asac041/6640166"><i class="fas fa-link"></i> Link</a></span>
+  <span style="padding-left:10px"><a href="https://academic.oup.com/biomet/article-pdf/110/2/339/50311400/asac041.pdf"><i class="far fa-file-pdf"></i> PDF</a></span>
   <span style="padding-left:10px"><a href="https://github.com/yixuan/gradfps"><i class="fas fa-code"></i> Code</a></span>
 - Zheng, Y., He, T., **Qiu, Y.**, and Wipf, D., *Learning Manifold Dimensions with Conditional Variational Autoencoders*. Advances in Neural Information Processing Systems (NeurIPS 2022), 2022.
   <span style="padding-left:10px"><a href="https://papers.nips.cc/paper_files/paper/2022/hash/e04101138a3c94544760c1dbdf2c7a2d-Abstract-Conference.html"><i class="fas fa-link"></i> Link</a></span>
