@@ -4,7 +4,7 @@ title : Teaching
 
 ### Fall 2023
 
-- Computational Statistics
+- [Computational Statistics](/teaching/compstat-2023f/)
 - Deep Learning
 
 ### Old
