@@ -60,3 +60,4 @@ common computing problems in statistical and machine learning models.
 #### Part III: Simulation and Sampling
 
 - [Lecture 10](/teaching/compstat-2022f/lec10.html): Basic and classical simulation problems, inverse transform algorithm, rejection sampling.
+- [Lecture 11](/teaching/compstat-2022f/lec11.html): Importance sampling, measure transport sampling.
