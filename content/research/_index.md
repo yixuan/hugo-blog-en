@@ -9,7 +9,7 @@ I have great interest in statistical computing, deep learning, exact inference m
 - Dai, B. and **Qiu, Y.**, *ReHLine: Regularized Composite ReLU-ReHU Loss Minimization with Linear Computation and Linear Convergence*. Advances in Neural Information Processing Systems (NeurIPS 2023), 2023.
   <span style="padding-left:10px"><a href="https://openreview.net/forum?id=3pEBW2UPAD"><i class="fas fa-link"></i> Link</a></span>
   <span style="padding-left:10px"><a href="https://openreview.net/pdf?id=3pEBW2UPAD"><i class="far fa-file-pdf"></i> PDF</a></span>
-  <span style="padding-left:10px"><a href="https://rehline.github.io/"><i class="fas fa-house"></i> Project Page</a></span>
+  <span style="padding-left:10px"><a href="https://rehline.github.io/"><i class="fas fa-home"></i> Project Page</a></span>
   <span style="padding-left:10px"><a href="https://github.com/softmin/ReHLine"><i class="fas fa-code"></i> Code</a></span>
 - **Qiu, Y.** and Wang, X., *Efficient Multimodal Sampling via Tempered Distribution Flow*. Journal of the American Statistical Association, accepted, 2023+.
   <span style="padding-left:10px"><a href="https://www.tandfonline.com/doi/abs/10.1080/01621459.2023.2198059"><i class="fas fa-link"></i> Link</a></span>
