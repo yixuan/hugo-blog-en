@@ -1,4 +1,4 @@
-![image](https://github.com/yixuan/hugo-blog-en/assets/216398/cdb3b2bd-a84e-4534-a04b-dd997053a48a)---
+---
 title : Research
 ---
 
