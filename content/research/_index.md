@@ -1,4 +1,4 @@
----
+![image](https://github.com/yixuan/hugo-blog-en/assets/216398/cdb3b2bd-a84e-4534-a04b-dd997053a48a)---
 title : Research
 ---
 
@@ -53,6 +53,17 @@ Application to User Access Control Analysis*. IEEE International Conference on B
 
 ## <i class="fas fa-angle-double-right"></i> Invited Talks
 
+- **Efficient, Stable, and Analytic Differentiation of the Sinkhorn Loss**<br/>
+  The 9th RUC International Forum on Statistics, 2023.
+  <a href="https://bitbucket.org/yixuan/downloads/downloads/2023-ruc-sinkhorn.pdf"><i class="far fa-clone"></i> Slides</a>
+- **Efficient Multi-Modal Sampling via Tempered Distribution Flow**<br/>
+  The 12th ICSA International Conference, 2023.
+  <a href="https://bitbucket.org/yixuan/downloads/downloads/2023-icsa-temperflow.mp4"><i class="far fa-clone"></i> Slides</a>
+- **Gradient-based Sparse Principal Component Analysis with Applications to Gene Co-expression Analysis**<br/>
+  City University of Hong Kong Biostatistics Seminar (online), 2023.
+  <a href="https://bitbucket.org/yixuan/downloads/downloads/2023-cityu-gradfps.pdf"><i class="far fa-clone"></i> Slides</a>
+- **Efficient Multi-Modal Sampling via Tempered Distribution Flow**<br/>
+  Statistical Learning Methods in Modern AI, Tianyuan Mathematical Center in Northwest China ([website](http://xiammt.xjtu.edu.cn/info/1053/2714.htm)), 2021.
 - **Efficient Multi-Modal Sampling via Tempered Distribution Flow**<br/>
   University of Missouri (online), 2021.
 - **Prettier R Graphs and Documents with {showtext}+{prettydoc}**<br/>
