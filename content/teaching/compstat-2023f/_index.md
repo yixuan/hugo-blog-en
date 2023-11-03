@@ -51,5 +51,7 @@ common computing problems in statistical and machine learning models.
 
 #### Part II: Optimization
 
-- [Lecture 6](/teaching/compstat-2022f/lec6.html): Convex sets and convex functions,
+- [Lecture 6](/teaching/compstat-2023f/lec6.html): Convex sets and convex functions,
   convex optimization problems, (projected) gradient descent method and its convergence properties.
+- [Lecture 7](/teaching/compstat-2023f/lec7.html): Nonsmooth optimization: subgradient and subdifferential, subgradient methods, proximal gradient descent.
+- [Lecture 8](/teaching/compstat-2023f/lec8.html): Advanced nonsmooth optimization via operator splitting methods: Douglas-Rachford splitting algorithm, Davis-Yin splitting algorithm, proximal-proximal-gradient method.
