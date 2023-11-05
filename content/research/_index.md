@@ -87,7 +87,7 @@ Application to User Access Control Analysis*. IEEE International Conference on B
 ## <i class="fas fa-angle-double-right"></i> Other Talks and Posters
 
 - **Compiling Techniques in Deep Learning Frameworks**<br/>
-  Capital of Statistics Data Science Seminar (in Chinese)
+  Capital of Statistics Data Science Seminar (in Chinese), 2022.
   <a href="https://www.bilibili.com/video/BV1E8411p7BX/"><i class="far fa-file-video"></i> Video</a>
 - **Unbiased Contrastive Divergence Algorithm for Training Energy-based Latent Variable Models**<br/>
   International Conference on Learning Representations ([website](https://iclr.cc/virtual_2020/poster_r1eyceSYPr.html)), 2020.
