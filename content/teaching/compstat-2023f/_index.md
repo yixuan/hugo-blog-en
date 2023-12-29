@@ -55,3 +55,11 @@ common computing problems in statistical and machine learning models.
   convex optimization problems, (projected) gradient descent method and its convergence properties.
 - [Lecture 7](/teaching/compstat-2023f/lec7.html): Nonsmooth optimization: subgradient and subdifferential, subgradient methods, proximal gradient descent.
 - [Lecture 8](/teaching/compstat-2023f/lec8.html): Advanced nonsmooth optimization via operator splitting methods: Douglas-Rachford splitting algorithm, Davis-Yin splitting algorithm, proximal-proximal-gradient method.
+- [Lecture 9](/teaching/compstat-2023f/lec9.html): Alternating direction method of multipliers, coordinate descent algorithm, case studies.
+
+#### Part III: Simulation and Sampling
+
+- [Lecture 10](/teaching/compstat-2023f/lec10.html): Basic and classical simulation problems, inverse transform algorithm, rejection sampling.
+- [Lecture 11](/teaching/compstat-2023f/lec11.html): Importance sampling, measure transport sampling.
+- [Lecture 12](/teaching/compstat-2023f/lec12.html): Markov chain Monte Carlo, Metropolis-Hastings algorithm, Gibbs sampler.
+- [Lecture 13](/teaching/compstat-2023f/lec13.html): Langevin algorithm, Hamiltonian Monte Carlo.
