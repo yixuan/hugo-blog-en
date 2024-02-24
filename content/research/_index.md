@@ -6,6 +6,10 @@ I have great interest in statistical computing, deep learning, exact inference m
 
 ## <i class="fas fa-angle-double-right"></i> Publication
 
+- Guo, X., **Qiu, Y.**, Zhang, H., and Chang, X., *Randomized Spectral Co-Clustering for Large-Scale Directed Networks*. Journal of Machine Learning Research, 2023.
+  <span style="padding-left:10px"><a href="https://jmlr.org/papers/v24/20-572.html"><i class="fas fa-link"></i> Link</a></span>
+  <span style="padding-left:10px"><a href="https://jmlr.org/papers/volume24/20-572/20-572.pdf"><i class="far fa-file-pdf"></i> PDF</a></span>
+  <span style="padding-left:10px"><a href="https://github.com/XiaoGuo-stat/RandClust"><i class="fas fa-code"></i> Code</a></span>
 - Dai, B. and **Qiu, Y.**, *ReHLine: Regularized Composite ReLU-ReHU Loss Minimization with Linear Computation and Linear Convergence*. Advances in Neural Information Processing Systems (NeurIPS 2023), 2023.
   <span style="padding-left:10px"><a href="https://openreview.net/forum?id=3pEBW2UPAD"><i class="fas fa-link"></i> Link</a></span>
   <span style="padding-left:10px"><a href="https://openreview.net/pdf?id=3pEBW2UPAD"><i class="far fa-file-pdf"></i> PDF</a></span>
