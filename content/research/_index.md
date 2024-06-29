@@ -9,7 +9,6 @@ I have great interest in statistical computing, deep learning, exact inference m
 - Zheng, A. Y., He, T., **Qiu, Y.**, Wang, M., and Wipf, D., *Graph Machine Learning through the Lens of Bilevel Optimization*. Artificial Intelligence and Statistics (AISTATS 2024), 2024.
   <span style="padding-left:10px"><a href="https://proceedings.mlr.press/v238/yijia-zheng24a.html"><i class="fas fa-link"></i> Link</a></span>
   <span style="padding-left:10px"><a href="https://proceedings.mlr.press/v238/yijia-zheng24a/yijia-zheng24a.pdf"><i class="far fa-file-pdf"></i> PDF</a></span>
-  <span style="padding-left:10px"><a href="https://github.com/amberyzheng/BloomGML"><i class="fas fa-code"></i> Code</a></span>
 - Lin, K. Z., **Qiu, Y.**, and Roeder, K., *eSVD-DE: Cohort-wide Differential Expression in Single-cell RNA-seq Data Using Exponential-family Embeddings*. BMC Bioinformatics, 2024.
   <span style="padding-left:10px"><a href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-024-05724-7"><i class="fas fa-link"></i> Link</a></span>
   <span style="padding-left:10px"><a href="https://bmcbioinformatics.biomedcentral.com/counter/pdf/10.1186/s12859-024-05724-7.pdf"><i class="far fa-file-pdf"></i> PDF</a></span>
