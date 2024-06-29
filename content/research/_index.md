@@ -17,7 +17,7 @@ I have great interest in statistical computing, deep learning, exact inference m
   <span style="padding-left:10px"><a href="https://jmlr.org/papers/v24/20-572.html"><i class="fas fa-link"></i> Link</a></span>
   <span style="padding-left:10px"><a href="https://jmlr.org/papers/volume24/20-572/20-572.pdf"><i class="far fa-file-pdf"></i> PDF</a></span>
   <span style="padding-left:10px"><a href="https://github.com/XiaoGuo-stat/RandClust"><i class="fas fa-code"></i> Code</a></span>
-- Dai, B. and **Qiu, Y.**, *ReHLine: Regularized Composite ReLU-ReHU Loss Minimization with Linear Computation and Linear Convergence*. Advances in Neural Information Processing Systems (NeurIPS 2023), 2023.
+- Dai, B.\* and **Qiu, Y.**\*, *ReHLine: Regularized Composite ReLU-ReHU Loss Minimization with Linear Computation and Linear Convergence*. \*Joint first authors. Advances in Neural Information Processing Systems (NeurIPS 2023), 2023.
   <span style="padding-left:10px"><a href="https://openreview.net/forum?id=3pEBW2UPAD"><i class="fas fa-link"></i> Link</a></span>
   <span style="padding-left:10px"><a href="https://openreview.net/pdf?id=3pEBW2UPAD"><i class="far fa-file-pdf"></i> PDF</a></span>
   <span style="padding-left:10px"><a href="https://rehline.github.io/"><i class="fas fa-home"></i> Project Page</a></span>
@@ -47,7 +47,7 @@ I have great interest in statistical computing, deep learning, exact inference m
   <span style="padding-left:10px"><a href="https://openreview.net/forum?id=r1eyceSYPr"><i class="fas fa-link"></i> Link</a></span>
   <span style="padding-left:10px"><a href="https://openreview.net/pdf?id=r1eyceSYPr"><i class="far fa-file-pdf"></i> PDF</a></span>
   <span style="padding-left:10px"><a href="https://github.com/yixuan/cdtau"><i class="fas fa-code"></i> Code</a></span>
-- Lu, J.\*, **Qiu, Y.**\*, and Deng, A., *A Note on Type S/M Errors in Hypothesis Testing*. *Joint first authors. British Journal of Mathematical and Statistical Psychology, 2019.
+- Lu, J.\*, **Qiu, Y.**\*, and Deng, A., *A Note on Type S/M Errors in Hypothesis Testing*. \*Joint first authors. British Journal of Mathematical and Statistical Psychology, 2019.
   <span style="padding-left:10px"><a href="https://bpspsychub.onlinelibrary.wiley.com/doi/10.1111/bmsp.12132"><i class="fas fa-link"></i> Link</a></span>
   <span style="padding-left:10px"><a href="https://www.microsoft.com/en-us/research/uploads/prod/2020/09/LuQiuDeng-BJMSP2019.pdf"><i class="far fa-file-pdf"></i> PDF</a></span>
 - **Qiu, Y.**, Zhang, L., and Liu, C., *Exact and Efficient Inference for Partial Bayes Problems*. Electronic Journal of Statistics, 2018.
