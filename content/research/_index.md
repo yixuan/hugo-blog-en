@@ -10,6 +10,9 @@ I have great interest in statistical computing, deep learning, exact inference m
   <span style="padding-left:10px"><a href="https://www.tandfonline.com/doi/full/10.1080/01621459.2024.2408778"><i class="fas fa-link"></i> Link</a></span>
   <span style="padding-left:10px"><a href="https://arxiv.org/pdf/2409.18374"><i class="far fa-file-pdf"></i> PDF</a></span>
   <span style="padding-left:10px"><a href="https://github.com/yixuan/LWGAN"><i class="fas fa-code"></i> Code</a></span>
+- Tang, Z. and **Qiu, Y.**, *Safe and Sparse Newton Method for Entropic-Regularized Optimal Transport*. Advances in Neural Information Processing Systems (NeurIPS 2024), 2024.
+  <span style="padding-left:10px"><a href="https://github.com/yixuan/regot-python"><i class="fas fa-home"></i> Package</a></span>
+  <span style="padding-left:10px"><a href="https://github.com/TangZihao1997/SSNS"><i class="fas fa-code"></i> Code</a></span>
 - Zheng, A. Y., He, T., **Qiu, Y.**, Wang, M., and Wipf, D., *Graph Machine Learning through the Lens of Bilevel Optimization*. Artificial Intelligence and Statistics (AISTATS 2024), 2024.
   <span style="padding-left:10px"><a href="https://proceedings.mlr.press/v238/yijia-zheng24a.html"><i class="fas fa-link"></i> Link</a></span>
   <span style="padding-left:10px"><a href="https://proceedings.mlr.press/v238/yijia-zheng24a/yijia-zheng24a.pdf"><i class="far fa-file-pdf"></i> PDF</a></span>
