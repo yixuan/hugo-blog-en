@@ -6,11 +6,16 @@ I have great interest in statistical computing, deep learning, exact inference m
 
 ## <i class="fas fa-angle-double-right"></i> Publication
 
+- Yin, H., **Qiu, Y.**, and Wang, X., *Wasserstein Coreset via Sinkhorn Loss*. Transactions on Machine Learning Research, 2025.
+  <span style="padding-left:10px"><a href="https://openreview.net/forum?id=DrMCDS88IL"><i class="fas fa-link"></i> Link</a></span>
+  <span style="padding-left:10px"><a href="https://openreview.net/pdf?id=DrMCDS88IL"><i class="far fa-file-pdf"></i> PDF</a></span>
 - **Qiu, Y.**\*, Gao, Q.\*, and Wang, X., *Adaptive Learning of the Latent Space of Wasserstein Generative Adversarial Networks*. \*Joint first authors. Journal of the American Statistical Association, accepted, 2024+.
   <span style="padding-left:10px"><a href="https://www.tandfonline.com/doi/full/10.1080/01621459.2024.2408778"><i class="fas fa-link"></i> Link</a></span>
   <span style="padding-left:10px"><a href="https://arxiv.org/pdf/2409.18374"><i class="far fa-file-pdf"></i> PDF</a></span>
   <span style="padding-left:10px"><a href="https://github.com/yixuan/LWGAN"><i class="fas fa-code"></i> Code</a></span>
 - Tang, Z. and **Qiu, Y.**, *Safe and Sparse Newton Method for Entropic-Regularized Optimal Transport*. Advances in Neural Information Processing Systems (NeurIPS 2024), 2024.
+  <span style="padding-left:10px"><a href="https://proceedings.neurips.cc/paper_files/paper/2024/hash/ea8620683340facbd5f754dd169e0980-Abstract-Conference.html"><i class="fas fa-link"></i> Link</a></span>
+  <span style="padding-left:10px"><a href="https://proceedings.neurips.cc/paper_files/paper/2024/file/ea8620683340facbd5f754dd169e0980-Paper-Conference.pdf"><i class="far fa-file-pdf"></i> PDF</a></span>
   <span style="padding-left:10px"><a href="https://github.com/yixuan/regot-python"><i class="fas fa-home"></i> Package</a></span>
   <span style="padding-left:10px"><a href="https://github.com/TangZihao1997/SSNS"><i class="fas fa-code"></i> Code</a></span>
 - Zheng, A. Y., He, T., **Qiu, Y.**, Wang, M., and Wipf, D., *Graph Machine Learning through the Lens of Bilevel Optimization*. Artificial Intelligence and Statistics (AISTATS 2024), 2024.
@@ -20,6 +25,10 @@ I have great interest in statistical computing, deep learning, exact inference m
   <span style="padding-left:10px"><a href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-024-05724-7"><i class="fas fa-link"></i> Link</a></span>
   <span style="padding-left:10px"><a href="https://bmcbioinformatics.biomedcentral.com/counter/pdf/10.1186/s12859-024-05724-7.pdf"><i class="far fa-file-pdf"></i> PDF</a></span>
   <span style="padding-left:10px"><a href="https://github.com/linnykos/eSVD2"><i class="fas fa-code"></i> Code</a></span>
+- **Qiu, Y.** and Wang, X., *Efficient Multimodal Sampling via Tempered Distribution Flow*. Journal of the American Statistical Association, 2024.
+  <span style="padding-left:10px"><a href="https://www.tandfonline.com/doi/abs/10.1080/01621459.2023.2198059"><i class="fas fa-link"></i> Link</a></span>
+  <span style="padding-left:10px"><a href="https://arxiv.org/pdf/2304.03933"><i class="far fa-file-pdf"></i> PDF</a></span>
+  <span style="padding-left:10px"><a href="https://github.com/yixuan/temperflow"><i class="fas fa-code"></i> Code</a></span>
 - Guo, X., **Qiu, Y.**, Zhang, H., and Chang, X., *Randomized Spectral Co-Clustering for Large-Scale Directed Networks*. Journal of Machine Learning Research, 2023.
   <span style="padding-left:10px"><a href="https://jmlr.org/papers/v24/20-572.html"><i class="fas fa-link"></i> Link</a></span>
   <span style="padding-left:10px"><a href="https://jmlr.org/papers/volume24/20-572/20-572.pdf"><i class="far fa-file-pdf"></i> PDF</a></span>
@@ -29,10 +38,6 @@ I have great interest in statistical computing, deep learning, exact inference m
   <span style="padding-left:10px"><a href="https://openreview.net/pdf?id=3pEBW2UPAD"><i class="far fa-file-pdf"></i> PDF</a></span>
   <span style="padding-left:10px"><a href="https://rehline.github.io/"><i class="fas fa-home"></i> Project Page</a></span>
   <span style="padding-left:10px"><a href="https://github.com/softmin/ReHLine"><i class="fas fa-code"></i> Code</a></span>
-- **Qiu, Y.** and Wang, X., *Efficient Multimodal Sampling via Tempered Distribution Flow*. Journal of the American Statistical Association, accepted, 2023+.
-  <span style="padding-left:10px"><a href="https://www.tandfonline.com/doi/abs/10.1080/01621459.2023.2198059"><i class="fas fa-link"></i> Link</a></span>
-  <span style="padding-left:10px"><a href="https://arxiv.org/pdf/2304.03933"><i class="far fa-file-pdf"></i> PDF</a></span>
-  <span style="padding-left:10px"><a href="https://github.com/yixuan/temperflow"><i class="fas fa-code"></i> Code</a></span>
 - **Qiu, Y.**, Lei, J., and Roeder, K., *Gradient-based Sparse Principal Component Analysis with Extensions to Online Learning*. Biometrika, 2023.
   <span style="padding-left:10px"><a href="https://academic.oup.com/biomet/advance-article-abstract/doi/10.1093/biomet/asac041/6640166"><i class="fas fa-link"></i> Link</a></span>
   <span style="padding-left:10px"><a href="https://academic.oup.com/biomet/article-pdf/110/2/339/50311400/asac041.pdf"><i class="far fa-file-pdf"></i> PDF</a></span>
