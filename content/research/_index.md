@@ -76,6 +76,8 @@ Application to User Access Control Analysis*. IEEE International Conference on B
 
 ## <i class="fas fa-angle-double-right"></i> Invited Talks
 
+- **ReHLine: Regularized composite ReLU-ReHU loss minimization with linear computation and linear convergence**<br/>
+  The 16th International Conference of the ERCIM WG on Computational and Methodological Statistics, 2023.
 - **Efficient, Stable, and Analytic Differentiation of the Sinkhorn Loss**<br/>
   The 9th RUC International Forum on Statistics, 2023.
   <a href="https://bitbucket.org/yixuan/downloads/downloads/2023-ruc-sinkhorn.pdf"><i class="far fa-clone"></i> Slides</a>
