@@ -6,6 +6,11 @@ I have great interest in statistical computing, deep learning, exact inference m
 
 ## <i class="fas fa-angle-double-right"></i> Publication
 
+- Wang, C. and **Qiu, Y.**, *The Sparse-Plus-Low-Rank Quasi-Newton Method for Entropic-Regularized Optimal Transport*. International Conference on Machine Learning (ICML 2025), 2025.
+  <span style="padding-left:10px"><a href="https://openreview.net/forum?id=WCkMkMcqpb"><i class="fas fa-link"></i> Link</a></span>
+  <span style="padding-left:10px"><a href="https://openreview.net/pdf?id=WCkMkMcqpb"><i class="far fa-file-pdf"></i> PDF</a></span>
+  <span style="padding-left:10px"><a href="https://github.com/yixuan/regot-python"><i class="fas fa-home"></i> Package</a></span>
+  <span style="padding-left:10px"><a href="https://github.com/Aoblex/numerical-experiments"><i class="fas fa-code"></i> Code</a></span>
 - Yin, H., **Qiu, Y.**, and Wang, X., *Wasserstein Coreset via Sinkhorn Loss*. Transactions on Machine Learning Research, 2025.
   <span style="padding-left:10px"><a href="https://openreview.net/forum?id=DrMCDS88IL"><i class="fas fa-link"></i> Link</a></span>
   <span style="padding-left:10px"><a href="https://openreview.net/pdf?id=DrMCDS88IL"><i class="far fa-file-pdf"></i> PDF</a></span>
