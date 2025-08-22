@@ -11,13 +11,13 @@ I have great interest in statistical computing, deep learning, exact inference m
   <span style="padding-left:10px"><a href="https://openreview.net/pdf?id=WCkMkMcqpb"><i class="far fa-file-pdf"></i> PDF</a></span>
   <span style="padding-left:10px"><a href="https://github.com/yixuan/regot-python"><i class="fas fa-home"></i> Package</a></span>
   <span style="padding-left:10px"><a href="https://github.com/Aoblex/numerical-experiments"><i class="fas fa-code"></i> Code</a></span>
-- Yin, H., **Qiu, Y.**, and Wang, X., *Wasserstein Coreset via Sinkhorn Loss*. Transactions on Machine Learning Research, 2025.
-  <span style="padding-left:10px"><a href="https://openreview.net/forum?id=DrMCDS88IL"><i class="fas fa-link"></i> Link</a></span>
-  <span style="padding-left:10px"><a href="https://openreview.net/pdf?id=DrMCDS88IL"><i class="far fa-file-pdf"></i> PDF</a></span>
-- **Qiu, Y.**\*, Gao, Q.\*, and Wang, X., *Adaptive Learning of the Latent Space of Wasserstein Generative Adversarial Networks*. \*Joint first authors. Journal of the American Statistical Association, accepted, 2024+.
+- **Qiu, Y.**\*, Gao, Q.\*, and Wang, X., *Adaptive Learning of the Latent Space of Wasserstein Generative Adversarial Networks*. \*Joint first authors. Journal of the American Statistical Association, 2025.
   <span style="padding-left:10px"><a href="https://www.tandfonline.com/doi/full/10.1080/01621459.2024.2408778"><i class="fas fa-link"></i> Link</a></span>
   <span style="padding-left:10px"><a href="https://arxiv.org/pdf/2409.18374"><i class="far fa-file-pdf"></i> PDF</a></span>
   <span style="padding-left:10px"><a href="https://github.com/yixuan/LWGAN"><i class="fas fa-code"></i> Code</a></span>
+- Yin, H., **Qiu, Y.**, and Wang, X., *Wasserstein Coreset via Sinkhorn Loss*. Transactions on Machine Learning Research, 2025.
+  <span style="padding-left:10px"><a href="https://openreview.net/forum?id=DrMCDS88IL"><i class="fas fa-link"></i> Link</a></span>
+  <span style="padding-left:10px"><a href="https://openreview.net/pdf?id=DrMCDS88IL"><i class="far fa-file-pdf"></i> PDF</a></span>
 - Tang, Z. and **Qiu, Y.**, *Safe and Sparse Newton Method for Entropic-Regularized Optimal Transport*. Advances in Neural Information Processing Systems (NeurIPS 2024), 2024.
   <span style="padding-left:10px"><a href="https://proceedings.neurips.cc/paper_files/paper/2024/hash/ea8620683340facbd5f754dd169e0980-Abstract-Conference.html"><i class="fas fa-link"></i> Link</a></span>
   <span style="padding-left:10px"><a href="https://proceedings.neurips.cc/paper_files/paper/2024/file/ea8620683340facbd5f754dd169e0980-Paper-Conference.pdf"><i class="far fa-file-pdf"></i> PDF</a></span>
@@ -44,7 +44,7 @@ I have great interest in statistical computing, deep learning, exact inference m
   <span style="padding-left:10px"><a href="https://rehline.github.io/"><i class="fas fa-home"></i> Project Page</a></span>
   <span style="padding-left:10px"><a href="https://github.com/softmin/ReHLine"><i class="fas fa-code"></i> Code</a></span>
 - **Qiu, Y.**, Lei, J., and Roeder, K., *Gradient-based Sparse Principal Component Analysis with Extensions to Online Learning*. Biometrika, 2023.
-  <span style="padding-left:10px"><a href="https://academic.oup.com/biomet/advance-article-abstract/doi/10.1093/biomet/asac041/6640166"><i class="fas fa-link"></i> Link</a></span>
+  <span style="padding-left:10px"><a href="https://academic.oup.com/biomet/article-abstract/110/2/339/6640166"><i class="fas fa-link"></i> Link</a></span>
   <span style="padding-left:10px"><a href="https://academic.oup.com/biomet/article-pdf/110/2/339/50311400/asac041.pdf"><i class="far fa-file-pdf"></i> PDF</a></span>
   <span style="padding-left:10px"><a href="https://github.com/yixuan/gradfps"><i class="fas fa-code"></i> Code</a></span>
 - Zheng, Y., He, T., **Qiu, Y.**, and Wipf, D., *Learning Manifold Dimensions with Conditional Variational Autoencoders*. Advances in Neural Information Processing Systems (NeurIPS 2022), 2022.
