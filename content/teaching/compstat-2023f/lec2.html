@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Computational Statistics</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Yixuan Qiu" />
+    <meta name="date" content="2023-09-13" />
+    <script src="libs/header-attrs-2.24/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        CommonHTML: {
+          scale: 100
+        }
+      });
+    </script>
+    <link rel="stylesheet" href="style.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Computational Statistics
+]
+.subtitle[
+## Lecture 2
+]
+.author[
+### Yixuan Qiu
+]
+.date[
+### 2023-09-13
+]
+
+---
+
+class: inverse, center, middle
+
+# Numerical Linear Algebra
+
+---
+
+# Important Problems
+
+- Linear systems
+
+- Eigenvalues
+
+- Sparse matrices
+
+---
+
+# Today's Topics
+
+- Preliminaries
+
+- Triangular and tridiagonal systems
+
+- LU decomposition
+
+- Cholesky decomposition
+
+---
+class: inverse, center, middle
+
+# Preliminaries
+
+---
+class: center, middle
+
+# Useful Formulas
+
+---
+
+# Trace
+
+- `\(\mathrm{tr}(AB)=\mathrm{tr}(BA)\)`
+
+- `\(\mathrm{tr}(ABC)=\mathrm{tr}(BCA)=\mathrm{tr}(CAB)\)`
+
+- `\(\require{color}\color{red} \mathrm{tr}(ABC)\neq\mathrm{tr}(ACB)\)`
+
+- `\(\mathrm{tr}(A'B)=\mathbf{vec}(A)'\mathbf{vec}(B)=\mathbf{vec}(B)'\mathbf{vec}(A)\)`
+
+---
+
+# Determinant
+
+- `\(\det(AB)=\det(A)\det(B)\)`
+
+- `\(\det(A^{-1})=[\det(A)]^{-1}\)`
+
+- Weinstein-Aronszajn identity:
+`$$\det(I_m+A_{m\times n}B_{n\times m})=\det(I_n+BA)$$`
+
+---
+
+# Woodbury Identity
+
+`$$(A+UCV)^{-1}=A^{-1}-A^{-1}U(C^{-1}+VA^{-1}U)^{-1}VA^{-1}$$`
+
+Special cases:
+
+- `\((I+UV)^{-1}=I-U(I+VU)^{-1}V\)`
+- `\((I+UU')^{-1}=I-U(I+U'U)^{-1}U'\)`
+- `$$(A+uv')^{-1}=A^{-1}-\frac{A^{-1}uv'A^{-1}}{1+v'A^{-1}u}$$`
+
+---
+
+# Block Matrix Inversion
+
+If `\(D - {CA}^{-1}B\)` is invertible:
+
+`$$\scriptsize \begin{bmatrix}
+    A &amp; B \\
+    C &amp; D
+  \end{bmatrix}^{-1} = \begin{bmatrix}
+     A^{-1} + A^{-1}B\left(D - {CA}^{-1}B\right)^{-1}{CA}^{-1} &amp;
+      -A^{-1}B\left(D - {CA}^{-1}B\right)^{-1} \\
+    -\left(D-{CA}^{-1}B\right)^{-1}{CA}^{-1} &amp;
+       \left(D - {CA}^{-1}B\right)^{-1}
+  \end{bmatrix}$$`
+
+If `\(A - {BD}^{-1}C\)` is invertible:
+
+`$$\scriptsize \begin{bmatrix}
+    A &amp; B \\
+    C &amp; D
+  \end{bmatrix}^{-1} = \begin{bmatrix}
+     \left(A - {BD}^{-1}C\right)^{-1} &amp;
+      -\left(A-{BD}^{-1}C\right)^{-1}{BD}^{-1} \\
+    -D^{-1}C\left(A - {BD}^{-1}C\right)^{-1} &amp;
+       \quad D^{-1} + D^{-1}C\left(A - {BD}^{-1}C\right)^{-1}{BD}^{-1}
+  \end{bmatrix}$$`
+---
+
+# Block Matrix Determinant
+
+If `\(A\)` is invertible:
+
+`$$\det\begin{pmatrix}A&amp; B\\ C&amp; D\end{pmatrix} = \det(A) \det\left(D - C A^{-1} B\right)$$`
+
+For any `\(A,B\in \mathbb{R}^{n\times n}\)`:
+
+`$$\det\begin{pmatrix}A&amp; B\\ B&amp; A\end{pmatrix} = \det(A+B) \det\left(A-B\right)$$`
+
+---
+class: inverse, center, middle
+
+# Linear Systems
+
+---
+class: center, middle
+
+# Triangular Systems
+
+---
+
+# Triangular Matrices
+
+`$$L=\begin{bmatrix}\times\\
+\times &amp; \times\\
+\vdots &amp; \vdots &amp; \ddots\\
+\times &amp; \times &amp; \cdots &amp; \times
+\end{bmatrix},\quad U=\begin{bmatrix}\times &amp; \cdots &amp; \times &amp; \times\\
+ &amp; \ddots &amp; \vdots &amp; \vdots\\
+ &amp;  &amp; \times &amp; \times\\
+ &amp;  &amp;  &amp; \times
+\end{bmatrix}$$`
+
+- Triangular matrices are important building blocks of numerical linear algebra
+
+- Cheap multiplication, determinant, and linear system solving
+
+- Many matrix decompositions are in the form of triangular matrices
+
+---
+
+# Basic Properties &lt;sup&gt;&lt;span class="small"&gt;[1]&lt;/span&gt;&lt;/sup&gt;
+
+- A triangular matrix is invertible if and only if all its diagonal entries are non-zero
+
+- Invertible lower (upper) triangular matrices are closed under multiplication and inversion
+
+- The determinant of a triangular matrix is the product of its diagonal entries
+
+`$$\small \det\begin{bmatrix}\lambda_{1}\\
+\times &amp; \lambda_{2}\\
+\vdots &amp; \vdots &amp; \ddots\\
+\times &amp; \times &amp; \cdots &amp; \lambda_{m}
+\end{bmatrix}=\lambda_{1}\det\begin{bmatrix}\lambda_{2}\\
+\vdots &amp; \ddots\\
+\times &amp; \cdots &amp; \lambda_{m}
+\end{bmatrix}=\cdots=\lambda_{1}\cdots\lambda_{m}$$`
+
+---
+
+# Basic Properties
+
+- .highlight[Question: What is the computational complexity of multiplying a triangular matrix with a vector?]
+
+--
+
+- `\(O(n^2)\)`
+
+---
+
+# Triangular Systems
+
+- We are interested in solving the linear systems of equations `\(Lx=b\)`
+`$$L=\begin{bmatrix}\begin{array}{cccc}
+l_{11}\\
+l_{21} &amp; l_{22}\\
+\vdots &amp; \vdots &amp; \ddots\\
+l_{n1} &amp; l_{n2} &amp; \cdots &amp; l_{nn}
+\end{array}\end{bmatrix}$$`
+
+- The algorithm is called .highlight[forward substitution]
+
+---
+
+# Forward Substitution
+
+- Let `\(l_{k,1:k}=(l_{k1},\ldots,l_{kk})'\)`, `\(x_{1:k}=(x_1,\ldots,x_k)'\)`, `\(k=1,\ldots,n\)`
+
+- The `\(k\)`-th equation gives
+`$$l_{k,1:k}'x_{1:k}=\sum_{i=1}^{k-1}l_{ki}x_i+l_{kk}x_k=b_k$$`
+- We can iteratively compute `\(x_1,\ldots,x_n\)`
+
+---
+
+# Algorithm
+
+- Start with `\(x_1=b_1/l_{11}\)`
+
+- For `\(k=2,\ldots,n\)`, iterate
+`$$x_k=\left(b_k-\sum_{i=1}^{k-1}l_{ki}x_i \right)/l_{kk}$$`
+
+--
+
+- .highlight[Computational complexity is] `\(O(n^2)\)`
+
+---
+
+# Backward Substitution
+
+- Similarly, we can solve the linear systems of equations `\(Ux=b\)` with an upper triangular matrix
+`$$U=\begin{bmatrix}u_{11} &amp; u_{12} &amp; \cdots &amp; u_{1n}\\
+ &amp; u_{22} &amp; \cdots &amp; u_{2n}\\
+ &amp;  &amp; \ddots &amp; \vdots\\
+ &amp;  &amp;  &amp; u_{nn}
+\end{bmatrix}$$`
+
+- The algorithm is called .highlight[backward substitution]
+
+--
+
+- Please derive this algorithm by yourself
+
+---
+
+# Implementation
+
+- Simulate matrices
+
+
+```r
+set.seed(123)
+n = 2000
+b = rnorm(n)
+M = 0.1 * matrix(rnorm(n^2), n)
+diag(M) = abs(diag(M)) + 1
+
+# Get lower and upper triangular parts
+L = M * lower.tri(M, diag = TRUE)
+U = M * upper.tri(M, diag = TRUE)
+```
+
+---
+
+# Implementation
+
+- In R, we have the `forwardsolve()` and `backsolve()` functions to implement the two algorithms
+
+
+```r
+x1 = forwardsolve(L, b)
+max(abs(L %*% x1 - b))  # Verify L*x1 = b
+```
+
+```
+## [1] 4.193368e-12
+```
+
+```r
+x2 = backsolve(U, b)
+max(abs(U %*% x2 - b))  # Verify U*x2 = b
+```
+
+```
+## [1] 5.541345e-12
+```
+
+---
+
+# Implementation
+
+- In fact, we do not need to create a new matrix
+- The upper/lower triangular part would not be used in `forwardsolve()`/`backsolve()`
+- Reduces memory use
+
+
+```r
+x1 = forwardsolve(M, b)
+max(abs(L %*% x1 - b))  # Verify L*x1 = b
+```
+
+```
+## [1] 4.193368e-12
+```
+
+```r
+x2 = backsolve(M, b)
+max(abs(U %*% x2 - b))  # Verify U*x2 = b
+```
+
+```
+## [1] 5.541345e-12
+```
+
+---
+
+# Benchmark
+
+- Whenever possible, use `forwardsolve()`/`backsolve()` instead of `solve()`
+
+
+```r
+library(dplyr)
+bench::mark(
+    solve(L, b), forwardsolve(L, b), backsolve(U, b),
+    max_iterations = 10, check = FALSE
+) %&gt;% select(expression, min, median)
+```
+
+```
+## # A tibble: 3 × 3
+##   expression              min   median
+##   &lt;bch:expr&gt;         &lt;bch:tm&gt; &lt;bch:tm&gt;
+## 1 solve(L, b)           1.42s    1.42s
+## 2 forwardsolve(L, b)   1.33ms   1.42ms
+## 3 backsolve(U, b)      1.31ms   1.43ms
+```
+
+---
+
+# Excercise
+
+- Implement the backward substitution algorithm
+
+- Experiment on simulated matrices
+
+- Use `backsolve()` to verify the result
+
+---
+class: center, middle
+
+# Tridiagonal Systems
+
+---
+
+# Tridiagonal Matrices
+
+- Tridiagonal matrices are band matrices that have nonzero elements only on the diagonal and two subdiagonals
+
+`$$T=\begin{bmatrix}b_{1} &amp; c_{1}\\
+a_{2} &amp; b_{2} &amp; c_{2}\\
+ &amp; a_{3} &amp; b_{3} &amp; \ddots\\
+ &amp;  &amp; \ddots &amp; \ddots &amp; c_{n-1}\\
+ &amp;  &amp;  &amp; a_{n} &amp; b_{n}
+\end{bmatrix}$$`
+- Useful in eigenvalue computation and spline interpolation
+
+---
+
+# Basic Properties
+
+- Can be represented by three vectors
+
+- Storage requirement is linear in `\(n\)`, i.e., `\(O(n)\)`
+
+- Cheap multiplication, determinant, and linear system solving
+
+- .highlight[Question: What is the computational complexity of multiplying a tridiagonal matrix with a vector?]
+
+--
+
+- `\(O(n)\)`
+
+---
+
+# Tridiagonal Systems
+
+- We are interested in solving the linear systems of equations `\(Tx=d\)`
+
+`$$\begin{bmatrix}b_{1} &amp; c_{1}\\
+a_{2} &amp; b_{2} &amp; c_{2}\\
+ &amp; a_{3} &amp; b_{3} &amp; \ddots\\
+ &amp;  &amp; \ddots &amp; \ddots &amp; c_{n-1}\\
+ &amp;  &amp;  &amp; a_{n} &amp; b_{n}
+\end{bmatrix}\begin{bmatrix}x_{1}\\
+x_{2}\\
+x_{3}\\
+\vdots\\
+x_{n}
+\end{bmatrix}=\begin{bmatrix}d_{1}\\
+d_{2}\\
+d_{3}\\
+\vdots\\
+d_{n}
+\end{bmatrix}$$`
+
+---
+
+# Algorithm
+
+- Forward sweep
+
+`$$\small c_{i}'=\begin{cases}
+\frac{c_{i}}{b_{i}}, &amp; i=1\\
+\frac{c_{i}}{b_{i}-a_{i}c_{i-1}'}, &amp; i=2,\ldots,n-1
+\end{cases},\qquad d_{i}'=\begin{cases}
+\frac{d_{i}}{b_{i}}, &amp; i=1\\
+\frac{d_{i}-a_{i}d_{i-1}'}{b_{i}-a_{i}c_{i-1}'}, &amp; i=2,\ldots,n
+\end{cases}$$`
+
+- Backward substitution
+
+`$$\begin{align*}
+x_{n} &amp; =d_{n}',\\
+x_{i} &amp; =d_{i}'-c_{i}'x_{i+1},\quad i=n-1,\ldots,1
+\end{align*}$$`
+
+- .highlight[Computational complexity is] `\(O(n)\)`
+
+---
+
+# Implementation
+
+- Simulate matrices
+
+
+```r
+set.seed(123)
+n = 2000
+diagonal = rnorm(n)
+lsubdiag = rnorm(n - 1)
+usubdiag = rnorm(n - 1)
+b = rnorm(n)
+
+# Explicitly form the matrix
+M = diag(diagonal)
+diag(M[2:n, ]) = lsubdiag
+diag(M[, 2:n]) = usubdiag
+M[1:5, 1:5]
+```
+
+```
+##            [,1]       [,2]       [,3]       [,4]      [,5]
+## [1,] -0.5604756  1.1210219  0.0000000 0.00000000 0.0000000
+## [2,] -0.5116037 -0.2301775  0.1965498 0.00000000 0.0000000
+## [3,]  0.0000000  0.2369379  1.5587083 0.65011319 0.0000000
+## [4,]  0.0000000  0.0000000 -0.5415892 0.07050839 0.6710042
+## [5,]  0.0000000  0.0000000  0.0000000 1.21922765 0.1292877
+```
+
+---
+
+# Implementation
+
+- The `tridiagmatrix()` function in the **cmna** R package implements the described algorithm
+
+
+```r
+library(cmna)
+
+x = tridiagmatrix(lsubdiag, diagonal, usubdiag, b)
+max(abs(M %*% x - b))  # Verify M*x = b
+```
+
+```
+## [1] 2.298162e-13
+```
+
+---
+
+# Benchmark
+
+- The specialized algorithm is much faster than the general `solve()`
+
+
+```r
+bench::mark(
+    solve(M, b),
+    tridiagmatrix(lsubdiag, diagonal, usubdiag, b),
+    max_iterations = 10, check = FALSE
+) %&gt;% select(expression, min, median)
+```
+
+```
+## # A tibble: 2 × 3
+##   expression                                          min   median
+##   &lt;bch:expr&gt;                                     &lt;bch:tm&gt; &lt;bch:tm&gt;
+## 1 solve(M, b)                                       1.37s    1.37s
+## 2 tridiagmatrix(lsubdiag, diagonal, usubdiag, b)  614.1µs 650.25µs
+```
+
+---
+
+# Benchmark
+
+- .highlight[Warning: the described algorithm may be unstable in some cases. If stability is required, use LU decomposition instead]
+
+---
+class: center, middle
+
+# LU Decomposition
+
+---
+
+# LU Decomposition
+
+- LU decomposition is an important method to solve general linear systems
+
+- Factorizes an `\(n\times n\)` matrix `\(A\)` into the product of two .highlight[triangular] matrices, `\(A=LU\)`
+
+- `\(L\)` lower triangular, with ones on the diagonal
+
+- `\(U\)` upper triangular
+
+---
+
+# Factorization Theorem &lt;sup&gt;&lt;span class="small"&gt;[2]&lt;/span&gt;&lt;/sup&gt;
+
+Let `\(A\)` be an `\(n\times n\)` matrix such that all of its diagonal submatrices are nonsingular. Then there exist a lower triangular matrix `\(L\)` with unit diagonal elements (i.e., `\(l_{ii}=1\)`), and an upper triangular matrix `\(U\)`, such that `\(A=LU\)`.
+
+---
+
+# Solving Linear Systems
+
+- Suppose the decomposition `\(A=LU\)` is given
+
+- If we wish to solve `\(Ax=b\)`, then:
+
+- First, solve `\(Ly=b\)` to get `\(y\)` .highlight[(forward substitution)]
+
+- Second, solve `\(Ux=y\)` to get `\(x\)` .highlight[(backward substitution)]
+
+---
+
+# Computing Determinant
+
+- Suppose the decomposition `\(A=LU\)` is given
+
+- .highlight[Question: How to compute] `\(\require{color}\color{deeppink}\det(A)\)`.highlight[?]
+
+--
+
+- `\(\det(A)=\det(L)\det(U)=\det(U)=u_{11}\cdots u_{nn}\)`
+
+---
+
+# Algorithm &lt;sup&gt;&lt;span class="small"&gt;[3]&lt;/span&gt;&lt;/sup&gt;
+
+Based on the relation
+
+![](images/lu.png)
+
+---
+
+# Pivoting
+
+- In practice, LU decomposition is performed with a permutation matrix `\(Q\)`, which is typically called .highlight[pivoting]:
+`$$QA=LU$$`
+
+- This is used to enhance the numerical stability
+
+- `\(Q\)` has the effect of interchanging rows of `\(A\)`
+
+- `\(Q\)` satisfies `\(Q'Q=QQ'=I\)`
+
+---
+
+# Pivoting
+
+- When using this factorization to solve linear systems `\(Ax=b\)`
+
+- First, compute `\(\tilde{b}=Qb\)`
+
+- Second, solve `\(Ly=\tilde{b}\)` to get `\(y\)`
+
+- Third, solve `\(Ux=y\)` to get `\(x\)`
+
+---
+
+# Computational Complexity
+
+- .highlight[Decomposition part is] `\(O(n^3)\)`
+
+- .highlight[Linear system solving part is] `\(O(n^2)\)`
+
+---
+
+# Implementation
+
+- The `lu()` function in the **Matrix** package can be used to compute the LU decomposition of a square matrix
+- Note that this function factorizes `\(A\)` as `\(A=PLU\)`, or equivalently, `\(P'A=LU\)` (i.e., `\(Q=P'\)`)
+
+
+```r
+library(Matrix)
+```
+
+```
+## Warning: package 'Matrix' was built under R version 4.2.3
+```
+
+```r
+set.seed(123)
+n = 5
+M = matrix(rnorm(n^2), n)
+
+lu_obj = lu(M)
+decomp = expand(lu_obj)
+names(decomp)  # A named list
+```
+
+```
+## [1] "L" "U" "P"
+```
+
+---
+
+# Implementation
+
+
+```r
+decomp$L
+```
+
+```
+## 5 x 5 Matrix of class "dtrMatrix" (unitriangular)
+##      [,1]        [,2]        [,3]        [,4]        [,5]       
+## [1,]  1.00000000           .           .           .           .
+## [2,] -0.35957699  1.00000000           .           .           .
+## [3,]  0.04523514 -0.49963385  1.00000000           .           .
+## [4,]  0.08294543 -0.27038315 -0.28235315  1.00000000           .
+## [5,] -0.14767195  0.21751065  0.15641432 -0.65806034  1.00000000
+```
+
+```r
+decomp$U
+```
+
+```
+## 5 x 5 Matrix of class "dtrMatrix"
+##      [,1]       [,2]       [,3]       [,4]       [,5]      
+## [1,]  1.5587083 -1.2650612  0.4007715 -1.9666172 -1.0260044
+## [2,]          .  1.2601781  1.3681900  1.0797629 -1.4367513
+## [3,]          .          .  0.7761478  1.3298022 -1.4003294
+## [4,]          .          .          .  0.3577540 -1.3237976
+## [5,]          .          .          .          . -0.7090854
+```
+
+---
+
+# Implementation
+
+
+```r
+decomp$P
+```
+
+```
+## 5 x 5 sparse Matrix of class "pMatrix"
+##               
+## [1,] . | . . .
+## [2,] . . . . |
+## [3,] | . . . .
+## [4,] . . | . .
+## [5,] . . . | .
+```
+
+```r
+# Verify P*L*U = A
+max(abs(decomp$P %*% decomp$L %*% decomp$U - M))
+```
+
+```
+## [1] 2.220446e-16
+```
+
+---
+
+# Implementation
+
+- We can then write a simple function to solve linear systems given the decomposition result
+
+
+```r
+lu_solve = function(decomp, b)
+{
+    bt = t(decomp$P) %*% b
+    y = forwardsolve(as.matrix(decomp$L), bt)  # L*y = b
+    x = backsolve(as.matrix(decomp$U), y)      # U*x = y
+    x
+}
+```
+
+---
+
+# Implementation
+
+- Verify the result
+
+
+```r
+set.seed(123)
+n = 2000
+M = matrix(rnorm(n^2), n)
+b = rnorm(n)
+
+decomp = expand(lu(M))
+x = lu_solve(decomp, b)
+max(abs(M %*% x - b))  # Verify M*x = b
+```
+
+```
+## [1] 1.933176e-11
+```
+
+---
+
+# Benchmark
+
+- The LU decomposition itself dominates the time of solving linear systems
+
+
+```r
+bench::mark(
+    solve(M, b), expand(lu(M)), lu_solve(decomp, b),
+    max_iterations = 10, check = FALSE
+) %&gt;% select(expression, min, median)
+```
+
+```
+## # A tibble: 3 × 3
+##   expression               min   median
+##   &lt;bch:expr&gt;          &lt;bch:tm&gt; &lt;bch:tm&gt;
+## 1 solve(M, b)             1.4s     1.4s
+## 2 expand(lu(M))          1.37s    1.37s
+## 3 lu_solve(decomp, b)  17.63ms  18.85ms
+```
+
+---
+
+# When to Use?
+
+- If `\(Ax=b\)` only needs to be solved once:
+  - Directly calling `solve()` is more convenient
+  - `solve()` internally uses algorithms similar to LU decomposition
+
+- If a sequence of linear systems `\(Ax^{(k)}=b^{(k)}\)` need to be solved iteratively
+  - First factorize `\(A\)` using LU decomposition
+  - Then use `lu_solve()` to get each solution `\(x^{(k)}\)`
+
+- We will encounter the second case in many optimization problems
+
+---
+class: center, middle
+
+# Cholesky Decomposition
+
+---
+
+# Cholesky Decomposition
+
+- LU decomposition applies to general square matrices
+
+- If we can guarantee the matrix `\(A\)` to be .highlight[positive definite]
+
+- Example: `\(A=X'X+\lambda I\)`, `\(\lambda&gt;0\)`
+
+- Then the Cholesky decomposition `\(A=LL'\)` can be computed
+
+- `\(L\)` is a lower triangular matrix
+
+---
+
+# Factorization Theorem &lt;sup&gt;&lt;span class="small"&gt;[2]&lt;/span&gt;&lt;/sup&gt;
+
+Let `\(A\)` be an `\(n\times n\)` real symmetric positive definite matrix. Then there exists a unique lower triangular matrix `\(L\)` with positive diagonal elements, such that `\(A=LL'\)`.
+
+---
+
+# Algorithm &lt;sup&gt;&lt;span class="small"&gt;[3]&lt;/span&gt;&lt;/sup&gt;
+
+Based on the relation
+`$$l_{jj}=\sqrt{a_{jj}-\sum_{k=1}^{j-1}l_{jk}^2}$$`
+`$$l_{ij}=\left(a_{ij}-\sum_{k=1}^{j-1}l_{ik}l_{jk}\right)/l_{jj},\quad i=j+1,\ldots,n$$`
+
+---
+
+# Solving Linear Systems
+
+- Suppose the decomposition `\(A=LL'\)` is given
+
+- If we wish to solve `\(Ax=b\)`, then:
+
+- First, solve `\(Ly=b\)` to get `\(y\)` .highlight[(forward substitution)]
+
+- Second, solve `\(L'x=y\)` to get `\(x\)` .highlight[(backward substitution)]
+
+---
+
+# Computing Determinant
+
+- Suppose the decomposition `\(A=LL'\)` is given
+
+- .highlight[Question: How to compute] `\(\require{color}\color{deeppink}\det(A)\)`.highlight[?]
+
+--
+
+- `\(\det(A)=[\det(L)]^2=l_{11}^2\cdots l_{nn}^2\)`
+
+---
+
+# Computational Complexity
+
+- .highlight[Decomposition part is] `\(O(n^3)\)`
+
+- .highlight[Linear system solving part is] `\(O(n^2)\)`
+
+- Same orders as LU decomposition, but in general faster
+
+---
+
+# Implementation
+
+- In R, the `chol()` function can be used to compute Cholesky decomposition
+- Note that this function factorizes `\(A\)` as `\(A=R'R\)`, so you actually get `\(R=L'\)`
+
+
+```r
+set.seed(123)
+n = 5
+M = matrix(rnorm(n^2), n)
+A = crossprod(M)  # positive definite
+
+R = chol(A)
+R
+```
+
+```
+##          [,1]      [,2]       [,3]       [,4]       [,5]
+## [1,] 1.678801 -1.873512 -0.1240544 -2.4977185 -0.6449736
+## [2,] 0.000000  1.383693  1.2267898  0.6009298 -0.7682812
+## [3,] 0.000000  0.000000  0.7676374  1.1355032 -0.8695156
+## [4,] 0.000000  0.000000  0.0000000  0.3672150 -1.0253122
+## [5,] 0.000000  0.000000  0.0000000  0.0000000  0.5906208
+```
+
+---
+
+# Implementation
+
+- Then we can write a simple function to solve linear systems given the decomposition result
+
+
+```r
+chol_solve = function(R, b)
+{
+    y = backsolve(R, b, transpose = TRUE)  # R'*y = b       
+    x = backsolve(R, y)                    # R*x = y
+    x
+}
+```
+
+---
+
+# Implementation
+
+- Verify the result
+
+
+```r
+set.seed(123)
+n = 2000
+M = matrix(rnorm(n^2), n)
+A = crossprod(M)
+b = rnorm(n)
+
+R = chol(A)
+max(abs(crossprod(R) - A))  # Verify R'R = A
+```
+
+```
+## [1] 1.364242e-12
+```
+
+```r
+x = chol_solve(R, b)
+max(abs(A %*% x - b))       # Verify A*x = b
+```
+
+```
+## [1] 4.437666e-09
+```
+
+---
+
+# Benchmark
+
+- The decomposition part dominates the time of solving linear systems
+
+
+```r
+bench::mark(
+    solve(A, b), chol(A), chol_solve(R, b),
+    max_iterations = 10, check = FALSE
+) %&gt;% select(expression, min, median)
+```
+
+```
+## # A tibble: 3 × 3
+##   expression            min   median
+##   &lt;bch:expr&gt;       &lt;bch:tm&gt; &lt;bch:tm&gt;
+## 1 solve(A, b)         1.38s    1.38s
+## 2 chol(A)             1.31s    1.31s
+## 3 chol_solve(R, b)   3.62ms   5.04ms
+```
+
+---
+
+# When to Use?
+
+- As long as you can guarantee `\(A\)` is positive definite, prefer to use Cholesky decomposition
+
+- `solve()` does not know the special property of `\(A\)`, so it will use the slightly slower LU decomposition
+
+- Cholesky decomposition utilizes this "prior information"
+
+- Cholesky decomposition can also be used when a sequence of linear systems `\(Ax^{(k)}=b^{(k)}\)` need to be solved iteratively
+
+---
+
+# References
+
+[1] Folkmar Bornemann (2018). Numerical Linear Algebra. Springer.
+
+[2] Grégoire Allaire and Sidi Mahmoud Kaber (2008). Numerical linear algebra. Springer.
+
+[3] Åke Björck (2015). Numerical methods in matrix computations. Springer.
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

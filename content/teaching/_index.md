@@ -2,15 +2,17 @@
 title : Teaching
 ---
 
-### Fall 2022
+### Fall 2023
 
-- [Computational Statistics](/teaching/compstat-2022f/)
+- [Computational Statistics](/teaching/compstat-2023f/)
 - Deep Learning
 
 ### Old
 
-- Distributed Computing (Fall 2021, Spring 2022)
-- Deep Learning (Fall 2021)
+- Bayesian Statistics (Spring 2023)
+- Computational Statistics (Fall 2022)
+- Distributed Computing (Fall 2021, Spring 2022, Spring 2023)
+- Deep Learning (Fall 2021, Fall 2022)
 - Introduction to Artificial Intelligence (Spring 2021)
 
 ### Teaching Assistant @ Purdue

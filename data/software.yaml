@@ -25,6 +25,10 @@ category_1:
 category_2:
   title: Statistical Modeling and Machine Learning
   list:
+    - name: ReHLine
+      url: https://rehline.github.io
+      logo: /images/sticker-rehline.png
+      description: Regularized composite ReLU-ReHU loss minimization with linear computation and linear convergence
     - name: TemperFlow
       url: https://github.com/yixuan/temperflow
       logo: /images/sticker-temperflow.png
