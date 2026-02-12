@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Computational Statistics</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Yixuan Qiu" />
+    <meta name="date" content="2025-10-13" />
+    <script src="libs/header-attrs-2.29/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        CommonHTML: {
+          scale: 100
+        }
+      });
+    </script>
+    <link rel="stylesheet" href="style.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Computational Statistics
+]
+.subtitle[
+## Lecture 5
+]
+.author[
+### Yixuan Qiu
+]
+.date[
+### 2025-10-13
+]
+
+---
+
+class: inverse, center, middle
+
+# Numerical Linear Algebra
+
+
+
+---
+
+# Today's Topics
+
+- Singular value decomposition
+
+- Sparse matrices
+
+- Case study: regression and PCA for sparse data
+
+---
+class: center, middle
+
+# Singular Value Decomposition
+
+---
+
+# Singular Value Decomposition
+
+- Singular value decomposition (SVD) can be viewed as an extension to the eigenvalue decomposition of symmetric matrices
+
+- SVD applies to general rectangular matrices
+
+- Wide applications in dimension reduction, image compression, recommender system, etc.
+
+---
+
+# SVD Theorem &lt;sup&gt;&lt;span class="small"&gt;[2]&lt;/span&gt;&lt;/sup&gt;
+
+Every matrix `\(A\in\mathbb{R}^{m\times n}\)` of rank `\(r\)` can be decomposed as
+
+`$$A=U\Sigma V'=\begin{pmatrix}U_{1} &amp; U_{2}\end{pmatrix}\begin{pmatrix}\Sigma_{1} &amp; 0\\
+0 &amp; 0
+\end{pmatrix}\begin{pmatrix}V_{1}'\\
+V_{2}'
+\end{pmatrix},$$`
+
+where `\(U_{m\times m}=(u_1,\ldots,u_m)\)` and `\(V_{n\times n}=(v_1,\ldots,v_n)\)` are orthogonal matrices, `\(U_1\in \mathbb{R}^{m\times r}\)`, `\(V_1\in \mathbb{R}^{n\times r}\)`, and
+`\(\Sigma_1=\mathrm{diag}(\sigma_1,\ldots,\sigma_r)\)` is a nonnegative diagonal matrix.
+
+`\(\sigma_1\ge\cdots\ge\sigma_r&gt;0\)` are called .highlight[singular values] of `\(A\)`. `\(u_i,i=1,\ldots,m\)` and `\(v_j,j=1,\ldots,n\)` are called left and right .highlight[singular vectors] of `\(A\)`, respectively.
+
+---
+
+# Compact SVD
+
+According to the factorization theorem, we can also write
+`$$A=U_1\Sigma_1V_1',$$`
+where `\(A\)` is `\(m\times n\)`, `\(U_1\)` is `\(m\times r\)`, `\(\Sigma_1\)` is `\(r\times r\)`, and `\(V_1\)` is `\(n\times r\)`.
+
+`\(U_1\)` and `\(V_1\)` are .highlight[column-orthonormal] matrices.
+
+This is typically called the compact SVD.
+
+---
+
+# Relation to Eigenvalues
+
+Suppose we have the (compact) SVD `\(A=U\Sigma V'\)`, then
+
+- `\(A'A=V\Sigma U'U\Sigma V'=V\Sigma^2 V'\)`
+
+- `\(AA'=U\Sigma V'V\Sigma U'=U\Sigma^2 U'\)`
+
+- .highlight[Singular values of] `\(\require{color}\color{deeppink}A\)` .highlight[are square roots of positive eigenvalues of] `\(\require{color}\color{deeppink}A'A\)` .highlight[and] `\(\require{color}\color{deeppink}AA'\)`
+
+For generality, we usually also allow singular values to be zero, by extending the `\(U\)`, `\(\Sigma\)`, and `\(V\)` matrices to proper dimensions.
+
+---
+
+# Partial SVD
+
+If we only extract the largest `\(k\)` singular values and associated singular vectors of `\(A\)`, we call the result `\(U_{(k)}\Sigma_{(k)}V_{(k)}'\)` the partial SVD of `\(A\)`.
+
+- `\(\Sigma_{(k)}=\mathrm{diag}(\sigma_1,\ldots,\sigma_k)\)`, `\(\sigma_1\ge\cdots\ge\sigma_k\)`
+
+- `\(U_{(k)}=(u_1,\ldots,u_k)\)`
+
+- `\(V_{(k)}=(v_1,\ldots,v_k)\)`
+
+---
+
+## Relation to Low-rank Approximation
+
+Partial SVD is useful due to an interesting theorem.
+
+Suppose that a matrix `\(A_{m\times n}\)`, `\(m\ge n\)` has SVD `\(A=U\Sigma V'\)`, where `\(\Sigma=\mathrm{diag}(\sigma_1,\ldots,\sigma_n)\)` and
+`\(\sigma_1\ge\cdots\ge\sigma_n\ge 0\)`. Then the best rank-*k* approximation to `\(A\)` in the Frobenius norm is given by
+
+`$$A_k=\sum_{i=1}^k \sigma_i u_i v_i'.$$`
+
+The claim also holds with the operator norm.
+
+---
+class: center, middle
+
+# SVD Computation
+
+---
+
+# SVD Computation
+
+Similar to eigenvalue computation, there are different use cases of SVD:
+
+- Computing all singular values (full SVD)
+
+- Computing the largest `\(k\)` singular values (partial SVD)
+
+It is not common to request the smallest singular values.
+
+---
+class: center, middle
+
+# Computing Full SVD
+
+---
+
+# Computing Full SVD
+
+Similar to full eigenvalue decomposition, computing full SVD also typically has two steps:
+
+1. Looking for orthogonal matrices `\(U_1\)` and `\(V_1\)` such that `\(U_1'AV_1\)` is .highlight[bidiagonal]
+`$$U_{1}'AV_{1}=\begin{bmatrix}B\\
+0
+\end{bmatrix},\quad B=\begin{bmatrix}\rho_{1} &amp; \theta_{2}\\
+ &amp; \rho_{2} &amp; \theta_{3}\\
+ &amp;  &amp; \ddots &amp; \ddots\\
+ &amp;  &amp;  &amp; \rho_{n-1} &amp; \theta_{n}\\
+ &amp;  &amp;  &amp;  &amp; \rho_{n}
+\end{bmatrix}$$`
+
+2. Applying the QR algorithm to the matrix `\(B\)` to compute all singular values
+
+---
+
+# The Golub-Kahan Householder (Bidiagonalization) Algorithm &lt;sup&gt;&lt;span class="small"&gt;[2]&lt;/span&gt;&lt;/sup&gt;
+
+Any `\(A_{m\times n}\)` with `\(m\ge n\)` can be reduced to
+`$$U_{1}'AV_{1}=\begin{bmatrix}B\\
+0
+\end{bmatrix}$$`
+by orthogonal matrices `\(U_1\in\mathbb{R}^{m\times m}\)` and
+`\(V_1\in\mathbb{R}^{n\times n}\)`. `\(U_1\)` and `\(V_1\)` are product of simple orthogonal matrices:
+
+
+- `\(U_1=Q_1 Q_2\cdots Q_n\)`
+- `\(V_1=P_0 P_1\cdots P_{n-2}\)`
+
+
+The singular values of `\(B\)` are the same as those of `\(A\)`.
+
+---
+
+# The QR Algorithm
+
+Since singular values of `\(B\)` are square roots
+of eigenvalues of `\(B'B\)`, the QR algorithm can proceed as follows:
+
+- Compute the QR decomposition: `\(B^{(k)\prime}B^{(k)}=Q_k R_k\)`
+
+- Update `\(B^{(k)}\)` to `\(B^{(k+1)}\)` such that `\(B^{(k+1)\prime}B^{(k+1)}=R_k Q_k=Q_k'B^{(k)\prime}B^{(k)}Q_k\)`
+
+`\(B^{(k)}\)` is bidiagonal for all `\(k\)`.
+
+The QR decomposition and the update of `\(B^{(k)}\)` would use the special structure of `\(B^{(k)}\)`, so `\(B^{(k)\prime}B^{(k)}\)` will not be explicitly formed.
+
+---
+
+# Advanced Algorithms
+
+- In practice, there are many improvements made to this basic method
+
+- A good summary of those advanced algorithms can be found at
+[&lt;span&gt;https&lt;/span&gt;://www.cs.utexas.edu/users/inderjit](https://www.cs.utexas.edu/users/inderjit/public_papers/HLA_SVD.pdf) [/public_papers/HLA_SVD.pdf](https://www.cs.utexas.edu/users/inderjit/public_papers/HLA_SVD.pdf)
+
+---
+class: center, middle
+
+# Computing Partial SVD
+
+---
+
+# Computing Partial SVD
+
+- Partial SVD seeks the largest `\(k\)` singular values of a matrix `\(A_{m\times n}\)`
+
+- Can be reduced to computing the largest `\(k\)` eigenvalues of `\(A'A\)` (if `\(m\ge n\)`) or `\(AA'\)` (if `\(m &lt; n\)`)
+
+- Using the power method or other iterative methods, and assuming `\(m\ge n\)`, we need to realize the operation `\(v\rightarrow A'Av\)`
+
+- .highlight[Be cautious of the computing order!] You should compute `\(x\leftarrow Av\)` first and then do `\(y\leftarrow A'x\)`
+
+---
+
+# Advanced Algorithms
+
+- Another algorithm to compute partial SVD is the .highlight[augmented implicitly restarted Lanczos bidiagonalization method] &lt;sup&gt;&lt;span class="small"&gt;[4]&lt;/span&gt;&lt;/sup&gt;
+
+- It works on the original matrix `\(A\)` instead of `\(A'A\)`
+
+- Potentially more numerical stable than computing the eigenvalues of `\(A'A\)`
+
+---
+
+# Implementation
+
+- Simply call `svd()` for .highlight[full (but compact) SVD]
+- You can specify how many left/right singular vectors to return
+
+
+``` r
+set.seed(123)
+n = 1000
+p = 500
+x = matrix(rnorm(n * p), n, p)
+str(svd(x))
+```
+
+```
+## List of 3
+##  $ d: num [1:500] 53.6 53.3 53.3 53 52.6 ...
+##  $ u: num [1:1000, 1:500] 0.00265 -0.03029 0.00451 -0.00763 -0.0034 ...
+##  $ v: num [1:500, 1:500] 0.01699 0.00386 0.00971 -0.01931 0.01455 ...
+```
+
+``` r
+str(svd(x, nu = 10, nv = 10))
+```
+
+```
+## List of 3
+##  $ d: num [1:500] 53.6 53.3 53.3 53 52.6 ...
+##  $ u: num [1:1000, 1:10] 0.00265 -0.03029 0.00451 -0.00763 -0.0034 ...
+##  $ v: num [1:500, 1:10] 0.01699 0.00386 0.00971 -0.01931 0.01455 ...
+```
+
+---
+
+# Benchmark
+
+- Use `nu = 0` and `nv = 0` if you do not need singular vectors
+
+
+``` r
+library(dplyr)
+bench::mark(
+    svd(x),
+    svd(x, nu = 100, nv = 100),
+    svd(x, nu = 1, nv = 1),
+    svd(x, nu = 0, nv = 0),
+    min_iterations = 3, max_iterations = 10, check = FALSE
+) %&gt;% select(expression, min, median)
+```
+
+```
+## # A tibble: 4 × 3
+##   expression                      min   median
+##   &lt;bch:expr&gt;                 &lt;bch:tm&gt; &lt;bch:tm&gt;
+## 1 svd(x)                        593ms    593ms
+## 2 svd(x, nu = 100, nv = 100)    588ms    596ms
+## 3 svd(x, nu = 1, nv = 1)        621ms    630ms
+## 4 svd(x, nu = 0, nv = 0)        200ms    213ms
+```
+
+---
+
+# Implementation
+
+- There are various options for .highlight[partial SVD]
+  - `irlba::irlba`
+  - `RSpectra::svds`
+  - `svd::propack.svd`, `svd::trlan.svd`, and `svd::ztrlan.svd`
+
+
+``` r
+res1 = irlba::irlba(x, 10)
+res1$d
+```
+
+```
+##  [1] 53.56025 53.30589 53.25349 53.03145 52.56782 52.30170 52.13693 51.85140
+##  [9] 51.64052 51.42326
+```
+
+``` r
+res2 = RSpectra::svds(x, k = 10)
+res2$d
+```
+
+```
+##  [1] 53.56025 53.30589 53.25349 53.03145 52.56782 52.30170 52.13693 51.85140
+##  [9] 51.64052 51.42326
+```
+
+---
+
+# Implementation
+
+
+``` r
+res3 = svd::propack.svd(x, neig = 10)
+res3$d
+```
+
+```
+##  [1] 53.56025 53.30589 53.25349 53.03145 52.56782 52.30170 52.13693 51.85140
+##  [9] 51.64052 51.42326
+```
+
+``` r
+res4 = svd::trlan.svd(x, neig = 10)
+res4$d
+```
+
+```
+##  [1] 53.56025 53.30589 53.25349 53.03145 52.56782 52.30170 52.13693 51.85140
+##  [9] 51.64052 51.42326
+```
+
+``` r
+res5 = svd::ztrlan.svd(x, neig = 10)
+res5$d
+```
+
+```
+##  [1] 53.56025 53.30589 53.25349 53.03145 52.56782 52.30170 52.13693 51.85140
+##  [9] 51.64052 51.42326
+```
+
+---
+
+# Benchmark
+
+- `irlba::irlba`, `RSpectra::svds`, and `svd::propack.svd` are roughly at the same level
+
+
+``` r
+bench::mark(
+    irlba::irlba(x, 10, tol = 1e-8),
+    RSpectra::svds(x, k = 10, opts = list(tol = 1e-8)),
+    svd::propack.svd(x, neig = 10, opts = list(tol = 1e-8)),
+    svd::trlan.svd(x, neig = 10, opts = list(tol = 1e-8)),
+    svd::ztrlan.svd(x, neig = 10, opts = list(tol = 1e-8)),
+    min_iterations = 10, max_iterations = 10, check = FALSE
+) %&gt;% select(expression, min, median)
+```
+
+```
+## # A tibble: 5 × 3
+##   expression                                                    min   median
+##   &lt;bch:expr&gt;                                               &lt;bch:tm&gt; &lt;bch:tm&gt;
+## 1 irlba::irlba(x, 10, tol = 1e-08)                           66.5ms   77.4ms
+## 2 RSpectra::svds(x, k = 10, opts = list(tol = 1e-08))        54.1ms   56.6ms
+## 3 svd::propack.svd(x, neig = 10, opts = list(tol = 1e-08))   63.3ms   65.9ms
+## 4 svd::trlan.svd(x, neig = 10, opts = list(tol = 1e-08))    145.5ms  162.6ms
+## 5 svd::ztrlan.svd(x, neig = 10, opts = list(tol = 1e-08))   322.5ms  338.9ms
+```
+
+---
+
+# Implementation
+
+- We will see how partial SVD can be used to efficiently compute PCA of sparse data
+
+---
+class: center, middle
+
+# Sparse Matrix
+
+---
+
+# Sparse Matrix
+
+A matrix that has very few nonzero elements.
+
+- Mathematically, not very different from dense matrices
+- But sparsity can make a huge impact on computing
+
+&lt;img src="lec5_files/figure-html/unnamed-chunk-6-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Problems
+
+We are mostly interested in the following problems:
+
+- How to store sparse data/matrices
+
+- How to implement basic matrix operations on sparse matrices
+
+- How to do statistical computing on sparse matrices
+
+---
+
+# Storage
+
+Two major storage formats:
+
+- Coordinate (COO) format
+
+- Compressed sparse column (CSC) format
+
+---
+
+# COO Format
+
+- Simplest storage scheme
+
+- Row indices, column indices, nonzero elements
+
+`$$\require{color}A=\begin{bmatrix}1 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
+\color{red}3 &amp; 0 &amp; 0 &amp; 5 &amp; 0\\
+0 &amp; 0 &amp; 7 &amp; \color{blue}8 &amp; 9\\
+0 &amp; 0 &amp; \color{green}2 &amp; 1 &amp; 0\\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0
+\end{bmatrix}$$`
+
+`$$\require{color}\begin{align*}
+i &amp; =\begin{bmatrix}1 &amp; \color{red}2 &amp; 3 &amp; \color{green}4 &amp; 2 &amp; \color{blue}3 &amp; 4 &amp; 3\end{bmatrix}\\
+j &amp; =\begin{bmatrix}1 &amp; \color{red}1 &amp; 3 &amp; \color{green}3 &amp; 4 &amp; \color{blue}4 &amp; 4 &amp; 5\end{bmatrix}\\
+x &amp; =\begin{bmatrix}1 &amp; \color{red}3 &amp; 7 &amp; \color{green}2 &amp; 5 &amp; \color{blue}8 &amp; 1 &amp; 9\end{bmatrix}
+\end{align*}$$`
+
+
+---
+
+# COO Format
+
+- For an `\(m\times n\)` matrix with `\(nnz\)` nonzero elements
+
+- COO format needs to store `\(3\cdot nnz\)` numbers
+
+- However, the `\(j\)` vector contains redundant information
+
+- The CSC format is a more economic scheme to represent sparse matrices
+
+---
+
+# CSC Format
+
+- The `\(x\)` vector stores elements in `\(A\)` column by column
+
+- Use a "pointer vector" `\(p\)`, where `\(p_{j+1}-p_{j}\)` is the number of nonzero elements in column `\(j\)`
+
+`$$\small A=\begin{bmatrix}1 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
+3 &amp; 0 &amp; 0 &amp; 5 &amp; 0\\
+0 &amp; 0 &amp; 7 &amp; 8 &amp; 9\\
+0 &amp; 0 &amp; 2 &amp; 1 &amp; 0\\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0
+\end{bmatrix}$$`
+
+`$$\require{color}\small\begin{align*}
+i &amp; =\begin{bmatrix}1 &amp; 2 &amp; 3 &amp; 4 &amp; 2 &amp; 3 &amp; 4 &amp; 3\end{bmatrix}\\
+\color{lightgray}j &amp; \color{lightgray}\;=\begin{bmatrix}1 &amp; 1 &amp; 3 &amp; 3 &amp; 4 &amp; 4 &amp; 4 &amp; 5\end{bmatrix}\\
+\color{deeppink}p &amp; \color{deeppink}\;=\begin{bmatrix}0 &amp; 2 &amp; 2 &amp; 4 &amp; 7 &amp; 8\end{bmatrix}\\
+x &amp; =\begin{bmatrix}1 &amp; 3 &amp; 7 &amp; 2 &amp; 5 &amp; 8 &amp; 1 &amp; 9\end{bmatrix}
+\end{align*}$$`
+
+---
+
+# CSC Format
+
+- The CSC format only needs to store the `\(i\)`, `\(p\)`, and `\(x\)` vectors
+
+- `\(2\cdot nnz+n+1\)` numbers in total
+
+--
+
+- .highlight[Question: If we also know that the sparse matrix is binary, i.e., every element is either 0 or 1, then what is a good scheme for storage?]
+
+---
+
+# Basic Operations
+
+- Elementwise operations are relatively simple
+
+- One of the most important operations for linear systems and eigenvalue computation is the matrix-vector multiplication
+
+- `\(v\rightarrow Av\)` and/or `\(v\rightarrow A'v\)`
+
+---
+
+# Computing `\(A'v\)`
+
+- The key point is to extract each column of `\(A\)`
+
+- Each column can be viewed as a sparse vector
+
+`$$A=\begin{bmatrix}1 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
+3 &amp; 0 &amp; 0 &amp; 5 &amp; 0\\
+0 &amp; 0 &amp; 7 &amp; 8 &amp; 9\\
+0 &amp; 0 &amp; 2 &amp; 1 &amp; 0\\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0
+\end{bmatrix}=\begin{bmatrix}a_{1} &amp; a_{2} &amp; a_{3} &amp; a_{4} &amp; a_{5}\end{bmatrix}$$`
+
+`$$A'v=\begin{bmatrix}a_{1}'v &amp; a_{2}'v &amp; a_{3}'v &amp; a_{4}'v &amp; a_{5}'v\end{bmatrix}'$$`
+
+---
+
+# Extract `\(a_j\)`
+
+- `\(a_j\)` has `\((p_{j+1}-p_j)\)` nonzero elements
+
+
+- The `\((p_j+1)\)`-th element of `\(x\)` is the first nonzero element of `\(a_j\)`
+- The `\((p_j+1)\)`-th element of `\(i\)` is the location of this element in the sparse vector
+
+
+- The `\((p_j+2)\)`-th element of `\(x\)` is the second nonzero element of `\(a_j\)`
+- The `\((p_j+2)\)`-th element of `\(i\)` is the location of this element in the sparse vector
+
+
+- ...
+
+---
+
+# Extract `\(a_j\)`
+
+.pull-left[
+
+`$$\small A=\begin{bmatrix}1 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
+3 &amp; 0 &amp; 0 &amp; 5 &amp; 0\\
+0 &amp; 0 &amp; 7 &amp; 8 &amp; 9\\
+0 &amp; 0 &amp; 2 &amp; 1 &amp; 0\\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0
+\end{bmatrix}$$`
+
+`$$\small\begin{align*}
+i &amp; =\begin{bmatrix}1 &amp; 2 &amp; 3 &amp; 4 &amp; 2 &amp; 3 &amp; 4 &amp; 3\end{bmatrix}\\
+p &amp; =\begin{bmatrix}0 &amp; 2 &amp; 2 &amp; 4 &amp; 7 &amp; 8\end{bmatrix}\\
+x &amp; =\begin{bmatrix}1 &amp; 3 &amp; 7 &amp; 2 &amp; 5 &amp; 8 &amp; 1 &amp; 9\end{bmatrix}
+\end{align*}$$`
+
+]
+
+.pull-right[
+
+- For example, to get the third column, `\(a_3\)`
+
+- `\(p_4-p_3=2\)`, meaning `\(a_3\)` has two nonzero elements
+
+- `\(p_3+1=3\)`, `\(x_3=7\)`, `\(i_3=3\)`
+
+- `\(p_3+2=4\)`, `\(x_4=2\)`, `\(i_4=4\)`
+
+- `\(a_3\)` can be expressed as `\(\{3\rightarrow 7, 4\rightarrow 2\}\)`
+
+]
+
+---
+
+# Computing `\(A'v\)`
+
+- Similarly, we can get
+`$$\begin{align*}
+a_{1} &amp; =\{1\rightarrow 1,2\rightarrow 3\}\\
+a_{2} &amp; =\{\}\\
+a_{3} &amp; =\{3\rightarrow 7,4\rightarrow 2\}\\
+a_{4} &amp; =\{2\rightarrow 5,3\rightarrow 8,4\rightarrow 1\}\\
+a_{5} &amp; =\{3\rightarrow 9\}
+\end{align*}$$`
+
+- Then the inner products only involve nonzero elements
+`$$\begin{align*}
+a_{1}'v &amp; =1\cdot v_{1}+3\cdot v_{2}\\
+a_{2}'v &amp; =0\\
+a_{3}'v &amp; =7\cdot v_{3}+2\cdot v_{4}\\
+ &amp; \cdots
+\end{align*}$$`
+
+---
+
+# Computing `\(Av\)`
+
+- We can again use the sparse vectors `\(a_j\)` to compute `\(Av\)`
+
+`$$A=\begin{bmatrix}1 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
+3 &amp; 0 &amp; 0 &amp; 5 &amp; 0\\
+0 &amp; 0 &amp; 7 &amp; 8 &amp; 9\\
+0 &amp; 0 &amp; 2 &amp; 1 &amp; 0\\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0
+\end{bmatrix}=\begin{bmatrix}a_{1} &amp; a_{2} &amp; a_{3} &amp; a_{4} &amp; a_{5}\end{bmatrix}$$`
+
+`$$Av=v_{1}a_{1}+\cdots+v_{5}a_{5}$$`
+
+- Each `\(v_ja_j\)` is still a sparse vector formed by multiplying each nonzero element of `\(a_j\)` by `\(v_j\)`
+
+---
+
+# Computing `\(Av\)`
+
+- Therefore, computing `\(Av\)` reduces to:
+
+  1. Initialize `\(r\leftarrow \mathbf{0}_m\)`
+  
+  2. For `\(j=1,\ldots,n\)` do `\(r\leftarrow r+v_ja_j\)`
+  
+- For example, `\(a_3=\{3\rightarrow 7,4\rightarrow 2\}\)`
+
+- Then `\(r\leftarrow r+v_3a_3\)` expands to
+
+`$$\begin{align*}
+r_{3} &amp; \leftarrow r_{3}+7\cdot v_{3}\\
+r_{4} &amp; \leftarrow r_{4}+2\cdot v_{4}
+\end{align*}$$`
+
+---
+
+# Computational Complexity
+
+- In general, for matrix `\(A_{m\times n}\)` with `\(nnz\)` nonzero elements
+
+- The complexity of `\(v\rightarrow Av\)` and `\(v\rightarrow A'v\)` are both `\(O(nnz)\)`
+
+- This makes many iterative methods very efficient on sparse matrices
+
+---
+
+# Implementation
+
+- The **Matrix** R package has nice support for different kinds of sparse matrices
+- A simple way to construct sparse matrices is to create from an `(i, j, x)` triplet (COO format)
+- The result is typically in CSC format (`dgCMatrix`)
+
+
+``` r
+library(Matrix)
+i = c(1, 2, 3, 4, 2, 3, 4, 3)
+j = c(1, 1, 3, 3, 4, 4, 4, 5)
+x = c(1, 3, 7, 2, 5, 8, 1, 9)
+xsp = sparseMatrix(i = i, j = j, x = x, dims = c(5, 5))
+xsp
+```
+
+```
+## 5 x 5 sparse Matrix of class "dgCMatrix"
+##               
+## [1,] 1 . . . .
+## [2,] 3 . . 5 .
+## [3,] . . 7 8 9
+## [4,] . . 2 1 .
+## [5,] . . . . .
+```
+
+---
+
+# Implementation
+
+- Note that internally, the `\(i\)` vector uses 0-based indices
+
+
+``` r
+xsp
+```
+
+```
+## 5 x 5 sparse Matrix of class "dgCMatrix"
+##               
+## [1,] 1 . . . .
+## [2,] 3 . . 5 .
+## [3,] . . 7 8 9
+## [4,] . . 2 1 .
+## [5,] . . . . .
+```
+
+``` r
+str(xsp)
+```
+
+```
+## Formal class 'dgCMatrix' [package "Matrix"] with 6 slots
+##   ..@ i       : int [1:8] 0 1 2 3 1 2 3 2
+##   ..@ p       : int [1:6] 0 2 2 4 7 8
+##   ..@ Dim     : int [1:2] 5 5
+##   ..@ Dimnames:List of 2
+##   .. ..$ : NULL
+##   .. ..$ : NULL
+##   ..@ x       : num [1:8] 1 3 7 2 5 8 1 9
+##   ..@ factors : list()
+```
+
+---
+
+# Implementation
+
+- Another way to construct sparse matrices is to convert from dense matrices
+
+
+``` r
+set.seed(123)
+n = 1000
+nnz = floor(0.01 * n^2)
+xdata = numeric(n^2)
+xdata[sample(n^2, nnz)] = rnorm(nnz)
+x = matrix(xdata, n, n)
+class(x)
+```
+
+```
+## [1] "matrix" "array"
+```
+
+``` r
+xsp = as(x, "sparseMatrix")
+class(xsp)
+```
+
+```
+## [1] "dgCMatrix"
+## attr(,"package")
+## [1] "Matrix"
+```
+
+---
+
+# Benchmark
+
+- Matrix multiplication operations are already defined for sparse matrices
+
+
+``` r
+bench::mark(
+    x %*% x, crossprod(x),
+    xsp %*% xsp, crossprod(xsp),
+    min_iterations = 10, max_iterations = 10, check = FALSE
+) %&gt;% select(expression, min, median)
+```
+
+```
+## # A tibble: 4 × 3
+##   expression          min   median
+##   &lt;bch:expr&gt;     &lt;bch:tm&gt; &lt;bch:tm&gt;
+## 1 x %*% x        388.27ms 403.67ms
+## 2 crossprod(x)    289.6ms 302.27ms
+## 3 xsp %*% xsp      4.05ms   4.17ms
+## 4 crossprod(xsp)    4.5ms   4.72ms
+```
+
+---
+class: center, middle
+
+# Sparse Matrix Computation
+
+---
+
+# Direct Methods
+
+- Direct methods for sparse matrices are typically difficult problems
+
+- .highlight[Preservation of sparsity] is a big challenge
+
+- If `\(A\)` is sparse, `\(A=LU\)`, `\(L\)` and `\(U\)` are not necessarily sparse
+
+- Therefore, proper ordering of rows/columns of `\(A\)` is critical
+
+- With some permutation matrices `\(P\)` and `\(Q\)`, `\(PAQ=\tilde{L}\tilde{U}\)`, `\(\tilde{L}\)` and `\(\tilde{U}\)` may be much more sparse than `\(L\)` and `\(U\)`
+
+---
+
+# Direct Methods
+
+- There are indeed sparse decomposition methods, e.g.,
+
+  - Sparse LU decomposition
+  
+  - Sparse Cholesky decomposition
+
+- They are typically very sophisticated
+
+- Software support such as [SuiteSparse](https://people.engr.tamu.edu/davis/suitesparse.html)
+
+---
+
+# Iterative Methods
+
+- We are mostly interested in iterative methods for sparse matrices
+
+- Small memory cost
+
+- Computationally efficient
+
+- Easy to implement
+
+---
+
+# Core Idea
+
+- Iterative methods that rely on `\(v\rightarrow Av\)`, `\(v\rightarrow A'v\)`, or some other minor operations are readily available for sparse matrices
+
+- Conjugate gradient method
+
+- Iterative eigenvalue algorithms such as power method
+
+- Partial SVD
+
+---
+class: center, middle
+
+# Case Studies
+
+---
+
+# Statistical Computing on Sparse Matrix
+
+- Regression
+
+- Ridge regression
+
+- PCA
+
+- Lasso (preview)
+
+---
+
+# Regression on Sparse Data
+
+- Suppose the data matrix `\(X\)` is sparse
+
+- Target is `\(\hat{\beta}=(X'X)^{-1}X'Y\)`
+
+- However, `\(X'X\)` may no longer be sparse
+
+- Also, `\(X\)` typically does not have a "specialized" QR decomposition
+
+- Therefore, there is no obvious benefit of the sparsity (except for computing `\(X'X\)`)
+
+---
+
+# Regression on Sparse Data
+
+- In contrast, CG can effectively utilize the sparsity
+
+- CG solves `\(Ax=b\)`, where `\(A=X'X\)` and `\(b=X'Y\)`
+
+- `\(\require{color}\color{deeppink}A\)` .highlight[is never explictly formed]
+
+- CG requires the operation `\(v\rightarrow Av=X'Xv\)`
+
+- Compute two sparse matrix-vector multiplications
+
+  1. `\(u\leftarrow Xv\)`
+  
+  2. `\(w\leftarrow X'u\)`
+
+---
+
+# Implementation
+
+- First simulate sparse data and use the dense solver to get the result
+
+
+``` r
+library(Matrix)
+set.seed(123)
+n = 10000
+p = 500
+xsp = rsparsematrix(n, p, density = 0.001)
+x = as.matrix(xsp)
+y = rnorm(n)
+bhat = solve(crossprod(x), crossprod(x, y))
+bhat[1:5]
+```
+
+```
+## [1] -0.003835525 -0.211645950  0.102156056  0.294562285  0.031367565
+```
+
+---
+
+# Implementation
+
+- Slight modification of the CG code
+
+
+``` r
+reg_cg = function(Xsp, y, x0 = rep(0, ncol(Xsp)), eps = 1e-6)
+{
+    b = as.numeric(crossprod(Xsp, y))
+    x = x0
+    p = r = b - as.numeric(crossprod(Xsp, Xsp %*% x))
+    r2 = sum(r^2)
+    errs = c()
+    for(i in seq_along(b))
+    {
+        Ap = as.numeric(crossprod(Xsp, Xsp %*% p))
+        alpha = r2 / sum(p * Ap)
+        x = x + alpha * p
+        r = r - alpha * Ap
+        r2_new = sum(r^2)
+        err = sqrt(r2_new)
+        errs = c(errs, err)
+
+        if(err &lt; eps)
+            break
+        beta = r2_new / r2
+        p = r + beta * p
+        r2 = r2_new
+    }
+    list(beta_hat = x, errs = errs, niter = i)
+}
+```
+
+---
+
+# Implementation
+
+- Verify the result
+
+
+``` r
+cg = reg_cg(xsp, y, eps = 1e-6)
+bhat_cg = cg$beta_hat
+cg$niter
+```
+
+```
+## [1] 56
+```
+
+``` r
+bhat_cg[1:5]
+```
+
+```
+## [1] -0.003835524 -0.211645950  0.102156055  0.294562283  0.031367563
+```
+
+``` r
+max(abs(bhat_cg - bhat))
+```
+
+```
+## [1] 1.548608e-07
+```
+
+---
+
+# Benchmark
+
+- Significant speedup over dense operations
+
+
+``` r
+bench::mark(
+    solve(crossprod(x), crossprod(x, y)),
+    reg_cg(xsp, y),
+    min_iterations = 3, max_iterations = 10, check = FALSE
+) %&gt;% select(expression, min, median)
+```
+
+```
+## # A tibble: 2 × 3
+##   expression                                min   median
+##   &lt;bch:expr&gt;                           &lt;bch:tm&gt; &lt;bch:tm&gt;
+## 1 solve(crossprod(x), crossprod(x, y)) 887.87ms 949.64ms
+## 2 reg_cg(xsp, y)                         2.16ms   3.06ms
+```
+
+---
+
+# Ridge Regression on Sparse Data
+
+- Ridge regression is similar, but now `\(A=X'X+\lambda I\)` and `\(b=X'Y\)`
+
+- Again, `\(A\)` .highlight[should not be explictly formed]
+
+- Now we need the operation `\(v\rightarrow Av=(X'X+\lambda I)v\)`
+
+- Compute two sparse matrix-vector multiplications and one vector addition
+
+  1. `\(u\leftarrow Xv\)`
+  
+  2. `\(w\leftarrow X'u\)`
+  
+  3. `\(z\leftarrow w+\lambda v\)`
+
+---
+
+# Excercises
+
+1. Implement the ridge regression for a sparse `\(X\)` with `\(n=10000\)` and `\(p=500\)`
+
+2. What if `\(p\gg n\)`? For example, `\(X\)` is a sparse matrix with `\(n=500\)` and `\(p=10000\)`
+
+3. We can find that the majority part of the CG code is unchanged in different problems. Design an implementation of CG that is as general as possible. .highlight[Hint: pass a function `Ax` as the first argument of CG, where `Ax` has the signature]
+```
+Ax = function(x, args) {...}
+```
+.highlight[`Ax` should implement the operation] `\(\require{color}\color{deeppink}v\rightarrow Av\)`.highlight[, and `args` contains information about] `\(\require{color}\color{deeppink}A.\)`
+
+---
+
+# PCA on Sparse Data
+
+- Another common task for large data is computing PCA
+
+- Equivalent to computing the largest `\(k\)` eigenvalues of the sample covariance matrix
+
+- An obvious way is to first compute
+`$$S=\frac{1}{n-1}\sum_{i=1}^{n}(x_{i\cdot}-\bar{x})(x_{i\cdot}-\bar{x})',$$`
+where `\(x_{i\cdot}\in\mathbb{R}^p\)` is the `\(i\)`-th observation, and `\(\bar{x}\in\mathbb{R}^p\)` is the sample mean vector
+
+- Then compute eigenvalues of `\(S\)`
+
+---
+
+# PCA on Sparse Data
+
+- However, this does not fully utilize the sparsity
+
+- In fact, `\(S\)` is generally a dense matrix
+
+- A better scheme is to observe that
+`$$S=\frac{1}{n-1}(X-\mathbf{1}_{n}\bar{x}')'(X-\mathbf{1}_{n}\bar{x}'),$$`
+where `\(X\)` is the data matrix, and `\(\mathbf{1}_n\)` is a vector of ones
+
+- Ignoring the `\((n-1)^{-1}\)` factor, we only need to compute the eigenvalues of `\(A'A\)`, where `\(A=X-\mathbf{1}_{n}\bar{x}'\)`
+
+- Also equivalent to the partial SVD of `\(A\)`
+
+---
+
+# PCA on Sparse Data
+
+- Then we need to implement the operations `\(v\rightarrow Av\)` and `\(v\rightarrow A'v\)`
+
+- As a first step, we need to compute `\(\bar{x}\)`. This is relatively easy since we have shown how to extract columns of `\(X\)`
+
+- Then to do `\(v\rightarrow Av=(X-\mathbf{1}_{n}\bar{x}')v\)`:
+
+  1. `\(u\leftarrow Xv\)`
+
+  2. `\(s\leftarrow \bar{x}'v\)`
+
+  3. `\(w\leftarrow u-s\mathbf{1}_n\)`
+
+---
+
+# PCA on Sparse Data
+
+- Similarly, to do `\(v\rightarrow A'v=(X-\mathbf{1}_{n}\bar{x}')'v\)`:
+
+  1. `\(u\leftarrow X'v\)`
+
+  2. `\(s\leftarrow \mathbf{1}'v\)`
+
+  3. `\(w\leftarrow u-s\bar{x}\)`
+
+---
+
+# Implementation and Benchmark
+
+- See https://statr.me/2019/11/rspectra-center-scale/ for more details
+
+- Especially the `center` and `scale` parameters in the `RSpectra::svds` function
+
+---
+
+# References
+
+.medium[
+
+[1] Grégoire Allaire and Sidi Mahmoud Kaber (2008). Numerical linear algebra. Springer.
+
+[2] Åke Björck (2015). Numerical methods in matrix computations. Springer.
+
+[3] Gene H. Golub and William Kahan (1965). Calculating the singular values and pseudoinverse of a matrix. Journal of SIAM: Series B, Numerical Analysis, 205–224.
+
+[4] James Baglama and Lothar Reichel (2005). Augmented implicitly restarted Lanczos bidiagonalization methods. SIAM Journal on Scientific Computing, 27(1), 19-42.
+
+[5] Iain S. Duff, Albert M. Erisman, and John K. Reid (2017). Direct methods for sparse matrices. Oxford University Press.
+
+[6] Yousef Saad (2003). Iterative methods for sparse linear systems. Society for Industrial and Applied Mathematics.
+
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

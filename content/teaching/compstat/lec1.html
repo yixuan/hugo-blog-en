@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Computational Statistics</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Yixuan Qiu" />
+    <meta name="date" content="2025-09-08" />
+    <script src="libs/header-attrs-2.29/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        CommonHTML: {
+          scale: 100
+        }
+      });
+    </script>
+    <link rel="stylesheet" href="style.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Computational Statistics
+]
+.subtitle[
+## Lecture 1
+]
+.author[
+### Yixuan Qiu
+]
+.date[
+### 2025-09-08
+]
+
+---
+
+class: center, middle
+
+![](images/books.png)
+
+---
+class: inverse, center, middle
+
+# The Role of Computing
+
+---
+
+# The Paradox
+
+Modern statistics and data science demand for novel and efficient computing algorithms
+
+- Big data break down many existing software packages
+
+- Solving complicated models are time-consuming
+
+- Hardware resources are not utilized in the most efficient way
+
+- High energy consumption but low performance
+
+---
+
+# The Paradox
+
+However, computing has long been an underrated field in statistics
+
+- Researchers tend to spend more time on the theoretical properties of models and methods
+
+- Practitioners love to directly use software packages and care less about the computing details
+
+- Computing itself is less likely to be the primary object of study
+
+- .highlight[A carefully designed computing algorithm may be deemed merely a "trick" rather than solid contributions]
+
+---
+class: center, middle
+
+## .highlight[But doing it right is nontrivial]
+
+---
+class: inverse, center, middle
+
+# Test Yourself
+
+---
+
+**Q1.** Given two matrices `\(A_{n\times m}\)` and `\(B_{m\times n}\)`, compute `\(\mathrm{tr}(AB)\)`.
+
+--
+
+Easy, isn't it?
+
+```r
+sum(diag(A %*% B))
+```
+
+--
+
+.highlight[But this is REALLY bad!]
+
+--
+
+
+``` r
+set.seed(123)
+A = matrix(rnorm(1000 * 2000), 2000)
+B = matrix(rnorm(1000 * 2000), 1000)
+system.time(sum(diag(A %*% B)))
+```
+
+```
+##    user  system elapsed 
+##    0.63    0.00    2.09
+```
+
+--
+
+
+
+"My solution" takes 0.017 seconds.
+
+---
+
+**Q2.** Let `\(f(x)\sim 0.3 \cdot N(-1, 0.1) + 0.7 \cdot N(1, 0.01)\)`.
+Write a function to evaluate `\(\log f(x)\)`. Test the result on `\(x=-15\)` and `\(x=15\)`.
+
+--
+
+
+``` r
+logf = function(x)
+{
+    f = 0.3 * dnorm(x, -1, sqrt(0.1)) + 0.7 * dnorm(x, 1, 0.1)
+    log(f)
+}
+
+logf(c(-15, 15))
+```
+
+```
+## [1] -Inf -Inf
+```
+
+--
+
+.highlight[Any better solution?]
+
+--
+
+
+
+The correct results are -980.972, -1280.972.
+
+--
+
+.highlight[What if we need] `\(\partial \log f(x)/\partial x\)`.highlight[, e.g., in Hamiltonian Monte Carlo?]
+
+---
+
+**Q3.** Computing predicted values of linear regression `\(\hat{y}=X(X'X)^{-1}X'Y\)`.
+
+--
+
+Literally translate the formula:
+
+```r
+X %*% solve(t(X) %*% X) %*% t(X) %*% Y
+```
+
+--
+
+.highlight[NEVER, ever, do this!]
+
+--
+
+
+``` r
+set.seed(123)
+X = matrix(rnorm(5000 * 500), 5000)
+Y = rnorm(5000)
+system.time(X %*% solve(t(X) %*% X) %*% t(X) %*% Y)
+```
+
+```
+##    user  system elapsed 
+##    1.41    0.02   10.15
+```
+
+--
+
+
+
+"My solution" takes 0.426 seconds.
+
+---
+
+**Q4.** Computing the operator norm of a matrix `\(A_{m\times n}\)`, `\(m&lt;n\)`. `\(\Vert A\Vert_{\mathrm{op}}=\sqrt{\lambda_\max(A'A)}\)`.
+
+--
+
+By definition:
+
+```r
+sqrt(eigen(t(A) %*% A)$values[1])
+```
+
+--
+
+.highlight[How fast is it on a matrix of size, say, 1000 x 2000?]
+
+--
+
+
+``` r
+set.seed(123)
+A = matrix(rnorm(1000 * 2000), 1000)
+system.time(sqrt(eigen(t(A) %*% A)$values[1]))
+```
+
+```
+##    user  system elapsed 
+##    2.97    0.03   13.25
+```
+
+--
+
+.highlight[Any method to accelerate it?]
+
+--
+
+
+
+"My solution" takes 0.242 seconds.
+
+---
+
+## Do you still think computing is trivial?
+
+- Perhaps you have already used such "bad" code in your projects
+
+- But maybe you have not identified the issues in these examples yet
+
+- .highlight[If this is the case, then this course is going to help you!]
+
+---
+class: inverse, center, middle
+
+# Why We Study Computing
+
+---
+
+# Studying Computing
+
+- It boosts modern statistical research
+
+- Many problems are not yet well resolved and are good research topics
+
+- It helps us to make the best use of computational resources
+
+- It is fun!
+
+---
+
+# Some (Loose) Definitions &lt;sup&gt;&lt;span class="small"&gt;[1]&lt;/span&gt;&lt;/sup&gt;
+
+- .highlight[Statistical Computing]: Computational methods that enable statistical methods
+
+- .highlight[Computational Statistics]: Statistical computing + statistical methods that are computationally intensive
+
+---
+
+# Scope
+
+Statistical computing is a multidisciplinary field
+
+- Statistics
+- Computer science
+- Numerical analysis
+- Optimization
+- Database
+- Programming
+- Graphics
+- Software engineering
+- Reproducible research
+- ...
+
+---
+
+# Scope
+
+Computational statistics builds on top of mathematical statistics, statistical computing, and applied statistics
+
+- Everything that appears in the previous slide
+- Monte Carlo simulation
+- Bootstrap/resampling techniques
+- EM algorithm
+- Density estimation
+- Computational optimal transport
+- ...
+
+---
+
+# Scope
+
+- This course would primarily focus on fundamental computing techniques
+
+- Will also discuss some advanced topics in modern computational statistics
+
+---
+
+# Fundamental Problems
+
+- Numerical Linear Algebra
+  - Computations on matrices and vectors
+
+- Optimization
+  - Minimizing objective functions
+
+- Simulation/Sampling
+  - Generating random numbers from statistical distributions
+
+---
+class: inverse, center, middle
+
+# Roadmap
+
+---
+
+# Principle
+
+- We will introduce numerical tools that are useful in statistical computing
+
+- We may not elaborate the details of every algorithm, but will introduce its motivation and function
+
+- You do not need to be an expert on each method
+
+- But you need to know their existence, so that you can quickly recall them when you encounter a related problem
+
+---
+
+# Course Projects
+
+- Some important methods and algorithms will be left as homework or course projects
+
+  - Understand the details well
+  
+  - Go through and verify the theoretical properties
+    
+  - Implement the algorithm correctly and efficiently
+
+---
+
+# Topics on Numerical Linear Algebra
+
+- Triangular and tridiagonal systems
+
+- LU decomposition
+
+- Cholesky decomposition
+
+- Conjugate gradient method
+
+- `\(LDL^T\)` decomposition
+
+- QR decomposition
+
+- Eigenvalue/Singular value decomposition
+
+- Basic sparse matrix operations
+
+---
+
+# Topics on Optimization
+
+- (Sub)Gradient descent and projected (sub)gradient descent
+
+- Newton's method
+
+- Proximal gradient descent
+
+- L-BFGS and L-BFGS-B
+
+- Douglas-Rachford splitting
+
+- ADMM
+
+---
+
+# Topics on Simulation and Sampling
+
+- Univariate random number generation
+
+- Rejection sampling
+
+- Importance sampling
+
+- Markov chain Monte Carlo
+
+- Measure transport
+
+---
+
+# Miscellaneous
+
+- Numerical stability
+
+- Software
+
+- Calling C++ code within R and Python
+
+- Basic parallel computing methods
+
+---
+
+# Goals of Statistical Computing
+
+- Be .highlight[Accurate]
+
+- Be .highlight[Stable]
+
+- Be .highlight[Fast]
+
+---
+class: inverse, center, middle
+
+# Every Story Starts with Regression
+
+---
+
+# Linear Regression
+
+In the classical setting, we are concerned with the regression model
+
+`$$Y_{n\times 1}=X_{n\times p}\beta_{p\times 1}+\varepsilon_{n\times 1}.$$`
+
+The ordinary least squares (OLS) solution is well-established:
+
+`$$\hat{\beta}=(X'X)^{-1}X'Y.$$`
+
+Is computing still a problem?
+
+---
+
+# Problem 1: Do OLS right
+
+- What is the proper method to compute `\(\hat{\beta}\)`? (Recall the problem in "Test Yourself")
+
+- What if `\(X\)` is not full-rank, and how to detect it?
+
+- What if `\(n\)` is extremely large?
+
+- What if `\(X\)` is sparse?
+
+---
+
+# Problem 2: Ridge regression
+
+If `\(n&lt;p\)`, we can fit a ridge regression model, and the coefficient estimate also has a closed form:
+
+`$$\hat{\beta}_\lambda=(X'X+\lambda I)^{-1}X'Y,\quad \lambda&gt;0.$$`
+
+- What is the proper method to compute `\(\hat{\beta}_\lambda\)`?
+
+- What if `\(p\)` is extremely large?
+
+- What if `\(X\)` is sparse?
+
+---
+
+# Problem 3: Lasso
+
+Alternatively, we can use a lasso model, which solves the optimization problem
+
+`$$\hat{\beta}_{lasso}=\underset{\beta}{\arg\min}\ \frac{1}{2n}\Vert Y-X\beta\Vert^2+\lambda \Vert\beta\Vert_1.$$`
+
+`\(\hat{\beta}_{lasso}\)` no longer has a closed form.
+
+- What is the proper method to compute `\(\hat{\beta}_{lasso}\)`?
+
+- What if `\(X\)` is sparse?
+
+- What about other general penalty functions?
+
+---
+
+# Problem 4: Nonnegative Least Squares
+
+In the regression setting, if we force `\(\beta\)` to be nonnegative, then we need to solve
+
+`$$\hat{\beta}_{nls}=\underset{\beta}{\arg\min}\ \Vert Y-X\beta\Vert^2\quad \text{subject to}\quad\beta\ge 0.$$`
+
+`\(\hat{\beta}_{nls}\)` does not have a closed form either.
+
+- What is the proper method to compute `\(\hat{\beta}_{nls}\)`?
+
+- What if `\(X\)` is sparse?
+
+- What about other general constraints?
+
+---
+
+# Problem 5: Bayesian Regression
+
+We assume `\((\beta,\sigma^2)\)` has a joint prior distribution `\(\pi(\beta,\sigma^2)\)`, and given `\((\beta,\sigma^2)\)`, `\(Y|\{\beta,\sigma^2\}\sim N(X\beta,\sigma^2 I)\)`.
+
+- How to approximate expectations `\(\mathbb{E}[f(\beta,\sigma)]\)` with respect to the posterior distribution `\(p(\beta,\sigma^2|Y,X)\)`, for some predetermined function `\(f\)`?
+
+- How to obtain an independent sample of `\(p(\beta,\sigma^2|Y,X)\)`?
+
+- How to get unbiased estimators for `\(\mathbb{E}[f(\beta,\sigma)]\)`?
+
+- What if `\(n\)` is extremely large?
+
+---
+
+# Connections
+
+- Problems 1 and 2 mainly involve numerical linear algebra
+
+- Problems 3 and 4 are optimization problems
+
+- Problem 5 is concerned with simulation and sampling techniques
+
+- .highlight[They would interact with each other]
+
+---
+
+# References
+
+[1] James E. Gentle, Wolfgang Karl Härdle, and Yuichi Mori (2012). Handbook of Computational Statistics. Springer.
+
+[2] Dennis S. Bernstein (2009). Matrix Mathematics: Theory, Facts, and Formulas (Second Edition). Princeton University Press.
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

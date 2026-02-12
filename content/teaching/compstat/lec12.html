@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Computational Statistics</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Yixuan Qiu" />
+    <meta name="date" content="2025-12-08" />
+    <script src="libs/header-attrs-2.29/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        CommonHTML: {
+          scale: 100
+        }
+      });
+    </script>
+    <link rel="stylesheet" href="style.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Computational Statistics
+]
+.subtitle[
+## Lecture 12
+]
+.author[
+### Yixuan Qiu
+]
+.date[
+### 2025-12-08
+]
+
+---
+
+class: inverse, center, middle
+
+# Simulation and Sampling
+
+
+
+---
+
+# Today's Topics
+
+- Markov chain Monte Carlo (MCMC)
+
+- Metropolis-Hastings algorithm
+
+- Gibbs sampler
+
+---
+
+# Problem
+
+Given .highlight[unnormalized] probability density/mass function `\(u(x)\propto \pi(x)\)`, estimate high-dimensional integral
+
+`$$I=\mathbb{E}_X[f(X)]=\int f(x)\pi(x)\mathrm{d}x,\quad X\sim \pi(x).$$`
+
+--
+
+We have already introduced inverse transform algorithm, rejection sampling, and importance sampling.
+
+--
+
+But they are not "general" enough.
+
+---
+
+# MCMC
+
+Markov chain Monte Carlo (MCMC) tackles this problem by constructing a Markov chain
+
+`$$X_0\rightarrow X_1\rightarrow \cdots \rightarrow X_N,$$`
+
+and approximate the integral as
+
+`$$\hat{I}=\frac{1}{N}\sum_{i=1}^{N}f(X_{i}).$$`
+
+We hope that `\(\hat{I}\rightarrow I=\mathbb{E}_X[f(X)]\)` almost surely as `\(N\rightarrow \infty\)`.
+
+---
+
+# MCMC
+
+Unlike previously introduced Monte Carlo methods, the Markov chain
+`\(X_0\rightarrow\cdots\rightarrow X_N\)` in general contains .highlight[dependent]
+sample points `\(\{X_i\}\)`.
+
+--
+
+The nature of Markov chains implies that `\(X_{t+1}\)` should be only based on `\(X_t\)` (with other independent sources of randomness) and not on `\(X_0,\ldots,X_{t-1}\)`.
+
+--
+
+Therefore, with a given starting point `\(X_0\)`, the whole Markov chain can be specified via a conditional distribution `\(\mathcal{T}(y|x)\)`:
+
+`$$X_1\sim \mathcal{T}(\cdot|X_0),\quad X_2\sim \mathcal{T}(\cdot|X_1),\quad\ldots$$`
+
+---
+
+# Transition Kernel
+
+- Such a conditional distribution is typically called a .highlight[transition kernel]
+
+- Denoted as `\(\mathcal{T}(x\rightarrow y)\equiv \mathcal{T}(y|x)\)`
+
+- Think of `\(x\)` as the current position/state, and `\(y\)` the next position/state in the Markov chain
+
+--
+
+- Our target is to find such a `\(\mathcal{T}(x\rightarrow y)\)` such that `\(\hat{I}\rightarrow I\ \ a.s.\)` holds
+
+---
+
+# Regularity Conditions
+
+We first require `\(\mathcal{T}(x\rightarrow y)\)` to satisfy some mild regularity conditions:
+
+- Irreducible: it is possible to get to any state from any state
+
+- Aperiodic: the chain cannot get trapped in cycles
+
+- Positive recurrent: revists every neighborhood infinitely often
+
+These conditions are rather weak and can be easily satisfied.
+
+---
+
+# Invariant/Stationary Distribution
+
+The "real" condition that matters is that `\(\pi(x)\)` is an invariant/stationary distribution of `\(\mathcal{T}(x\rightarrow y)\)`, meaning that
+
+`$$\pi(y)=\int\pi(x)\mathcal{T}(x\rightarrow y)\mathrm{d}x.$$`
+
+--
+
+- Combined with the regularity conditions, we have `\(\hat{I}\rightarrow I\ \ a.s.\)`
+
+- This property is called the .highlight[ergodicity] of Markov chains
+
+- `\(X_0\)` can be chosen arbitrarily
+
+---
+
+# Detailed Balance
+
+- How to satisfy the stationary distribution condition?
+
+- We typically consider a stronger, but easier-to-verify condition called detailed balance:
+`$$\pi(x)\mathcal{T}(x\rightarrow y)=\pi(y)\mathcal{T}(y\rightarrow x)$$`
+
+- Easy to verify that it implies the stationary distribution condition
+
+- .highlight[Sufficient but not necessary]
+
+---
+
+# Important Algorithms
+
+- Metropolis-Hastings algorithm
+
+- Gibbs sampler
+
+- Metropolis-adjusted Langevin algorithm
+
+- Hamiltonian Monte Carlo
+
+---
+class: inverse, center, middle
+
+# Metropolis-Hastings Algorithm
+
+---
+
+# Metropolis-Hastings Algorithm
+
+- Listed as one of the "Top 10 Algorithms" in the 20th century &lt;sup&gt;&lt;span class="small"&gt;&lt;a href="https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;arnumber=814652"&gt;[1]&lt;/a&gt;&lt;/span&gt;&lt;/sup&gt;
+
+- Foundation of many other MCMC algorithms
+
+- Simple and widely used
+
+---
+
+# Metropolis-Hastings Algorithm
+
+- Choose an initial value `\(X_0\)`
+
+- Choose an .highlight[arbitrary] proposal distribution `\(q(y|x)\)`
+
+- Given `\(X_t\)`, propose a new point `\(Y\sim q(\cdot|X_t)\)`
+
+- Define
+`$$\alpha=\min\left(1,\frac{\pi(Y)q(X_{t}|Y)}{\pi(X_{t})q(Y|X_{t})}\right)$$`
+
+- With probability `\(\alpha\)` set `\(X_{t+1}=Y\)`; otherwise set `\(X_{t+1}=X_t\)`
+
+---
+
+# Some (Important) Remarks
+
+- We do not really need to know `\(\pi(x)\)`
+
+- The unnormalized density `\(u(x)\propto \pi(x)\)` suffices, since
+`$$\alpha=\min\left(1,\frac{\pi(Y)q(X_{t}|Y)}{\pi(X_{t})q(Y|X_{t})}\right)=\min\left(1,\frac{u(Y)q(X_{t}|Y)}{u(X_{t})q(Y|X_{t})}\right)$$`
+
+- `\(q(y|x)\)` can be chosen almost completely freely (but some would be better)
+
+- .highlight[These properties show the real power of M-H]
+
+---
+
+# Some (Important) Remarks
+
+- If the "acceptance" step `\(X_{t+1}=Y\)` fails, we still need to make `\(X_{t+1}=X_t\)` (i.e., repeat the previous position once)
+
+- This is different from the rejection sampling
+
+---
+
+# Transition Kernel
+
+- Let `\(\alpha(x,y)=\min\left(1,\frac{u(y)q(x|y)}{u(x)q(y|x)}\right)\)`
+
+- Probability of proposing `\(x_{t+1}\)` and accepting it is `\(q(x_{t+1}|x_t)\alpha(x_t,x_{t+1})\)`
+
+- Probability of accepting a move is `\(\alpha(x_t)=\int q(y|x_t)\alpha(x_t,y)\mathrm{d}y\)`
+
+- The transition kernel is
+`$$\mathcal{T}(x_{t}\rightarrow x_{t+1})=q(x_{t+1}|x_{t})\alpha(x_{t},x_{t+1})+(1-\alpha(x_{t}))\delta(x_{t+1}=x_{t}),$$`
+where `\(\delta(\cdot)\)` is a Dirac measure
+
+---
+
+# Verifying Detailed Balance
+
+- We need to verify
+`$$\pi(x_t)\mathcal{T}(x_t\rightarrow x_{t+1})=\pi(x_{t+1})\mathcal{T}(x_{t+1}\rightarrow x_t)$$`
+
+- First term of LHS is
+`$$\begin{align*}
+ &amp; \pi(x_{t})q(x_{t+1}|x_{t})\alpha(x_{t},x_{t+1})\\
+=\, &amp; \pi(x_{t})q(x_{t+1}|x_{t})\cdot\min\left(1,\frac{\pi(x_{t+1})q(x_{t}|x_{t+1})}{\pi(x_{t})q(x_{t+1}|x_{t})}\right)\\
+=\, &amp; \min\left(\pi(x_{t})q(x_{t+1}|x_{t}),\pi(x_{t+1})q(x_{t}|x_{t+1})\right)
+\end{align*}$$`
+
+- Second term of LHS is
+`$$\pi(x_{t})(1-\alpha(x_{t}))\delta(x_{t}=x_{t+1})=\pi(x_{t+1})(1-\alpha(x_{t+1}))\delta(x_{t+1}=x_{t})$$`
+
+---
+
+# Random Walk M-H
+
+- The Metropolis-Hastings algorithm gives full freedom in choosing the proposal distribution `\(q(y|x)\)`
+
+- One commonly-used implementation of the M-H algorithm is the random walk M-H
+
+- It makes `\(q(y|x)\)` a normal distribution `\(N(x,\sigma^2 I)\)`
+
+- The acceptance probability simplifies to
+`$$\alpha=\min\left(1,\frac{u(Y)}{u(X_{t})}\right)$$`
+
+- `\(\sigma^2\)` is a hyperparameter
+
+---
+
+# Visualization
+
+https://chi-feng.github.io/mcmc-demo/app.html?algorithm=RandomWalkMH&amp;target=banana
+
+---
+
+# Extensions
+
+- Do we have a better choice than random walk M-H?
+
+- How to design new MCMC algorithm based on M-H?
+
+- We will see an excellent example based on the Langevin algorithm
+
+- A good review of the history of M-H can be found in [2]
+
+- Also introduces a lot of extensions of M-H
+
+---
+class: inverse, center, middle
+
+# Gibbs Sampler
+
+---
+
+# Gibbs Sampler
+
+- Suppose the variable `\(X\)` we want to sample can be partitioned as `\(X=(X_1,\ldots,X_d)\)`
+
+- Each component `\(X_i\)` can be a scalar or a vector
+
+- The Gibbs sampler has the following iterations:
+
+  - Select an index `\(i\)` from `\(\{1,\ldots,d\}\)` randomly or deterministically
+  
+  - Sample `\(X_i^{(k+1)}\sim \pi(x_i|X_{-i}^{(k)})\)`
+  
+  - Set `\(X^{(k+1)}=(X_1^{(k)},\ldots,X_i^{(k+1)},\ldots,X_d^{(k)})\)`
+
+---
+
+# Transition Kernel
+
+- Suppose index `\(i\)` is selected with probability `\(\rho_i\)`
+
+- `\(X^{(k+1)}\)` and `\(X^{(k)}\)` differ only in component `\(X_i\)`
+
+- `\(\mathcal{T}(x^{(k)}\rightarrow x^{(k+1)})=\rho_i\pi\left(x_i^{(k+1)}|x_{-i}^{(k)}\right)\)`
+
+---
+
+# Detailed Balance
+
+- We need to verify
+`$$\pi(x^{(k)})\mathcal{T}(x^{(k)}\rightarrow x^{(k+1)})=\pi(x^{(k+1)})\mathcal{T}(x^{(k+1)}\rightarrow x^{(k)})$$`
+
+- Note that `\(x_{-i}^{(k)}=x_{-i}^{(k+1)}\)`
+
+- LHS is
+`$$\begin{align*}
+ &amp; \pi(x^{(k)})\rho_{i}\pi\left(x_{i}^{(k+1)}|x_{-i}^{(k)}\right)\\
+=\, &amp; \pi(x_{-i}^{(k)})\pi\left(x_{i}^{(k)}|x_{-i}^{(k)}\right)\rho_{i}\pi\left(x_{i}^{(k+1)}|x_{-i}^{(k)}\right)\\
+=\, &amp; \pi(x_{-i}^{(k+1)})\pi\left(x_{i}^{(k)}|x_{-i}^{(k+1)}\right)\rho_{i}\pi\left(x_{i}^{(k+1)}|x_{-i}^{(k+1)}\right)
+\end{align*}$$`
+
+- By symmetry, equal to RHS
+
+
+---
+
+# Visualization
+
+https://chi-feng.github.io/mcmc-demo/app.html?algorithm=GibbsSampling&amp;target=banana
+
+---
+
+# References
+
+.medium[
+
+[1] Jack Dongarra &amp; Francis Sullivan (2000). Guest Editors' Introduction to the top 10 algorithms. Computing in Science &amp; Engineering.
+
+[2] D. B. Dunson &amp; J. E. Johndrow (2020). The Hastings algorithm at fifty. Biometrika.
+
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

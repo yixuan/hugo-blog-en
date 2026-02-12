@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Computational Statistics</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Yixuan Qiu" />
+    <meta name="date" content="2025-11-24" />
+    <script src="libs/header-attrs-2.29/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        CommonHTML: {
+          scale: 100
+        }
+      });
+    </script>
+    <link rel="stylesheet" href="style.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Computational Statistics
+]
+.subtitle[
+## Lecture 10
+]
+.author[
+### Yixuan Qiu
+]
+.date[
+### 2025-11-24
+]
+
+---
+
+class: inverse, center, middle
+
+# Simulation and Sampling
+
+
+
+---
+
+&lt;video controls autoplay loop src="images/simulation.mp4"&gt;&lt;/video&gt;
+
+.center[
+
+.small[(Video: https://colindcarroll.com/2018/11/24/animated-mcmc-with-matplotlib/)]
+
+]
+
+---
+
+# Today's Topics
+
+- Some classical problems
+
+- Inverse transform algorithm
+
+- Rejection sampling
+
+---
+
+# Problem
+
+Given a probability distribution `\(\nu\)`, generate random variables `\(X_1,\ldots,X_n\)` from `\(\nu\)`
+
+`\(\nu\)` can be specified in different forms
+
+- Distribution function `\(F(x)\)`
+
+- Density/Mass function `\(p(x)\)`
+
+- Unnormalized density/mass function `\(q(x)\propto p(x)\)`
+
+- Some general description of the distribution
+
+---
+
+# Why We Need Sampling
+
+Many quantities of interest in statistics can be written as expectations of random variables, expressed as high-dimensional integrals:
+
+`$$I=\mathbb{E}_X[f(X)]=\int f(x)p(x)\mathrm{d}x,\quad X\sim p(x).$$`
+
+In many cases we are unable to evaluate `\(I\)` exactly, but it is possible to find an .highlight[unbiased estimator] for `\(I\)`:
+
+`$$\hat{I}=\frac{1}{M}\sum_{i=1}^M f(X_i),\quad X_i\sim p(x),\ i=1,\ldots,M.$$`
+
+The key challenge is to generate `\(X_1,\ldots,X_M\sim p(x)\)`.
+
+---
+
+# Example - EM Algorithm
+
+To maximize the marginal likelihood
+`$$L(\theta;X)=\int p(X|Z,\theta)p(Z|\theta)\mathrm{d}Z,$$`
+EM algorithm consists of two steps:
+
+- Expectation: Define
+`$$Q(\theta|\theta^{(t)})=\mathbb{E}_{Z|X,\theta^{(t)}}[\log L(\theta;X,Z)]$$`
+
+- Maximization: Solve
+`$$\theta^{(t+1)}=\underset{\theta}{\arg\max}\ Q(\theta|\theta^{(t)})$$`
+
+---
+
+# Example - EM Algorithm
+
+When `\(Q(\theta|\theta^{(t)})\)` has no closed form, it needs to be approximated by Monte Carlo samples from `\(p(Z|X,\theta^{(t)})\)`.
+
+This method is typically called Monte Carlo expectation-maximization (MCEM).
+
+---
+
+# Example - Bayesian Statistics
+
+At the core of Bayesian statistics is the sampling from posterior distribution
+`$$p(\theta|x)\propto p(\theta,x)=\pi(\theta)p(x|\theta).$$`
+
+In this case, `\(p(\theta|x)\)` is given in the unnormalized form, since we only have access to `\(p(\theta,x)=\pi(\theta)p(x|\theta)\)`.
+
+---
+
+# Pseudo Random Number
+
+- Strictly speaking, it is unlikely to get "real" random numbers in computers
+
+- What existing algorithms generate are pseudo random numbers
+
+- We omit these technical details
+
+- Instead, we assume there is a "generator" that can produce independent random variables `\(U_1,U_2,\ldots\)` that follow the uniform distribution `\(\mathrm{Unif}(0,1)\)`
+
+- Our target is to generate other random numbers based on `\(U_1,U_2,\ldots\)`
+
+---
+class: inverse, center, middle
+
+# Classical Problems
+
+---
+
+# Classical Problems
+
+- Random permutation
+
+- One-pass random selection 
+
+- Generating normal random variables
+
+---
+
+# Random Permutation
+
+Problem: Generate a permutation of `\(1,\ldots, n\)` such that all `\(n!\)` possible orderings are equally likely.
+
+--
+
+- Widely used in sampling without replacement
+
+- Can select only a subset
+
+---
+
+# Algorithm
+
+A simple and natural method:
+
+- Generate a sequence of uniform random numbers `\(U_1,\ldots,U_n\)`
+
+- Sort `\(U_1,\ldots,U_n\)` and record their orders `\(I_1,\ldots,I_n\)`
+
+- That is, `\(U_{I_1}\le\cdots\le U_{I_n}\)`
+
+- Then `\(I_1,\ldots,I_n\)` is a random permutation of `\(1,\ldots,n\)`
+
+- The complexity of this algorithm is `\(O(n\log(n))\)`
+
+---
+
+# Algorithm
+
+A better algorithm is as follows &lt;sup&gt;&lt;span class="small"&gt;[1]&lt;/span&gt;&lt;/sup&gt;:
+
+![](images/permutation.png)
+
+- Here `\(\mathrm{Int}(x)\)` is the largest integer less than or equal to `\(x\)`
+
+- This is known as the Fisher-Yates shuffling algorithm
+
+- Complexity is `\(O(n)\)`
+
+---
+
+# Proof Sketch
+
+- For each `\(k\)`, `\(I\)` follows a (discrete) uniform distribution on `\([k]:=\{1,2,\ldots,k\}\)`
+
+- When `\(k=n\)`, `\(P(P_n=i)=1/n\)` for `\(i\in [n]\)`
+
+- When `\(k=n-1\)`, `\(P(P_{n-1}=i|P_n=p_n)=1/(n-1)\)` for `\(i\in [n]\setminus\{p_n\}\)`
+
+- When `\(k=n-2\)`, `\(P(P_{n-2}=i|P_n=p_n,P_{n-1}=p_{n-1})=1/(n-2)\)` for `\(i\in [n]\setminus\{p_n,p_{n-1}\}\)`
+
+- By reduction, we have `\(P(P_1=p_1,\ldots,P_n=p_n)=1/n!\)`, where `\(\{p_1,\ldots,p_n\}\)` is a permutation of `\([n]\)`
+
+---
+
+# One-Pass Random Selection
+
+Problem: Suppose that there is a sequence of nonnegative numbers `\(a_1,\ldots,a_n\)`, and one can access them .highlight[sequentially]. The task is to randomly select an index `\(i^*\)` such that `\(P(i^*=i)=a_i/\sum_{j=1}^n a_j\)`, .highlight[with only one pass of data access].
+
+--
+
+- Useful when accessing data is expensive
+
+- For example, reading data from hard disks
+
+- Can be extended to multiple independent selections
+
+---
+
+# Algorithm &lt;sup&gt;&lt;span class="small"&gt;[2]&lt;/span&gt;&lt;/sup&gt;
+
+![](images/select_algorithm.png)
+
+We need to show that `\(P(i^*=i)=a_i/S_n\)` for `\(i=1,\ldots,n\)`, where `\(S_k=\sum_{j=1}^k a_j\)`.
+
+---
+
+# Proof Sketch
+
+- Now we attempt to prove a stronger conclusion: .highlight[after] `\(\require{color}\color{deeppink}{k}\)` .highlight[iterations], we have `\(P(i^*=i)=a_i/S_k\)` for `\(i=1,\ldots,k\)`
+
+- Clearly this holds for `\(k=1\)`
+
+- Suppose that the result holds for `\(k=l\)`, and then in the `\((l+1)\)`-th iteration:
+
+  - For `\(i=1,\ldots,l\)`, `\(i^*=i\)` means that in the new iteration `\(i^*\)` is not updated
+  - For `\(i=l+1\)`, `\(i^*=l+1\)` means `\(i^*\)` is updated
+  - The probability of updating is `\(a_{l+1}/S_{l+1}\)`, which is exactly `\(P(i^*=l+1)\)`
+  - Finally, for `\(i=1,\ldots,l\)`, `\(P(i^*=i)=(a_i/S_l)\cdot(1-a_{l+1}/S_{l+1})=a_i/S_{l+1}\)`
+
+---
+
+# Generating Normal Random Variables
+
+Problem: Given a uniform random number generator, simulate random variables `\(X_1,\ldots,X_n\overset{iid}{\sim}N(0,1)\)`.
+
+--
+
+- Foundation of many simulation algorithms
+
+- Extensively studied
+
+- Many different algorithms
+
+---
+
+# Box-Muller Transform
+
+1. Generate two independent uniform random numbers `\(U_1\)` and `\(U_2\)`
+
+2. Let `\(Z_1=\sqrt{-2\log(U_1)}\cos(2\pi U_2)\)` and `\(Z_2=\sqrt{-2\log(U_1)}\sin(2\pi U_2)\)`
+
+3. Then `\(Z_1\)` and `\(Z_2\)` are two .highlight[independent] `\(N(0,1)\)` random variables
+
+--
+
+- Requires evaluating functions `\(\log(x)\)`, `\(\sqrt{x}\)`, `\(\sin(x)\)`, and `\(\cos(x)\)`
+
+- May be inefficient when lots of random numbers are required
+
+---
+
+# Inverse Transform Algorithm
+
+Using the general inverse transform algorithm (introduced later):
+
+1. Generate uniform random number `\(U\)`
+
+2. Set `\(Z=\Phi^{-1}(U)\)`, where `\(\Phi(x)\)` is the c.d.f. of `\(N(0,1)\)`
+
+--
+
+- However, computing `\(\Phi^{-1}(\cdot)\)` may be difficult and inefficient
+
+---
+
+# Ziggurat Method
+
+Essentially a carefully designed rejection method (introduced later).
+From [3]:
+
+![](images/ziggurat.png)
+
+--
+
+- Practically one of the most efficient methods to generate normal random numbers
+
+---
+
+# Other Methods
+
+Many other methods exist, see [[3]](https://www.doc.ic.ac.uk/~wl/papers/07/csur07dt.pdf)
+
+---
+
+# Implementation
+
+We do a simple comparison between R's built-in `rnorm()` and various normal random number generators based on the Ziggurat method.
+
+
+``` r
+library(dplyr)
+library(bench)
+library(dqrng)
+library(RcppZiggurat)
+
+bench::mark(
+    rnorm(1e7), dqrnorm(1e7), zrnorm(1e7),
+    min_iterations = 10, max_iterations = 10, check = FALSE
+) %&gt;% select(expression, min, median)
+```
+
+```
+## # A tibble: 3 × 3
+##   expression          min   median
+##   &lt;bch:expr&gt;     &lt;bch:tm&gt; &lt;bch:tm&gt;
+## 1 rnorm(1e+07)      340ms  359.9ms
+## 2 dqrnorm(1e+07)   72.9ms   78.8ms
+## 3 zrnorm(1e+07)    93.2ms   97.5ms
+```
+
+---
+
+# Univariate random number generation
+
+- Inverse transform algorithm
+
+- Rejection sampling
+
+---
+class: inverse, center, middle
+
+# Inverse Transform Algorithm
+
+---
+
+# Discrete Distribution
+
+Suppose we have a discrete distribution with the following probability mass function:
+
+`$$p(x_i)\equiv P(X=x_i)=p_i,\quad i=0,1,\ldots,\ \sum_j p_j=1$$`
+
+The following algorithm &lt;sup&gt;&lt;span class="small"&gt;[1]&lt;/span&gt;&lt;/sup&gt; can be used to generate `\(X\sim p(x)\)`:
+
+.center[
+
+&lt;img src="images/discrete.png" width="60%"/&gt;
+
+]
+
+---
+
+# Discrete Distribution
+
+This procedure can be compactly expressed as `\(X=F^{-1}(U)\)`, where `\(F(\cdot)\)` is the c.d.f. of `\(X\)`, and `\(F^{-1}(\cdot)\)` is the (generalized) inverse c.d.f.:
+
+`$$F^{-1}(p)=\inf\,\{x\in\mathbb{R}:p\le F(x)\}.$$`
+
+This is why this method is called the .highlight[inverse transform algorithm] for discrete distributions.
+
+---
+
+# Continuous Distribution
+
+For continuous distributions, the algorithm is more straightforward.
+To generate `\(X\sim p(x)\)`:
+
+1. Generate uniform random number `\(U\)`
+
+2. Set `\(X=F^{-1}(U)\)`, where `\(F(x)\)` is the c.d.f. of `\(X\)`
+
+---
+
+# Proof Sketch
+
+To prove that `\(X\sim p(x)\)`, we only need to show `\(P(X\le x)=F(x)\)`:
+
+`$$\begin{align*}
+P(X\le x) &amp; =P(F^{-1}(U)\le x) &amp;  &amp; \text{(by algorithm)}\\
+ &amp; =P(U\le F(x)) &amp;  &amp; \text{(monotonicity of }F(\cdot)\text{)}\\
+ &amp; =F(x) &amp;  &amp; \text{(c.d.f of uniform distribution)}
+\end{align*}$$`
+
+---
+
+# Challenge
+
+- In general, the inverse transform algorithm only applies to univariate distributions (but we have a generalized method called measure transport)
+
+- Also, evaluating `\(F^{-1}(\cdot)\)` may be difficult
+
+---
+
+# Example
+
+- Consider the exponential distribution with mean 1, whose distribution function is given by `\(F(x)=1-e^{-x}\)`
+
+- Using the inverse transform algorithm we have `\(X=-\log(1-U)\)`
+
+- Since `\(1-U\)` also follows `\(\mathrm{Unif}(0,1)\)`, we can simply do `\(X=-\log(U)\)`
+
+- To generate exponential random variable with mean `\(\theta\)`, we have `\(X=-\theta\log(U)\)`
+
+---
+class: inverse, center, middle
+
+# Rejection Sampling
+
+---
+
+# Rejection Sampling
+
+Rejection sampling is a general technique for exact sampling. It applies to both discrete and continuous distributions, and is not limited to univariate distributions.
+
+Suppose we want to generate `\(X\sim f(x)\)`, and we have an existing method to sample from another distribution `\(X\sim g(x)\)`. `\(f(x)\)` and `\(g(x)\)` can be interpreted as probability mass functions or density functions.
+
+---
+
+# Rejection Sampling
+
+Let `\(c&gt;0\)` be a constant such that `\(f(x)/g(x)\le c\)` for all `\(x\in\mathcal{X}\)`, where `\(\mathcal{X}\)` stands for the support of `\(g(x)\)`.
+
+Then the rejection sampling method proceeds as follows:
+
+1. Generate `\(Y\sim g(y)\)`
+
+2. Generate a uniform random number `\(U\)`
+
+3. If `\(U\le f(Y)/[cg(Y)]\)`, set `\(X=Y\)`. Otherwise return to Step 1.
+
+---
+
+# Diagram
+
+From [1]:
+
+.center[
+
+![](images/rejection_discrete.png)
+
+.medium[(For discrete distribution)]
+
+]
+
+.center[
+
+![](images/rejection_continuous.png)
+
+.medium[(For continuous distribution)]
+
+]
+
+---
+
+# Theorem &lt;sup&gt;&lt;span class="small"&gt;[1]&lt;/span&gt;&lt;/sup&gt;
+
+1. The generated random variable `\(X\)` follows `\(f(x)\)`.
+
+2. The number of iterations of the algorithm is a geometric random variable with mean `\(c\)`.
+
+--
+
+.highlight[Question: What is the best possible value of] `\(\require{color}\color{deeppink}{c}\)` .highlight[?]
+
+---
+
+# Proof Sketch
+
+- `\(P(\text{accepted}|Y=y)=f(y)/[cg(y)]\)`
+
+- `\(P(\text{accepted})=\int P(\text{accepted}|Y=y)g(y)\mathrm{d}y=1/c\)`
+
+- Let `\(\mathcal{X}=(-\infty,x_1]\times\cdots\times(-\infty,x_p]\)`, and then
+
+`$$\small\begin{align*}
+P(X\in\mathcal{X}) &amp; =P(Y\in\mathcal{X},\text{accepted})+(1-1/c)P(X\in\mathcal{X})\\
+ &amp; =\int_{\mathcal{X}}P(\text{accepted}|Y=y)g(y)\mathrm{d}y+(1-1/c)P(X\in\mathcal{X})\\
+ &amp; =(1/c)\int_{\mathcal{X}} f(y)\mathrm{d}y+(1-1/c)P(X\in\mathcal{X})
+\end{align*}$$`
+
+- This shows that `\(P(X\in\mathcal{X})=\int_{\mathcal{X}} f(y)\mathrm{d}y\)`
+
+---
+
+# Geometric Interpretation
+
+Consider the set
+
+`$$\mathcal{S}_{M}(h)=\{(x,z):0\le z\le Mh(x),x\in\mathbb{R}^{p},z\in\mathbb{R}\},$$`
+
+where `\(h\)` is a density function, and `\(M&gt;0\)` is a constant.
+
+We show that if `\((X,Z)\sim \mathrm{Unif}(\mathcal{S}_{M}(f))\)`, then `\(X\sim f(x)\)`.
+
+---
+
+# Geometric Interpretation
+
+.center[
+
+![](images/rejection_geometry.png)
+
+.small[(Image: https://artowen.su.domains/mc/Ch-nonunifrng.pdf)]
+
+]
+
+---
+
+# Geometric Interpretation
+
+Let `\(\mathcal{S}=\mathcal{S}_{M}(f)\)` and `\(\mathcal{X}=(-\infty,x_1]\times\cdots\times(-\infty,x_p]\)`, and then by definition,
+
+`$$\begin{align*}
+P(X\in\mathcal{X}) &amp; =\frac{\mathrm{vol}(\mathcal{S}\cap\mathcal{X}\times[0,+\infty))}{\mathrm{vol}(\mathcal{S})}=\frac{\int_{\mathcal{X}}\int_{0}^{Mf(x)}\mathrm{d}z\mathrm{d}x}{\int_{\mathbb{R}^{p}}\int_{0}^{Mf(x)}\mathrm{d}z\mathrm{d}x}\\
+ &amp; =\int_{\mathcal{X}}f(x)\mathrm{d}x,
+\end{align*}$$`
+
+which proves that `\(X\)` has density `\(f(x)\)`.
+
+Conversely, if `\(X\sim h(x)\)` and `\(Z|\{X=x\}\sim \mathrm{Unif}(0,Mh(x))\)`, then `\((X,Z)\sim \mathrm{Unif}(\mathcal{S}_{M}(h))\)`.
+
+---
+
+# Challenge
+
+- Finding a good proposal distribution `\(g(x)\)` can be hard
+
+- Finding the constant `\(c\)` is even harder
+
+- Rejection sampling may "waste" a lot of random numbers
+
+- If `\(f(x)\)` is high-dimensional, the problem would be much more challenging
+
+---
+
+# References
+
+.medium[
+
+[1] Sheldon M. Ross (2011). Simulation. Academic Press.
+
+[2] Michael W. Mahoney (2016). Lecture notes on randomized linear algebra. arXiv:1608.04481.
+
+[3] David B. Thomas et al. (2007). Gaussian random number generators. ACM Computing Surveys.
+
+[4] https://artowen.su.domains/mc/Ch-nonunifrng.pdf
+
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
