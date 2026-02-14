@@ -2,17 +2,17 @@
 title : Teaching
 ---
 
-### Fall 2023
+### Current (Fall 2025)
 
-- [Computational Statistics](/teaching/compstat-2023f/)
-- Deep Learning
+- [Computational Statistics](/teaching/compstat/)
+- Bayesian Statistics
 
-### Old
+### Instructor @ SUFE
 
-- Bayesian Statistics (Spring 2023)
-- Computational Statistics (Fall 2022)
-- Distributed Computing (Fall 2021, Spring 2022, Spring 2023)
-- Deep Learning (Fall 2021, Fall 2022)
+- Bayesian Statistics (Spring 2023, Spring 2024)
+- Computational Statistics (Fall 2022, Fall 2023, Fall 2024)
+- Distributed Computing (Fall 2021, Spring 2022, Spring 2023, Spring 2024, Spring 2025)
+- Deep Learning (Fall 2021, Fall 2022, Fall 2023, Fall 2024, Spring 2025)
 - Introduction to Artificial Intelligence (Spring 2021)
 
 ### Teaching Assistant @ Purdue

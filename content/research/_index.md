@@ -6,6 +6,8 @@ I have great interest in statistical computing, deep learning, exact inference m
 
 ## <i class="fas fa-angle-double-right"></i> Publication
 
+- Ouyang, X., Zheng, H., Liang, H., Zhang, J., **Qiu, Y.**, Meng, C., and Li, M., *Sparsification Techniques for Large-Scale Optimal Transport Problems*. WIREs Computational Statistics, 2026.
+  <span style="padding-left:10px"><a href="https://wires.onlinelibrary.wiley.com/doi/abs/10.1002/wics.70056"><i class="fas fa-link"></i> Link</a></span>
 - Wang, C. and **Qiu, Y.**, *The Sparse-Plus-Low-Rank Quasi-Newton Method for Entropic-Regularized Optimal Transport*. International Conference on Machine Learning (ICML 2025), 2025.
   <span style="padding-left:10px"><a href="https://openreview.net/forum?id=WCkMkMcqpb"><i class="fas fa-link"></i> Link</a></span>
   <span style="padding-left:10px"><a href="https://openreview.net/pdf?id=WCkMkMcqpb"><i class="far fa-file-pdf"></i> PDF</a></span>
@@ -15,6 +17,10 @@ I have great interest in statistical computing, deep learning, exact inference m
   <span style="padding-left:10px"><a href="https://www.tandfonline.com/doi/full/10.1080/01621459.2024.2408778"><i class="fas fa-link"></i> Link</a></span>
   <span style="padding-left:10px"><a href="https://arxiv.org/pdf/2409.18374"><i class="far fa-file-pdf"></i> PDF</a></span>
   <span style="padding-left:10px"><a href="https://github.com/yixuan/LWGAN"><i class="fas fa-code"></i> Code</a></span>
+- Gao, T., Dai, B., and **Qiu, Y.**, *ReLU-ReHU Representations of Piecewise Linear-Quadratic Losses*. Journal of Data Science, 2025.
+  <span style="padding-left:10px"><a href="https://jds-online.org/journal/JDS/article/1401/info"><i class="fas fa-link"></i> Link</a></span>
+  <span style="padding-left:10px"><a href="https://jds-online.org/journal/JDS/article/1401/file/pdf"><i class="far fa-file-pdf"></i> PDF</a></span>
+  <span style="padding-left:10px"><a href="https://github.com/keepwith/PLQComposite"><i class="fas fa-code"></i> Code</a></span>
 - Yin, H., **Qiu, Y.**, and Wang, X., *Wasserstein Coreset via Sinkhorn Loss*. Transactions on Machine Learning Research, 2025.
   <span style="padding-left:10px"><a href="https://openreview.net/forum?id=DrMCDS88IL"><i class="fas fa-link"></i> Link</a></span>
   <span style="padding-left:10px"><a href="https://openreview.net/pdf?id=DrMCDS88IL"><i class="far fa-file-pdf"></i> PDF</a></span>

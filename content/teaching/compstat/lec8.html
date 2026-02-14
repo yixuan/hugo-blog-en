@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Computational Statistics</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Yixuan Qiu" />
+    <meta name="date" content="2025-11-10" />
+    <script src="libs/header-attrs-2.29/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        CommonHTML: {
+          scale: 100
+        }
+      });
+    </script>
+    <link rel="stylesheet" href="style.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Computational Statistics
+]
+.subtitle[
+## Lecture 8
+]
+.author[
+### Yixuan Qiu
+]
+.date[
+### 2025-11-10
+]
+
+---
+
+class: inverse, center, middle
+
+# Optimization
+
+
+
+---
+
+# Last Time
+
+- Dealing with .highlight[nonsmooth] problems of the form `\(F(x)=f(x)+h(x)\)`
+
+- What if we have more than one nonsmooth term?
+
+- This is common in statistical models, e.g., by adding multiple regularization terms/constraints to the model
+
+---
+
+# Today's Topics
+
+- Douglas-Rachford splitting method
+
+- Davis-Yin splitting method
+
+- Proximal-proximal-gradient algorithm
+
+---
+
+# Motivation
+
+- For the nonsmooth function `\(F(x)=f(x)+h(x)\)`, where `\(f(x)\)` is smooth and `\(h(x)\)` is nonsmooth, we have the proximal gradient descent algorithm
+
+`$$x^{(k+1)}=\mathbf{prox}_{\alpha h}\left(x^{(k)}-\alpha\cdot\nabla f(x^{(k)})\right),\quad k=0,1,\ldots$$`
+
+- If we let `\(f(x)=0\)`, and then we get the .highlight[proximal point algorithm] (PPA) for minimizing a nonsmooth function `\(h(x)\)`:
+
+`$$x^{(k+1)}=\mathbf{prox}_{\alpha h}(x^{(k)}),\quad k=0,1,\ldots$$`
+
+---
+
+# Motivation
+
+- Now consider `\(F(x)=g(x)+h(x)\)`, where both `\(g(x)\)` and `\(h(x)\)` are nonsmooth
+
+- Of course, we can try to compute `\(\mathbf{prox}_{\alpha (g+h)}\)`, and then apply PPA
+
+- But unfortunately, in general `\(\mathbf{prox}_{\alpha (g+h)}\neq\mathbf{prox}_{\alpha g}+\mathbf{prox}_{\alpha h}\)` or other simple combination of `\(\mathbf{prox}_{\alpha g}\)` and `\(\mathbf{prox}_{\alpha h}\)`
+
+- So even if we can compute `\(\mathbf{prox}_{\alpha g}\)` and `\(\mathbf{prox}_{\alpha h}\)` individually, there is no obvious way to solve `\(\min_x F(x)\)`
+
+---
+class: center, middle
+
+# Douglas-Rachford Splitting
+
+---
+
+# Douglas-Rachford Splitting
+
+The Douglas-Rachford splitting (DRS) algorithm is a useful method to solve the problem
+
+`$$\min_x\ F(x):= \min_x\ g(x)+h(x),$$`
+
+where `\(g(x)\)` and `\(h(x)\)` are convex functions, possibly nonsmooth.
+
+The algorithm relies on `\(\mathbf{prox}_{\alpha g}\)` and `\(\mathbf{prox}_{\alpha h}\)`.
+
+---
+
+# DRS Algorithm
+
+DRS uses the following iteration scheme: given an initial value `\(y^{(0)}\)`, for `\(k=0,1,\ldots\)`, iterate
+
+`$$\begin{align*}
+x^{(k+1)} &amp; =\mathbf{prox}_{\alpha g}(y^{(k)})\\
+y^{(k+1)} &amp; =y^{(k)}+\mathbf{prox}_{\alpha h}(2x^{(k+1)}-y^{(k)})-x^{(k+1)}
+\end{align*}$$`
+
+- The roles of `\(g(x)\)` and `\(h(x)\)` are not symmetric
+
+- The step size `\(\alpha&gt;0\)` can be chosen arbitrarily, but it may affect the convergence speed
+
+---
+
+# Convergence Property &lt;sup&gt;&lt;span class="small"&gt;[1,4]&lt;/span&gt;&lt;/sup&gt;
+
+We first present the convergence property of the `\(y^{(k)}\)` sequence.
+Define
+`$$T(y)=2\mathbf{prox}_{\alpha h}(2\mathbf{prox}_{\alpha g}(y)-y)-2\mathbf{prox}_{\alpha g}(y)+y,$$`
+and then it is easy to see that `\(y^{(k+1)}=(y^{(k)}+T(y^{(k)}))/2\)`.
+
+- `\(y^{(k)}\)` converges to some fixed point `\(y^*\)` of `\(T(\cdot)\)`, i.e., `\(T(y^*)=y^*\)`.
+
+- `\(\Vert y^{(k)}-y^* \Vert\)` is monotonically nonincreasing.
+
+- `\(\Vert y^{(k+1)}-y^{(k)} \Vert=\Vert T(y^{(k)})-y^{(k)} \Vert/2\)` is monotonically nonincreasing and converges to 0.
+
+---
+
+# Convergence Property &lt;sup&gt;&lt;span class="small"&gt;[1,4]&lt;/span&gt;&lt;/sup&gt;
+
+(continued from last slide)
+
+- We have the asymptotic rate `\(\Vert y^{(k+1)}-y^{(k)}\Vert^2=o(1/k).\)`
+
+- Nonasymptotic rate
+`$$\Vert y^{(k+1)}-y^{(k)}\Vert^2\le\frac{\Vert y^{(0)}-y^* \Vert^2}{k+1}.$$`
+
+---
+
+# Convergence Property &lt;sup&gt;&lt;span class="small"&gt;[1,4]&lt;/span&gt;&lt;/sup&gt;
+
+`\(y^*\)` is connected with the optimization problem `\(\min_x\ g(x)+h(x)\)` via the following important conclusion:
+
+If `\(y^*\)` is a point such that `\(T(y^*)=y^*\)`, then `\(x^*=\mathbf{prox}_{\alpha g}(y^*)\)` is an optimal point of `\(\min_x\ g(x)+h(x)\)`.
+
+It has also been proved that `\(x^{(k)}\)` converges to some optimal point of `\(\min_x\ g(x)+h(x)\)`.
+
+Convergence rates will be introduced in the Davis-Yin splitting algorithm, which is a generalization of DRS.
+
+---
+
+# Example - `\(P_{C\cap D}(u)\)`
+
+Problem: given two closed convex sets `\(C\)` and `\(D\)`, `\(C\cap D\neq \varnothing\)`, compute the projection operator `\(P_{C\cap D}(u)\)`.
+
+In many cases we have simple `\(P_C\)` and `\(P_D\)` operations, but `\(C\cap D\)` may be complicated. For example:
+
+&lt;img src="lec8_files/figure-html/unnamed-chunk-1-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Example - `\(P_{C\cap D}(u)\)`
+
+The optimization problem becomes
+
+`$$\begin{align*}
+\min_{x} &amp; \ \frac{1}{2}\Vert x-u\Vert^{2}\\
+\text{s.t.} &amp; \ x\in C,\ x\in D.
+\end{align*}$$`
+
+Or equivalently,
+
+`$$\min_{x}\ \frac{1}{2}\Vert x-u\Vert^{2}+I_{C}(x)+I_{D}(x),$$`
+where `\(I_C(x)=0\)` if `\(x\in C\)`, and `\(I_C(x)=\infty\)` if `\(x\notin C\)`.
+
+---
+
+# Example - `\(P_{C\cap D}(u)\)`
+
+Now let `\(g(x)=\frac{1}{2}\Vert x-u\Vert^{2}+I_{C}(x)\)`, and then
+
+`$$\small\begin{align*}
+\mathbf{prox}_{\alpha g}(z) &amp; =\underset{x}{\arg\min}\ \frac{1}{2}\Vert x-u\Vert^{2}+I_{C}(x)+\frac{1}{2\alpha}\Vert x-z\Vert^{2}\\
+ &amp; =\underset{x}{\arg\min}\ \frac{(\alpha+1)\Vert x\Vert^{2}-2x'(\alpha u+z)}{2\alpha}+I_{C}(x)\\
+ &amp; =\underset{x\in C}{\arg\min}\ \Vert x-(\alpha+1)^{-1}(\alpha u+z)\Vert^{2}\\
+ &amp; =P_{C}\left((\alpha+1)^{-1}(\alpha u+z)\right).
+\end{align*}$$`
+
+Also, let `\(h(x)=I_{D}(x)\)`, and `\(\mathbf{prox}_{\alpha h}(z)=P_D(z)\)`. Then proceed using the DRS algorithm.
+
+---
+class: center, middle
+
+# Davis-Yin Splitting
+
+---
+
+# Motivation
+
+- Suppose that `\(f(x)\)` is a smooth convex function, and `\(g(x)\)` and `\(h(x)\)` are possibly nonsmooth convex functinos
+
+- Recall that proximal gradient descent minimizes `\(f(x)+h(x)\)`
+
+- DRS algorithm minimizes `\(g(x)+h(x)\)`
+
+- To unify the above two, we want to find an algorithm to minimize `\(F(x)=f(x)+g(x)+h(x)\)`
+
+- Later we will also see that such a "three-operator" problem is the key to handling the sum of an arbitrary number of functions
+
+---
+
+# Davis-Yin Splitting
+
+Consider the optimization problem
+
+`$$\min_x\ F(x):=\min_x\ f(x)+g(x)+h(x),$$`
+
+where `\(f(x)\)` is convex and `\(L\)`-smooth, and `\(g(x)\)` and `\(h(x)\)` are possibly nonsmooth convex functions.
+
+The Davis-Yin splitting (DYS) algorithm uses the following iteration scheme: given an initial value `\(y^{(0)}\)` and a step size `\(0&lt;\alpha&lt;2/L\)`, for `\(k=0,1,\ldots\)`, iterate
+
+`$$\begin{align*}
+x^{(k+1)} &amp; =\mathbf{prox}_{\alpha g}(y^{(k)})\\
+y^{(k+1)} &amp; =y^{(k)}+\mathbf{prox}_{\alpha h}(2x^{(k+1)}-y^{(k)}-\alpha\nabla f(x^{(k+1)}))-x^{(k+1)}
+\end{align*}$$`
+
+---
+
+# Some Remarks
+
+- For the smooth component `\(f(x)\)`, we compute its gradient `\(\nabla f(x)\)`
+
+- For the nonsmooth terms `\(g(x)\)` and `\(h(x)\)`, we use their proximal operators
+
+- The algorithm is similar to DRS, with an additional gradient descent term
+
+---
+
+# Convergence Property &lt;sup&gt;&lt;span class="small"&gt;[2]&lt;/span&gt;&lt;/sup&gt;
+
+Define
+`$$\small T(y)=\mathbf{prox}_{\alpha h}(2\mathbf{prox}_{\alpha g}(y)-y-\alpha\nabla f(\mathbf{prox}_{\alpha g}(y)))-\mathbf{prox}_{\alpha g}(y)+y,$$`
+and then `\(y^{(k+1)}=T(y^{(k)})\)`.
+
+Similar to DRS, the following properties of the `\(y^{(k)}\)` sequence hold:
+
+- `\(y^{(k)}\)` converges to some fixed point `\(y^*\)` of `\(T(\cdot)\)`.
+
+- `\(\Vert y^{(k)}-y^* \Vert\)` is monotonically nonincreasing.
+
+- `\(\Vert y^{(k+1)}-y^{(k)} \Vert=\Vert T(y^{(k)})-y^{(k)} \Vert\)` is monotonically nonincreasing and converges to 0.
+
+---
+
+# Convergence Property &lt;sup&gt;&lt;span class="small"&gt;[2]&lt;/span&gt;&lt;/sup&gt;
+
+The following convergence result is on the `\(x^{(k)}\)` variables.
+
+Suppose `\(h(x)\)` is Lipschitz continuous on the closed ball `\(B(0,(1+\alpha L)\Vert y^{(0)}-y^*\Vert)\)`, then
+
+`$$(f+g+h)(x^{(k)})-(f+g+h)(x^*)=o\left(\frac{1}{\sqrt{k+1}}\right).$$`
+
+--
+
+It seems that the convergence rate is not significantly better than a subgradient method, but it shows that by properly averaging the iterates `\(x^{(k)}\)`, we can get a faster speed.
+
+---
+
+# Convergence Property &lt;sup&gt;&lt;span class="small"&gt;[2]&lt;/span&gt;&lt;/sup&gt;
+
+Let
+`$$\bar{x}^{(k)}=\frac{2}{(k+1)(k+2)}\sum_{i=0}^k (i+1)x^{(i)},$$`
+and then
+
+`$$(f+g+h)(\bar{x}^{(k)})-(f+g+h)(x^*)=O\left(\frac{1}{k+1}\right).$$`
+
+---
+
+# Accelerations
+
+- There exist several accelerated variants of the DYS algorithm under stronger assumptions
+
+- See [2] for details
+
+---
+class: center, middle
+
+# Proximal-Proximal-Gradient Algorithm
+
+---
+
+# Further Extensions
+
+- DYS has given an elegant solution to the nonsmooth convex optimization problem `\(\min_x\ f(x)+g(x)+h(x)\)`
+
+- But what if we have more than three components?
+
+- For smooth components, easy:
+
+- The gradients are additive, so if we have smooth components `\(f_1(x),\ldots,f_m(x)\)`, then just let `\(f=f_1+\cdots+f_m\)`, and hence `\(\nabla f=\nabla f_1+\cdots+\nabla f_m\)`
+
+- Directly apply DYS as usual (of course, the smoothness parameter `\(L\)` may change, which affects the step size `\(\alpha\)`)
+
+---
+
+# The Consensus Trick
+
+- Proximal operators are in general not additive, but we can use the "consensus trick".
+
+- Suppose we want to minimize `\(F(x)=f(x)+\sum_{i=1}^m h_i(x)\)`, where `\(f(x)\)` is smooth and `\(h_i(x)\)` may be nonsmooth. Then we find that
+
+`$$\require{color}\begin{align*}
+x^{*} &amp; \in\underset{x}{\arg\min}\ f(x)+\sum_{i=1}^{m}h_{i}(x)\\
+\Leftrightarrow &amp; \  (x^{*},\ldots,x^{*})\in\underset{\substack{x_{(1)},\ldots,x_{(m)}\\
+x_{(1)}=\cdots=x_{(m)}
+}
+}{\arg\min}\ f(\textcolor{deeppink}{\bar{x}})+\sum_{i=1}^{m}h_{i}(\textcolor{deeppink}{x_{(i)}}),
+\end{align*}$$`
+where `\(\bar{x}=m^{-1}\sum_{i=1}^m x_{(i)}\)`.
+
+---
+
+# The Consensus Trick
+
+Therefore, if we want `\(x^*\in\mathbb{R}^d\)`, then we can work on a "stacked" variable `\(\mathbf{x}=(x_{(1)},\ldots,x_{(m)})\in\mathbb{R}^{md}\)`, and optimize the function `\(\tilde{F}(\mathbf{x}):=\tilde{f}(\mathbf{x})+I_{C}(\mathbf{x})+\tilde{h}(\mathbf{x})\)`, where
+
+- `\(\tilde{f}(\mathbf{x})=f(\bar{x})\)`, `\(\bar{x}=m^{-1}\sum_{i=1}^m x_{(i)}\)`
+- `\(C=\{\mathbf{x}:x_{(1)}=\cdots=x_{(m)}\}\)`
+- `\(\tilde{h}(\mathbf{x})=\sum_{i=1}^m h_i(x_{(i)})\)`
+
+We have shown that an optimal point of `\(\tilde{F}(\mathbf{x})\)` is `\((x^{*},\ldots,x^{*})\)`, where `\(x^*\)` is an optimal point of the original problem.
+
+---
+
+# Proximal Operators
+
+- More importantly, we can show that
+
+- `\(\mathbf{prox}_{\alpha I_{C}}(\mathbf{x})=(\bar{x},\ldots,\bar{x})\)`
+
+- `\(\mathbf{prox}_{\alpha\tilde{h}}(\mathbf{x})=(\mathbf{prox}_{\alpha h_{1}}(x_{(1)}),\ldots,\mathbf{prox}_{\alpha h_{m}}(x_{(m)}))\)`
+
+- .highlight[This means that we only need to evaluate] `\(\require{color}\color{deeppink}\mathbf{prox}_{\alpha h_{i}}(\cdot)\)` .highlight[individually!]
+
+- This is essentially the key idea of proximal-proximal-gradient (PPG) algorithm
+
+---
+
+# PPG Algorithm
+
+Consider the optimization problem
+
+`$$\min_{x\in\mathbb{R}^d} F(x):=\min_{x\in\mathbb{R}^d}\ r(x)+\frac{1}{n}\sum_{i=1}^{n}(f_{i}(x)+g_{i}(x))$$`
+
+- `\(r(x)\)`, `\(f_i(x)\)`, and `\(g_i(x)\)` are convex functions
+
+- `\(f_i(x)\)` are differentiable
+
+- `\(r(x)\)` and `\(g_i(x)\)` have simple proximal operators
+
+- Generalization of DYS
+
+---
+
+# PPG Algorithm
+
+Given an initial value `\(\mathbf{z}^{(0)}=(z_{(1)}^{(0)},\ldots,z_{(n)}^{(0)})\)`, iterate
+
+`$$\small\begin{align*}
+x^{(k+1/2)} &amp; =\mathbf{prox}_{\alpha r}(\bar{z}^{(k)})\\
+x_{(i)}^{(k+1)} &amp; =\mathbf{prox}_{\alpha g_{i}}\left(2x^{(k+1/2)}-z_{(i)}^{(k)}-\alpha\nabla f_{i}(x^{(k+1/2)})\right),\quad i=1,\ldots,n\\
+z_{(i)}^{(k+1)} &amp; =z_{(i)}^{(k)}+x_{(i)}^{(k+1)}-x^{(k+1/2)},\quad i=1,\ldots,n
+\end{align*}$$`
+
+Remarks:
+
+- `\(\mathbf{z}^{(k)}=(z_{(1)}^{(k)},\ldots,z_{(n)}^{(k)})\in\mathbb{R}^{nd}\)`, subscripts for copies, superscripts for iteration numbers
+- `\(\bar{z}^{(k)}=n^{-1}\sum_{i=1}^{n}z_{(i)}^{(k)}\in\mathbb{R}^{d}\)`
+- Updates of `\(x_{(i)}^{(k+1)}\)` and `\(z_{(i)}^{(k+1)}\)` can be parallelized across `\(i\)`
+
+---
+
+# Convergence Property &lt;sup&gt;&lt;span class="small"&gt;[3]&lt;/span&gt;&lt;/sup&gt;
+
+We first state the convergence of the `\(\mathbf{z}^{(k)}\)` variables.
+
+Suppose that `\(f_1(x)\ldots,f_n(x)\)` are differentiable and `\(L\)`-smooth. Select a step size `\(0&lt;\alpha&lt;3/(2L)\)`, and denote `\(p(\mathbf{z}^{(k)})=\alpha^{-1}(\mathbf{z}^{(k+1)}-\mathbf{z}^{(k)})\)`. Then `\(\Vert p(\mathbf{z}^{(k)})\Vert\rightarrow 0\)` monotonically with the rate
+`$$\Vert p(\mathbf{z}^{(k)})\Vert= O(1/\sqrt{k}).$$`
+
+---
+
+# Convergence Property &lt;sup&gt;&lt;span class="small"&gt;[3]&lt;/span&gt;&lt;/sup&gt;
+
+For the `\(x\)`-variables, we have `\(x^{(k+1/2)}\rightarrow x^*\)` and `\(x_{(i)}^{(k)}\rightarrow x^*\)` for all `\(i=1,\ldots,n\)`, where `\(x^*\)` is an optimal point of `\(F(x)\)`.
+
+If in addition, `\(\bar{g}(x)=n^{-1}\sum_{i=1}^n g_i(x)\)` is Lipschitz continuous, then
+
+`$$F(x^{(k+1/2)})-F(x^*)=O(1/\sqrt{k}).$$`
+
+Finally, let `\(x_{avg}^{(k+1/2)}=k^{-1}\sum_{j=1}^k x^{(j+1/2)}\)`, then under the same assumptions we have
+
+`$$F(x_{avg}^{(k+1/2)})-F(x^*)=O(1/k).$$`
+
+---
+
+# Accelerations
+
+Other faster convergence rates with stronger assumptions can be found in [3].
+
+---
+
+# Summary
+
+- We have summarized three important algorithms for nonsmooth optimization problems
+
+- DRS `\(\rightarrow\)` DYS `\(\rightarrow\)` PPG with increasing generality
+
+- These methods are very useful for statistical models with multiple constraints and/or regularization terms
+
+- They typically have much better convergence speed than subgradient methods
+
+---
+
+# References
+
+.medium[
+
+[1] Damek Davis and Wotao Yin (2016). Convergence rate analysis of several splitting schemes. Splitting methods in communication, imaging, science, and engineering.
+
+[2] Damek Davis and Wotao Yin (2017). A three-operator splitting scheme and its optimization applications. Set-valued and variational analysis.
+
+[3] Ernest K. Ryu and Wotao Yin (2019). Proximal-proximal-gradient method. Journal of Computational Mathematics.
+
+[4] Patrick L. Combettes (2004). Solving monotone inclusions via compositions of nonexpansive averaged operators. Optimization.
+
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

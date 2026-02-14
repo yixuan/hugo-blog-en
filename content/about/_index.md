@@ -7,16 +7,16 @@ title : About Me
 </div>
 
 I am Yixuan Qiu, currently an associate professor in
-[School of Statistics and Management](https://ssm.sufe.edu.cn/) at
+[School of Statistics and Data Science](https://ssds.sufe.edu.cn/) at
 [Shanghai University of Finance and Economics (SUFE)](https://english.sufe.edu.cn/).
 Before joining SUFE in 2020, I was a postdoctoral researcher in
-[Department of Statistics](http://www.stat.cmu.edu/) at [Carnegie Mellon University](https://www.cmu.edu/),
-working with Dr. [Kathryn Roeder](http://www.stat.cmu.edu/~roeder/index.html) and
-Dr. [Jing Lei](http://www.stat.cmu.edu/~jinglei/). I obtained my PhD degree in statistics
-from [Purdue University](http://www.stat.purdue.edu/) in 2018, advised by
+[Department of Statistics and Data Sciencec](https://www.cmu.edu/dietrich/statistics-datascience/index.html) at [Carnegie Mellon University](https://www.cmu.edu/),
+working with Dr. [Kathryn Roeder](https://kathrynmroeder.github.io/) and
+Dr. [Jing Lei](https://www.stat.cmu.edu/~jinglei/). I obtained my PhD degree in statistics
+from [Purdue University](https://www.stat.purdue.edu/) in 2018, advised by
 Dr. [Lingsong Zhang](https://www.stat.purdue.edu/~lingsong/) and
 Dr. [Xiao Wang](https://www.stat.purdue.edu/~wangxiao/).
-Prior to my PhD study in Purdue, I graduated from [Renmin University of China](https://www.ruc.edu.cn/en)
+Prior to my PhD study in Purdue, I graduated from [Renmin University of China](https://en.ruc.edu.cn/)
 for B.A. and M.A. in statistics and actuarial science, respectively.
 
 My research focuses on statistical machine learning and inference. I have great interest

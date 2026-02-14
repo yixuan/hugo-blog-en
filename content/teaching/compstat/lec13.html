@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Computational Statistics</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Yixuan Qiu" />
+    <meta name="date" content="2025-12-15" />
+    <script src="libs/header-attrs-2.29/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        CommonHTML: {
+          scale: 100
+        }
+      });
+    </script>
+    <link rel="stylesheet" href="style.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Computational Statistics
+]
+.subtitle[
+## Lecture 13
+]
+.author[
+### Yixuan Qiu
+]
+.date[
+### 2025-12-15
+]
+
+---
+
+class: inverse, center, middle
+
+# Simulation and Sampling
+
+
+
+---
+
+# Today's Topics
+
+- Langevin algorithm
+
+- Hamiltonian Monte Carlo
+
+---
+class: inverse, center, middle
+
+# Langevin Algorithm
+
+---
+
+# Langevin Dynamics
+
+The Langevin dynamics, or Langevin diffusion process, is the solution to the following stochastic differential equation (SDE) on `\(\mathbb{R}^d\)`:
+
+`$$\mathrm{d}X_t=-\nabla V(X_t)\mathrm{d}t+\sqrt{2}\mathrm{d}B_t,\quad X_0\sim p_0(x),$$`
+
+where `\(\nabla V(\cdot)\)` is the gradient of some smooth function `\(V:\mathbb{R}^d\rightarrow\mathbb{R}\)`, and `\(B_t\)` is the `\(d\)`-dimensional Brownian motion.
+
+---
+
+# Langevin Dynamics
+
+The SDE can be understood as the continuous-time limit of the following iteration:
+
+`$$\tau^{-1}(X_{t+\tau}-X_t)=-\nabla V(X_t)+\sqrt{2}\tau^{-1}(B_{t+\tau}-B_t).$$`
+
+It is known that `\(B_{t+\tau}-B_t\sim N(0,\tau I)\)`, so we can rewrite the formula above as
+
+`$$X_{t+\tau}-X_t=-\tau\nabla V(X_t)+\sqrt{2\tau}\xi_{t+\tau},$$`
+
+where `\(\xi_{t+\tau}\sim N(0,I)\)` and is independent of `\(X_t\)`.
+
+.highlight[It is very similar to the gradient descent iteration, except for the additional noise term.]
+
+---
+
+# Invariant Distribution
+
+An important property of the Langevin dynamics is that under mild conditions, it has an explicit invariant distribution. Theorem 2.1 of [1]:
+
+Suppose that `\(\nabla V(\cdot)\)` is continuously differentiable, and there exist some constants `\(a, b, C&lt;\infty\)` such that
+
+`$$\langle-\nabla V(x),x\rangle\le a\Vert x\Vert^{2}+b,\quad\forall\Vert x\Vert&gt;C.$$`
+
+Let `\(p_t(x)\)` be the density function of `\(X_t\)`. Then `\(\Vert p_t-\pi \Vert_{\mathrm{TV}}\rightarrow 0\)`, where `\(\Vert f-g \Vert_{\mathrm{TV}}\)` is the total variation distance between two densities `\(f\)` and `\(g\)`, and `\(\pi(x)\propto \exp\{-V(x)\}\)`.
+
+---
+
+# Invariant Distribution
+
+This means that no matter what the initial distribution `\(p_0(x)\)` is, `\(X_t\)` will eventually follow the distribution `\(\pi(x)\propto \exp\{-V(x)\}\)`.
+
+In other words, if we are interested in sampling from some target distribution `\(\pi(x)\propto \exp\{-V(x)\}\)`, we can simulate the Langevin diffusion process of some particles, starting from an arbitrary initial distribution.
+
+.highlight[This is the foundation of the Langevin Monte Carlo algorithm.]
+
+---
+
+# Convergence Rate &lt;sup&gt;&lt;span class="small"&gt;[2]&lt;/span&gt;&lt;/sup&gt;
+
+In addition, if `\(V(\cdot)\)` is `\(m\)`-strongly-convex and `\(L\)`-smooth, then
+
+`$$\Vert p_t-\pi \Vert_{\mathrm{TV}}\le \frac{1}{2}\chi^2(p_0\Vert \pi)^{1/2}e^{-mt/2},$$`
+
+where `\(\chi^2(f||g)=\int (f(x)/g(x)-1)^2 g(x)\mathrm{d}x\)` is the `\(\chi^2\)` divergence between two densities `\(f\)` and `\(g\)`.
+
+This means that if `\(V(\cdot)\)` is both smooth and strongly convex, then the distribution of `\(X_t\)` converges to `\(\pi\)` .highlight[exponentially fast].
+
+---
+
+# Unadjusted Langevin Algorithm
+
+A natural and obvious method to simulate the SDE is using the discretized iteration:
+
+`$$\begin{align*}
+X^{(0)} &amp; \sim p_{0}(x),\qquad\xi^{(k)}\overset{iid}{\sim}N(0,I_{d}),\\
+X^{(k+1)} &amp; =X^{(k)}-\tau\nabla V(X^{(k)})+\sqrt{2\tau}\xi^{(k+1)},\quad k=0,1,\ldots
+\end{align*}$$`
+
+This is called the .highlight[unadjusted Langevin algorithm (ULA)].
+
+---
+
+# Convergence of ULA &lt;sup&gt;&lt;span class="small"&gt;[3]&lt;/span&gt;&lt;/sup&gt;
+
+Let `\(p_{k\tau}\)` denote the distribution of `\(X^{(k)}\)` with step size `\(\tau\)`. Suppose that `\(V(\cdot)\)` is `\(m\)`-strongly-convex and `\(L\)`-smooth, and set `\(p_0=N(0,m^{-1}I)\)`. Then with
+
+`$$\tau=\frac{m\varepsilon}{16dL^2},\quad k=\frac{16L^2}{m^2}\cdot \frac{d\log(\frac{Ld}{m\varepsilon})}{\varepsilon},$$`
+
+we have
+
+`$$\mathrm{KL}(p_{k\tau}\Vert\pi)\le\varepsilon,\quad\Vert p_{k\tau}-\pi\Vert_{\mathrm{TV}}\le\sqrt{\varepsilon},\quad W_{2}(p_{k\tau},\pi)\le\sqrt{2\varepsilon/m},$$`
+
+where `\(\mathrm{KL}(\cdot\Vert\cdot)\)` is the KL divergenve, and `\(W_2(\cdot,\cdot)\)` is the 2-Wasserstein distance.
+
+---
+
+# Metropolis-Adjusted Langevin Algorithm
+
+Due to the discretization, in general the distribution of `\(X^{(k)}\)` generated by ULA would .highlight[NOT] converge to `\(\pi\)`.
+
+However, ULA provides a good proposal distribution for the Metropolis-Hastings algorithm.
+
+Random walk Metropolis:
+
+- Propose `\(Y^{(k+1)}\sim N(X^{(k)},\sigma^2 I)\)`
+
+- Define `\(\alpha=\min\{1,\pi(X^{(k+1)})/\pi(X^{(k)})\}\)`
+
+- Set `\(X^{(k+1)}=Y^{(k+1)}\)` with probability `\(\alpha\)`, otherwise `\(X^{(k+1)}=X^{(k)}\)`
+
+---
+
+# Metropolis-Adjusted Langevin Algorithm
+
+Metropolis-Adjusted Langevin Algorithm (MALA):
+
+- Propose `\(Y^{(k+1)}\sim N(X^{(k)}-\tau\nabla V(X^{(k)}),2\tau I)\)`
+
+- Define
+`$$\small\alpha=\min\left\{ 1,\frac{\exp\left[-V(Y^{(k+1)})-\Vert X^{(k)}-Y^{(k+1)}+\tau\nabla V(Y^{(k+1)})\Vert^{2}/(4\tau)\right]}{\exp\left[-V(X^{(k)})-\Vert Y^{(k+1)}-X^{(k)}+\tau\nabla V(X^{(k)})\Vert^{2}/(4\tau)\right]}\right\}$$`
+
+- Set `\(X^{(k+1)}=Y^{(k+1)}\)` with probability `\(\alpha\)`, otherwise `\(X^{(k+1)}=X^{(k)}\)`
+
+---
+
+# Convergence Rate of MALA &lt;sup&gt;&lt;span class="small"&gt;[4]&lt;/span&gt;&lt;/sup&gt;
+
+For smooth and strongly convex `\(V(\cdot)\)`, [4] shows that MALA has advantages over ULA and random walk Metropolis.
+
+Roughly speaking, to obtain samples with total variation error at most `\(\varepsilon\)`, ULA requires `\(O(\kappa^2 d/\varepsilon^2)\)` steps from a warm start, whereas MALA only requires `\(O(\kappa d\log(1/\varepsilon))\)`. Here `\(\kappa=L/m\)` is the condition number.
+
+As a comparison, the random walk Metropolis requires `\(O(\kappa^2 d\log(1/\varepsilon))\)` steps.
+
+---
+
+# Underdamped Langevin Diffusion
+
+Another variant of Langevin diffusion, called underdamped Langevin diffusion, solves the following SDE:
+
+`$$\begin{align*}
+X_{0} &amp; =x_{0},\quad Z_{0}=z_{0},\\
+\mathrm{d}X_{t} &amp; =Z_{t}\mathrm{d}t,\\
+\mathrm{d}Z_{t} &amp; =-\gamma Z_{t}\mathrm{d}t-\nabla V(X_{t})\mathrm{d}t+\sqrt{2\gamma}\mathrm{d}B_{t},\quad t\ge0.
+\end{align*}$$`
+
+Here we introduce an auxiliary process `\(\{Z_t\}\)`. Interestingly, `\((X_t,Z_t)\)` has a joint invariant distribution of the form
+
+`$$\pi(x,z)\propto \exp\{-V(x)-\Vert z\Vert^2/2\}\propto \pi(x)\cdot\exp(-\Vert z\Vert^2/2),$$`
+
+where `\(\pi(x)\propto \exp\{-V(x)\}\)` is the target distribution.
+
+---
+
+# Underdamped Langevin Diffusion
+
+This means that if the distribution of `\((X_t,Z_t)\)` converges to the invariant distribution, then `\(X_t\)` eventually follows `\(\pi(x)\)`, and `\(Z_t\)` converges to a normal distribution `\(N(0,I_d)\)` independent of `\(X\)`.
+
+The discretized version is
+
+`$$\begin{align*}
+X^{(k+1)} &amp; =X^{(k)}+\tau Z^{(k)},\\
+Z^{(k+1)} &amp; =(1-\gamma\tau)Z^{(k)}-\tau\nabla V(X^{(k)})+\sqrt{2\gamma\tau}\xi^{(k+1)},\quad k=0,1,\ldots
+\end{align*}$$`
+
+--
+
+However, for the underdamped Langevin diffusion we do not have an obvious Metropolis correction method.
+
+---
+class: inverse, center, middle
+
+# Hamiltonian Monte Carlo
+
+---
+
+# Hamiltonian Dynamics
+
+- Imagine a particle with position `\(x\in\mathbb{R}^d\)`, velocity `\(v\in\mathbb{R}^d\)`, and unit mass
+
+- Define the total energy as
+`$$H(x,v)=U(x)+\frac{1}{2}\Vert v \Vert^2$$`
+
+- Also called the Hamiltonian of the particle
+
+---
+
+# Hamiltonian Dynamics
+
+- The Hamiltonian dynamics are a set of differential equations:
+`$$\frac{\mathrm{d}x}{\mathrm{d}t}=\frac{\partial H(x,v)}{\partial v},\quad\frac{\mathrm{d}v}{\mathrm{d}t}=-\frac{\partial H(x,v)}{\partial x}$$`
+
+- We immediately find that `\(\mathrm{d}H/\mathrm{d}t=0\)`
+
+- With the given form `\(H(x,v)=U(x)+\frac{1}{2}\Vert v \Vert^2\)`, we have
+`$$\frac{\mathrm{d}x}{\mathrm{d}t}=v,\quad\frac{\mathrm{d}v}{\mathrm{d}t}=-\nabla U(x)$$`
+
+---
+
+# Hamiltonian Dynamics
+
+- Starting from an initial value `\((x,v)\)`, denote the solution to the equations by
+`$$\varphi_t(x,v)=\left(x_t(x,v),v_t(x,v)\right)$$`
+
+- Properties
+
+  - `\(\varphi_t\)` is a .highlight[deterministic] operator, i.e., no random variables involved so far
+
+  - `\(\varphi_t(x_t(x,v),-v_t(x,v))=\left(x,-v\right)\)`
+  
+  - `\(H(\varphi_t(x,v))=H(x,v)\)`
+
+---
+
+# Stationarity Theorem &lt;sup&gt;&lt;span class="small"&gt;[5]&lt;/span&gt;&lt;/sup&gt;
+
+Suppose `\((X,V)\sim\pi(x,v)\propto e^{-H(x,v)}\)`, then for any `\(T\ge 0\)`, `\(\varphi_T(X,V)\sim\pi(x,v).\)`
+
+--
+
+Implications:
+
+- `\((X,V)\sim\pi(x,v)\)` implies that `\(X\)` and `\(V\)` are independent with `\(X\sim\pi(x)\propto e^{-U(x)}\)` and `\(V\sim N(0,I_d)\)`
+
+- The theorem indicates that the operator `\(\varphi_T\)` does not change the distribution of the random vectors `\((X,V)\)`
+
+- Marginally, `\(\varphi_T\)` does not change the distribution of `\(X\)` for any `\(V\)` that is independent of `\(X\)`
+
+---
+
+# Idealized HMC
+
+If we define a Markov chain with the following transition algorithm from `\(X^{(k)}\)`:
+
+1. Simulate `\(V\sim N(0,I_d)\)` independent of `\(X^{(k)}\)`
+
+2. Let `\((X^{(k+1)},V')=\varphi_T(X^{(k)},V)\)`
+
+Then this transition kernel `\(\mathcal{T}(x^{(k)}\rightarrow x^{(k+1)})\)` satisfies
+`$$\pi(y)=\int\pi(x)\mathcal{T}(x\rightarrow y)\mathrm{d}x,$$`
+where `\(\pi(x)\propto e^{-U(x)}\)`.
+
+---
+
+# Idealized HMC
+
+For `\(k=1,...,K\)`:
+
+1. Sample `\(\xi\sim N(0,I_d)\)`
+
+2. Set `\((X^{(k+1)},\xi')=\varphi_T(X^{(k)},\xi)\)`
+
+Then under mild conditions on `\(U(x)\)` we obtain the ergodicity of `\(\{X^{(k)}\}\)`.
+
+Note that `\(\varphi_T\)` is essentially determined by `\(\nabla U(x)\)`, and we assume the solution to the differential equations can be solved exactly.
+
+---
+
+# Convergence Rate &lt;sup&gt;&lt;span class="small"&gt;[6]&lt;/span&gt;&lt;/sup&gt;
+
+Assume that `\(U:\mathbb{R}^d\rightarrow\mathbb{R}\)` is `\(m\)`-strongly-convex and `\(L\)`-smooth. Let `\(\nu_k\)` be the marginal distribution of `\(X^{(k)}\)` from the idealized HMC algorithm. Then for any `\(0&lt;\varepsilon&lt;\sqrt{d}\)` with `\(X^{(0)}=\arg\min_x U(x)\)`, `\(T=\Omega\left(\frac{1}{\sqrt{L}}\right)\)`, and `\(k=O\left(\frac{L}{m}\log(d/\varepsilon)\right)\)`, we have
+`$$W_2(\nu_k,\pi)\le\frac{\varepsilon}{\sqrt{m}},$$`
+where `\(W_2(\cdot,\cdot)\)` is the 2-Wasserstein distance between two distributions.
+
+---
+
+# Some Remarks
+
+The previous theorem means that if `\(U(\cdot)\)` is both smooth and strongly convex, then the distribution of `\(X^{(k)}\)` converges to `\(\pi\)` .highlight[exponentially fast].
+
+At first glance it is based on the same assumption as in the Langevin algorithm, and the result is also similar.
+
+However, empirical results show that HMC tends to perform better for more complicated distributions, e.g. multimodal distributions.
+
+---
+
+# Discretized HMC
+
+- In reality, of course, we cannot solve the differential equations exactly
+
+- Need to discretize the solution
+
+- Let `\(q(0)=X^{(k)}\)`, `\(p(0)\sim N(0,I_d)\)`. For `\(l=0,\ldots,L-1\)`,
+`$$\begin{align*}
+p(l+1/2) &amp; =p(l)-\frac{\tau}{2}\nabla U(q(l))\\
+q(l+1) &amp; =q(l)+\tau p(l+1/2)\\
+p(l+1) &amp; =p(l+1/2)-\frac{\tau}{2}\nabla U(q(l+1))
+\end{align*}$$`
+
+- Propose `\(Y=q(L)\)` as the next state
+
+- `\(\tau\)` and `\(L\)` are tuning parameters
+
+---
+
+# Discretized HMC
+
+- .highlight[But now we lose the preservation of Hamiltonian]
+
+- Need a Metropolis-Hastings correction!
+
+- Acceptance probability
+`$$\alpha=\min\left(1,\frac{\exp\left[-H(Y,\tilde{V})\right]}{\exp\left[-H(X^{(k)},V)\right]}\right),\quad V=p(0),\quad\tilde{V}=p(L)$$`
+
+- With probability `\(\alpha\)` set `\(X^{(k+1)}=Y\)`; otherwise set `\(X^{(k+1)}=X^{(k)}\)`
+
+---
+
+# References
+
+.medium[
+
+[1] Gareth O. Roberts and Richard L. Tweedie (1996). Exponential convergence of Langevin distributions and their discrete approximations. Bernoulli.
+
+[2] Arnak S. Dalalyan (2017). Theoretical guarantees for approximate sampling from smooth and log‐concave densities. Journal of the Royal Statistical Society: Series B (Statistical Methodology).
+
+[3] Xiang Cheng and Peter Bartlett (2018). Convergence of Langevin MCMC in KL-divergence. Algorithmic Learning Theory.
+
+[4] Raaz Dwivedi et al. (2019). Log-concave sampling: Metropolis-Hastings algorithms are fast. Journal of Machine Learning Research.
+
+]
+
+---
+
+# References
+
+.medium[
+
+[5] Nisheeth K. Vishnoi (2021). An introduction to Hamiltonian Monte Carlo method for sampling. arXiv:2108.12107.
+
+[6] Zongchen Chen &amp; Santosh S. Vempala (2022). Optimal convergence rate of hamiltonian monte carlo for strongly logconcave distributions. Theory of Computing.
+
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
