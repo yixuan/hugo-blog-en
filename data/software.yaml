@@ -25,6 +25,10 @@ category_1:
 category_2:
   title: Statistical Modeling and Machine Learning
   list:
+    - name: RegOT
+      url: https://github.com/yixuan/regot-python
+      logo: /images/sticker-regot.png
+      description: A collection of state-of-the-art solvers for regularized optimal transport, implemented in efficient C++ code
     - name: ReHLine
       url: https://rehline.github.io
       logo: /images/sticker-rehline.png
