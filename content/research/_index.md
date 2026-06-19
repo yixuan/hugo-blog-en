@@ -6,11 +6,15 @@ I have great interest in statistical computing, deep learning, exact inference m
 
 ## <i class="fas fa-angle-double-right"></i> Publication
 
+- **Qiu, Y.**, *cuRegOT: A GPU-Accelerated Solver for Entropic-Regularized Optimal Transport*. International Conference on Machine Learning (ICML 2026), 2026.
+  <span style="padding-left:10px"><a href="https://arxiv.org/abs/2605.08793"><i class="fas fa-link"></i> Link</a></span>
+  <span style="padding-left:10px"><a href="https://arxiv.org/pdf/2605.08793"><i class="far fa-file-pdf"></i> PDF</a></span>
+  <span style="padding-left:10px"><a href="https://github.com/yixuan/regot-cuda"><i class="fas fa-home"></i> Package</a></span>
 - Ouyang, X., Zheng, H., Liang, H., Zhang, J., **Qiu, Y.**, Meng, C., and Li, M., *Sparsification Techniques for Large-Scale Optimal Transport Problems*. WIREs Computational Statistics, 2026.
   <span style="padding-left:10px"><a href="https://wires.onlinelibrary.wiley.com/doi/abs/10.1002/wics.70056"><i class="fas fa-link"></i> Link</a></span>
 - Wang, C. and **Qiu, Y.**, *The Sparse-Plus-Low-Rank Quasi-Newton Method for Entropic-Regularized Optimal Transport*. International Conference on Machine Learning (ICML 2025), 2025.
-  <span style="padding-left:10px"><a href="https://openreview.net/forum?id=WCkMkMcqpb"><i class="fas fa-link"></i> Link</a></span>
-  <span style="padding-left:10px"><a href="https://openreview.net/pdf?id=WCkMkMcqpb"><i class="far fa-file-pdf"></i> PDF</a></span>
+  <span style="padding-left:10px"><a href="https://proceedings.mlr.press/v267/wang25ck.html"><i class="fas fa-link"></i> Link</a></span>
+  <span style="padding-left:10px"><a href="https://raw.githubusercontent.com/mlresearch/v267/main/assets/wang25ck/wang25ck.pdf"><i class="far fa-file-pdf"></i> PDF</a></span>
   <span style="padding-left:10px"><a href="https://github.com/yixuan/regot-python"><i class="fas fa-home"></i> Package</a></span>
   <span style="padding-left:10px"><a href="https://github.com/Aoblex/numerical-experiments"><i class="fas fa-code"></i> Code</a></span>
 - **Qiu, Y.**\*, Gao, Q.\*, and Wang, X., *Adaptive Learning of the Latent Space of Wasserstein Generative Adversarial Networks*. \*Joint first authors. Journal of the American Statistical Association, 2025.
@@ -45,8 +49,8 @@ I have great interest in statistical computing, deep learning, exact inference m
   <span style="padding-left:10px"><a href="https://jmlr.org/papers/volume24/20-572/20-572.pdf"><i class="far fa-file-pdf"></i> PDF</a></span>
   <span style="padding-left:10px"><a href="https://github.com/XiaoGuo-stat/RandClust"><i class="fas fa-code"></i> Code</a></span>
 - Dai, B.\* and **Qiu, Y.**\*, *ReHLine: Regularized Composite ReLU-ReHU Loss Minimization with Linear Computation and Linear Convergence*. \*Joint first authors. Advances in Neural Information Processing Systems (NeurIPS 2023), 2023.
-  <span style="padding-left:10px"><a href="https://openreview.net/forum?id=3pEBW2UPAD"><i class="fas fa-link"></i> Link</a></span>
-  <span style="padding-left:10px"><a href="https://openreview.net/pdf?id=3pEBW2UPAD"><i class="far fa-file-pdf"></i> PDF</a></span>
+  <span style="padding-left:10px"><a href="https://proceedings.neurips.cc/paper_files/paper/2023/hash/2e37e56599e3f49cc899f40ae4f5d1fa-Abstract-Conference.html"><i class="fas fa-link"></i> Link</a></span>
+  <span style="padding-left:10px"><a href="https://proceedings.neurips.cc/paper_files/paper/2023/file/2e37e56599e3f49cc899f40ae4f5d1fa-Paper-Conference.pdf"><i class="far fa-file-pdf"></i> PDF</a></span>
   <span style="padding-left:10px"><a href="https://rehline.github.io/"><i class="fas fa-home"></i> Project Page</a></span>
   <span style="padding-left:10px"><a href="https://github.com/softmin/ReHLine"><i class="fas fa-code"></i> Code</a></span>
 - **Qiu, Y.**, Lei, J., and Roeder, K., *Gradient-based Sparse Principal Component Analysis with Extensions to Online Learning*. Biometrika, 2023.
@@ -54,8 +58,8 @@ I have great interest in statistical computing, deep learning, exact inference m
   <span style="padding-left:10px"><a href="https://academic.oup.com/biomet/article-pdf/110/2/339/50311400/asac041.pdf"><i class="far fa-file-pdf"></i> PDF</a></span>
   <span style="padding-left:10px"><a href="https://github.com/yixuan/gradfps"><i class="fas fa-code"></i> Code</a></span>
 - Zheng, Y., He, T., **Qiu, Y.**, and Wipf, D., *Learning Manifold Dimensions with Conditional Variational Autoencoders*. Advances in Neural Information Processing Systems (NeurIPS 2022), 2022.
-  <span style="padding-left:10px"><a href="https://papers.nips.cc/paper_files/paper/2022/hash/e04101138a3c94544760c1dbdf2c7a2d-Abstract-Conference.html"><i class="fas fa-link"></i> Link</a></span>
-  <span style="padding-left:10px"><a href="https://papers.nips.cc/paper_files/paper/2022/file/e04101138a3c94544760c1dbdf2c7a2d-Paper-Conference.pdf"><i class="far fa-file-pdf"></i> PDF</a></span>
+  <span style="padding-left:10px"><a href="https://proceedings.neurips.cc/paper_files/paper/2022/hash/e04101138a3c94544760c1dbdf2c7a2d-Abstract-Conference.html"><i class="fas fa-link"></i> Link</a></span>
+  <span style="padding-left:10px"><a href="https://proceedings.neurips.cc/paper_files/paper/2022/file/e04101138a3c94544760c1dbdf2c7a2d-Paper-Conference.pdf"><i class="far fa-file-pdf"></i> PDF</a></span>
 - **Qiu, Y.**, Wang, J., Lei, J., and Roeder, K., *Identification of Cell-type-specific Marker Genes from Co-expression Patterns in Tissue Samples*. Bioinformatics, 2021.
   <span style="padding-left:10px"><a href="https://academic.oup.com/bioinformatics/article/37/19/3228/6255309"><i class="fas fa-link"></i> Link</a></span>
   <span style="padding-left:10px"><a href="https://academic.oup.com/bioinformatics/article-pdf/37/19/3228/40556813/btab257.pdf"><i class="far fa-file-pdf"></i> PDF</a></span>
